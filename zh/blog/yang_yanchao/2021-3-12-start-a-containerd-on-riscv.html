@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>手把手教你搭建基于 RISC-V 的 openEuler 系统，部署 runc并运行容器</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/165.3045043c.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>yang_yanchao</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2021-03-11</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>手把手教你搭建基于 RISC-V 的 openEuler 系统，部署 runc并运行容器</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>yang_yanchao</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2021-03-11</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>RISC-V</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>容器</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>runc</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><h1 id="手把手教你搭建基于-risc-v-的-openeuler-系统-部署-runc并运行容器"><a href="#手把手教你搭建基于-risc-v-的-openeuler-系统-部署-runc并运行容器" class="header-anchor">#</a> 手把手教你搭建基于 RISC-V 的 openEuler 系统，部署 runc并运行容器</h1> <p>RISC-V 是一个基于精简指令集（RISC）原则的开源指令集架构（ISA）。openEuler 在 RISC-V 上进行了一些探索：</p> <p>[^]: 以下相关信息来自于 https://gitee.com/openeuler/RISC-V</p> <ul><li>2020年 6 月，openEuler 发布了第一版支持 RISC-V 的文件系统 rootfs 和 kernel 镜像。</li> <li>2020年 8 月，在 OBS 构建系统开始构建 openEuler RISC-V 软件包。</li> <li>2020年 9 月，在华为全联接（HC）2020 大会上发布了 openEuler RISC-V，国内首发 RISC-V 版 Linux。</li> <li>2020年 10 月，中科院成功移植 openEuler RISC-V 到果壳（nutshell）。</li> <li>2020年 11 月，在 openEuler 镜像仓发布第二版 rootfs 和 kernel 镜像，可以在 qemu 中启动镜像，体验 openEuler RISC-V 移植版。</li></ul> <p><img src="/assets/img/2021-3-12-start-a-containerd-on-riscv-01.23f85feb.jpg" alt="openEuler summit 上展示的运行在果壳芯片上的openEuler RISC-V "></p> <p>**openEuler Summit 上展示的运行在果壳芯片上的 openEuler RISC-V **</p> <p>在容器技术炙手可热的今天，各个技术公司都积极拥抱容器。如何使用 QEMU 模拟器启动 openEuler RISC-V 移植版，并在其中运行容器呢？本文将带你一探究竟。</p> <h3 id="环境要求"><a href="#环境要求" class="header-anchor">#</a> 环境要求</h3> <ul><li>运行环境：Linux</li> <li>所需文件：openEuler RISC-V 系统镜像，请参见 &quot;获取 openEuler RISC-V 移植版系统镜像&quot;</li> <li>软件环境：QEMU &gt;= 4.0.0  &lt;=5.0.1，请参见 &quot;获取 openEuler RISC-V 移植版系统镜像&quot;</li></ul> <h4 id="获取-openeuler-risc-v-移植版系统镜像"><a href="#获取-openeuler-risc-v-移植版系统镜像" class="header-anchor">#</a> 获取 openEuler RISC-V 移植版系统镜像</h4> <p>在 openEuler 官网可以获得 openEuler RISC-V 移植版发布的最新版本的 openEuler RISC-V 镜像以及 repo 源，名称为 <strong>openEuler Preview</strong></p> <div class="language-https extra-class"><pre class="language-text"><code>https://repo.openeuler.org/openEuler-preview/RISC-V/Image/
+</code></pre></div><p>其中的两个文件是启动 openEuler RISC-V 移植版所必需的：</p> <ul><li><strong>fw_payload_oe_docker.elf</strong> 利用 openSBI 将 kernel-5.5 的 image 作为 payload 所制作的用于 QEMU 启动的 image，同时它也增加了 Docker 相关的启动配置。</li> <li><strong>openEuler-preview.riscv64.qcow2</strong> openEuler RISC-V移植版的rootfs镜像。</li></ul> <h4 id="通过-qemu-启动一个-openeuler-risc-v"><a href="#通过-qemu-启动一个-openeuler-risc-v" class="header-anchor">#</a> 通过 QEMU 启动一个 openEuler RISC-V</h4> <p>首先你需要在你的 Host Linux 环境中有 qemu-system-riscv64 的二进制程序，如果你的 Linux 环境的 repo源中没有提供这个二进制，那么则需要手动从 QEMU 的源码构建出来，具体的构建方式如 QEMU 的官方指导所述：</p> <p><a href="https://wiki.qemu.org/Documentation/Platforms/RISCV" target="_blank" rel="noopener noreferrer">Build QEMU for Platforms/RISCV<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <p>可以参考以下命令：</p> <div class="language- extra-class"><pre class="language-text"><code>git clone https://gitee.com/openeuler/qemu.git
+cd qemu
+./configure --target-list=riscv64-softmmu &amp;&amp; make
+cp riscv64-softmmu/qemu-system-riscv64 /bin
+</code></pre></div><p>QEMU 的启动方式，这里以主机端口转发的方式实现网络功能</p> <div class="language- extra-class"><pre class="language-text"><code>$ qemu-system-riscv64 \
+  -nographic -machine virt \
+  -smp 8 -m 2G \
+  -kernel fw_payload_oe_docker.elf \
+  -drive file=openEuler-preview.riscv64.qcow2,format=qcow2,id=hd0 \
+  -object rng-random,filename=/dev/urandom,id=rng0 \
+  -device virtio-rng-device,rng=rng0 \
+  -device virtio-blk-device,drive=hd0 \
+  -device virtio-net-device,netdev=usernet \
+  -netdev user,id=usernet,hostfwd=tcp::12055-:22 \
+  -append 'root=/dev/vda1 rw console=ttyS0 systemd.default_timeout_start_sec=600 selinux=0 highres=off mem=4096M earlycon'
+</code></pre></div><p>当系统启动之后，可以通过 ssh 登录 Guest OS，并且在模拟器中应当是可以访问互联网的。系统默认的登录用户名/密码是：root/openEuler12#$</p> <div class="language-shell extra-class"><pre class="language-shell"><code> <span class="token function">ssh</span> -p <span class="token number">12055</span> root@localhost
+</code></pre></div><h3 id="部署-runc-并运行容器"><a href="#部署-runc-并运行容器" class="header-anchor">#</a> 部署 runc 并运行容器</h3> <p>说明：接下来的操作均在所启动的 openEuler RISC-V 的模拟器运行的 Guest OS 中。</p> <h4 id="安装-runc-软件包"><a href="#安装-runc-软件包" class="header-anchor">#</a> 安装 runc 软件包</h4> <p>openEuler RISC-V repo 源中包含了 runc 软件包，配置 repo 并安装 runc 的参考命令如下：</p> <div class="language-shell extra-class"><pre class="language-shell"><code><span class="token comment"># yum-config-manager --add-repo https://repo.openeuler.org/openEuler-preview/RISC-V/everything/</span>
+<span class="token comment"># yum install docker-runc</span>
+</code></pre></div><h4 id="准备容器镜像"><a href="#准备容器镜像" class="header-anchor">#</a> 准备容器镜像</h4> <ol><li><p>准备工作目录</p> <p>在正式部署之前，先来准备一个工作目录，比如 mycontainer，本文后续的所有操作都在这个目录下执行。</p> <div class="language-shell extra-class"><pre class="language-shell"><code><span class="token function">mkdir</span> mycontainer
+<span class="token builtin class-name">cd</span> mycontainer
+</code></pre></div></li> <li><p>准备容器启动镜像</p> <p>使用自己制作的 rootfs 作为容器启动镜像。假设自制的文件系统中需要 gcc（根据用户自己实际情况确定安装的软件），则参考命令如下：</p> <div class="language-shell extra-class"><pre class="language-shell"><code><span class="token function">mkdir</span> rootfs
+yum <span class="token function">install</span> gcc --installroot<span class="token operator">=</span><span class="token variable"><span class="token variable">`</span><span class="token builtin class-name">pwd</span><span class="token variable">`</span></span>/rootfs
+</code></pre></div></li></ol> <h4 id="使用-runc-运行容器"><a href="#使用-runc-运行容器" class="header-anchor">#</a> 使用 runc 运行容器</h4> <p>有了 rootfs 之后，我们需要按照 OCI 标准，有一个配置文件<code>config.json</code> 说明如何运行容器，包括要运行的命令、权限、环境变量等内容，runc 提供了一个命令可以自动帮我们生成该配置文件：</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">[</span>root@openEuler-RISCV-rare mycontainer<span class="token punctuation">]</span><span class="token comment"># runc spec</span>
+<span class="token punctuation">[</span>root@openEuler-RISCV-rare mycontainer<span class="token punctuation">]</span><span class="token comment"># ls</span>
+config.json  rootfs
+</code></pre></div><p>这样就构成了一个 <a href="https://github.com/opencontainers/runtime-spec/blob/master/bundle.md" target="_blank" rel="noopener noreferrer">OCI runtime bundle<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a> 的内容，这个 bundle 非常简单，就上面两个内容：config.json 文件和 rootfs 文件系统。<code>config.json</code> 里面的内容很长，这里就不贴出来了，我们暂时也不会对其进行修改，直接使用这个默认生成的文件。有了这些信息，runc 就能知道怎么运行容器了，我们先来看看简单的方法 <code>runc run</code>（这个命令需要 root 权限），它会创建并启动一个容器：</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">[</span>root@openEuler-RISCV-rare mycontainer<span class="token punctuation">]</span><span class="token comment"># runc run openEuler_container</span>
+sh-5.0<span class="token comment"># ls</span>
+bin  boot  dev	etc  home  lib	lib64  media  mnt  opt	proc  root  run  sbin  srv  sys  tmp  usr  var
+sh-5.0<span class="token comment"># whoami</span>
+root
+sh-5.0<span class="token comment"># pwd</span>
+/
+sh-5.0<span class="token comment"># echo hello container</span>
+hello container
+</code></pre></div><p>最后一个参数是容器的名字，需要在主机上保证唯一性。运行之后直接进入到了容器的 <code>sh</code> 交互界面，但是这个容器并没有配置网络方面的内容，只是有一个默认的 <code>lo</code> 接口，因此无法和外部通信，但其他功能都正常。</p> <p>此时，另开一个终端，可以查看运行的容器信息：</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">[</span>root@openEuler-RISCV-rare ~<span class="token punctuation">]</span><span class="token comment"># runc list</span>
+ID                    PID         STATUS      BUNDLE              CREATED                        OWNER
+openEuler_container   <span class="token number">17318</span>       running     /home/mycontainer   <span class="token number">2019</span>-09-03T15:27:25.5978852Z   root
+
+</code></pre></div><p>启动容器的第二种方式是使用specs生命周期操作，可以更好地创建和管理容器。但是这样会使容器在后台启动，所以需要对 <code>config.json</code> 进行修改。改动有两处，把 <code>terminal</code> 的值改成 <code>false</code>，修改 <code>args</code> 命令行参数为 <code>sleep 20</code>。<code>args</code>的命令只是一个样例，使用中可以根据实际需求进行修改：</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token property">&quot;process&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+		<span class="token property">&quot;terminal&quot;</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+		<span class="token property">&quot;consoleSize&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+			<span class="token property">&quot;height&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+			<span class="token property">&quot;width&quot;</span><span class="token operator">:</span> <span class="token number">0</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token property">&quot;user&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+			<span class="token property">&quot;uid&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+			<span class="token property">&quot;gid&quot;</span><span class="token operator">:</span> <span class="token number">0</span>
+		<span class="token punctuation">}</span><span class="token punctuation">,</span>
+		<span class="token property">&quot;args&quot;</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+			<span class="token string">&quot;sleep&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;20&quot;</span>
+		<span class="token punctuation">]</span><span class="token punctuation">,</span>
+		···
+<span class="token punctuation">}</span>
+</code></pre></div><p>接着用 runc 命令来控制容器的运行，实现各个容器状态的转换</p> <ol><li><p>使用 <code>create</code> 创建容器。此时容器没有运行，只是准备好了所有运行环境，使用 <code>list</code> 查看，此时容器状态为 <code>created</code>。</p> <p>假设容器名为 openEuler，参考命令如下：</p></li></ol> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token punctuation">[</span>root@openEuler-RISCV-rare mycontainer<span class="token punctuation">]</span><span class="token comment"># runc create openEuler</span>
+<span class="token punctuation">[</span>root@openEuler-RISCV-rare mycontainer<span class="token punctuation">]</span><span class="token comment"># runc list</span>
+ID          PID         STATUS      BUNDLE              CREATED                        OWNER
+openEuler   <span class="token number">17402</span>       created     /home/mycontainer   <span class="token number">2019</span>-09-03T15:37:46.6289281Z   root
+</code></pre></div><ol start="2"><li>运行容器，会执行启动命令 <code>sleep 20</code>。使用 <code>list</code> 查看，此时容器状态为<code>running</code>。</li></ol> <div class="language-shell extra-class"><pre class="language-shell"><code><span class="token punctuation">[</span>root@openEuler-RISCV-rare mycontainer<span class="token punctuation">]</span><span class="token comment"># runc start openEuler</span>
+<span class="token punctuation">[</span>root@openEuler-RISCV-rare mycontainer<span class="token punctuation">]</span><span class="token comment"># runc list</span>
+ID          PID         STATUS      BUNDLE              CREATED                        OWNER
+openEuler   <span class="token number">17402</span>       running     /home/mycontainer   <span class="token number">2019</span>-09-03T15:37:46.6289281Z   root
+</code></pre></div><ol start="3"><li>容器运行 20 秒之后，容器关闭，状态为<code>stop</code>。</li></ol> <div class="language-shell extra-class"><pre class="language-shell"><code><span class="token punctuation">[</span>root@openEuler-RISCV-rare mycontainer<span class="token punctuation">]</span><span class="token comment"># runc list</span>
+ID          PID         STATUS      BUNDLE              CREATED                        OWNER
+openEuler   <span class="token number">0</span>           stopped     /home/mycontainer   <span class="token number">2019</span>-09-03T15:37:46.6289281Z   root
+</code></pre></div><ol start="4"><li>删除容器，容器的信息就不在了。</li></ol> <div class="language-shell extra-class"><pre class="language-shell"><code><span class="token punctuation">[</span>root@openEuler-RISCV-rare mycontainer<span class="token punctuation">]</span><span class="token comment"># runc delete openEuler</span>
+<span class="token punctuation">[</span>root@openEuler-RISCV-rare mycontainer<span class="token punctuation">]</span><span class="token comment"># runc list</span>
+ID          PID         STATUS      BUNDLE      CREATED     OWNER
+</code></pre></div><p>今天的介绍就到这里，更多关于 runc 使用的介绍可以用 <code>runc -h</code> 查看。后续 openEuler RISC-V 的 Docker 也会使能哦！
+更多关于 openEuler RISC-V 的内容请关注</p> <div class="language-https extra-class"><pre class="language-text"><code>https://gitee.com/openeuler/RISC-V
+</code></pre></div></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/165.3045043c.js" defer></script>
+  </body>
+</html>

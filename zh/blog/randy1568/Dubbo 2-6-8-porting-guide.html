@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Dubbo 2.6.8 移植指南（openEuler 20.03 LTS SP1）</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/139.8ceea00e.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>randy1568</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2021-12-29</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>Dubbo 2.6.8 移植指南（openEuler 20.03 LTS SP1）</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>randy1568</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2021-12-29</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>Dubbo</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>Porting Guide</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><h1 id="dubbo-2-6-8-移植指南-openeuler-20-03-lts-sp1"><a href="#dubbo-2-6-8-移植指南-openeuler-20-03-lts-sp1" class="header-anchor">#</a> Dubbo 2.6.8 移植指南（openEuler 20.03 LTS SP1)</h1> <h2 id="介绍"><a href="#介绍" class="header-anchor">#</a> 介绍</h2> <h3 id="简要介绍"><a href="#简要介绍" class="header-anchor">#</a> 简要介绍</h3> <p>Dubbo是阿里巴巴公司开源的一个高性能优秀的服务框架，使得应用可通过高性能的RPC（远程过程调用）实现服务的输出和输入功能，可以和Spring框架无缝集成。简单地说，Dubbo是一个基于Spring的RPC框架，能够实现服务的远程调用、服务的治理。</p> <h3 id="建议版本"><a href="#建议版本" class="header-anchor">#</a> 建议版本</h3> <p>建议使用Dubbo 2.6.8版本。</p> <h2 id="环境要求"><a href="#环境要求" class="header-anchor">#</a> 环境要求</h2> <h3 id="硬件要求"><a href="#硬件要求" class="header-anchor">#</a> 硬件要求</h3> <p>硬件要求如<a href="https://support.huaweicloud.com/prtg-dubbo-kunpengwebs/kunpengdubbo268_02_0002.html#kunpengdubbo268_02_0002__d0e90" target="_blank" rel="noopener noreferrer">表1<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>所示。</p> <table><thead><tr><th>项目</th> <th>说明</th></tr></thead> <tbody><tr><td>CPU</td> <td>鲲鹏920处理器</td></tr> <tr><td>网络</td> <td>可访问外网</td></tr> <tr><td>存储</td> <td>无要求</td></tr> <tr><td>内存</td> <td>无要求</td></tr></tbody></table> <h3 id="操作系统要求"><a href="#操作系统要求" class="header-anchor">#</a> 操作系统要求</h3> <p>操作系统要求如<a href="https://support.huaweicloud.com/prtg-dubbo-kunpengwebs/kunpengdubbo268_02_0002.html#kunpengdubbo268_02_0002__d0e141" target="_blank" rel="noopener noreferrer">表2<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>所示。</p> <table><thead><tr><th>项目</th> <th>版本</th></tr></thead> <tbody><tr><td>openEuler</td> <td>20.03 LTS-SP1 aarch64</td></tr> <tr><td>Kernel</td> <td>4.19.90</td></tr></tbody></table> <h2 id="配置编译环境"><a href="#配置编译环境" class="header-anchor">#</a> 配置编译环境</h2> <h3 id="配置dns服务器"><a href="#配置dns服务器" class="header-anchor">#</a> 配置DNS服务器</h3> <div class="language- extra-class"><pre class="language-text"><code># cat /etc/resolv.conf 
+nameserver 114.114.114.114
+nameserver 8.8.8.8
+</code></pre></div><h3 id="安装依赖包"><a href="#安装依赖包" class="header-anchor">#</a> 安装依赖包</h3> <ol><li>下载并安装依赖包</li></ol> <div class="language- extra-class"><pre class="language-text"><code>yum install java-1.8.0* tcl git gcc gcc-c++ make cmake libtool autoconf automake -y
+</code></pre></div><ol start="2"><li>查看Java版本</li></ol> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost ~]# java -version
+openjdk version &quot;1.8.0_272&quot;
+OpenJDK Runtime Environment Bisheng (build 1.8.0_272-b10)
+OpenJDK 64-Bit Server VM Bisheng (build 25.272-b10, mixed mode)
+
+</code></pre></div><h3 id="安装maven"><a href="#安装maven" class="header-anchor">#</a> 安装Maven</h3> <ol><li>下载Maven安装包</li></ol> <div class="language- extra-class"><pre class="language-text"><code>wget https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+</code></pre></div><ol start="2"><li>解压安装包到指定目录</li></ol> <div class="language- extra-class"><pre class="language-text"><code>tar -zxvf apache-maven-3.6.3-bin.tar.gz -C /opt/
+</code></pre></div><ol start="3"><li>配置Maven环境变量。</li></ol> <p>a.在“/etc/profile” 文件末尾增加Maven路径</p> <div class="language- extra-class"><pre class="language-text"><code>echo &quot;MAVEN_HOME=/opt/apache-maven-3.6.3/&quot; &gt;&gt; /etc/profile
+echo &quot;export PATH=$MAVEN_HOME/bin:$PATH&quot; &gt;&gt; /etc/profile
+</code></pre></div><p>b.使修改的环境变量生效。</p> <div class="language- extra-class"><pre class="language-text"><code>source /etc/profile
+</code></pre></div><ol start="4"><li>检查配置是否生效。</li></ol> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost ~]# mvn -v
+Apache Maven 3.6.3 (cecedd343002696d0abb50b32b541b8a6ba2883f)
+Maven home: /opt/apache-maven-3.6.3
+Java version: 1.8.0_272, vendor: Bisheng, runtime: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.272.b10-7.oe1.aarch64/jre
+Default locale: en_US, platform encoding: UTF-8
+OS name: &quot;linux&quot;, version: &quot;4.19.90-2012.4.0.0053.oe1.aarch64&quot;, arch: &quot;aarch64&quot;, family: &quot;unix&quot;
+
+</code></pre></div><ol start="5"><li>修改Maven配置文件中的本地仓、远程仓、代理等。</li></ol> <p>配置文件路径：“/opt/apache-maven-3.6.3/conf/settings.xml”。</p> <p>配置网络代理，其中host，port，username，password需要根据当前环境修改：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;proxies&gt;
+   &lt;proxy&gt;
+     &lt;id&gt;my-proxy&lt;/id&gt;
+     &lt;active&gt;true&lt;/active&gt;
+     &lt;protocol&gt;https&lt;/protocol&gt;
+     &lt;host&gt;代理服务器网址&lt;/host&gt;
+     &lt;port&gt;代理服务器端口&lt;/port&gt;
+     &lt;username&gt;用户名&lt;/username&gt;
+     &lt;password&gt;密码&lt;/password&gt;
+     &lt;nonProxyHosts&gt;local.net|some.host.com&lt;/nonProxyHosts&gt;
+   &lt;/proxy&gt;
+   &lt;proxy&gt;
+     &lt;id&gt;my-proxy1&lt;/id&gt;
+     &lt;active&gt;true&lt;/active&gt;
+     &lt;protocol&gt;http&lt;/protocol&gt;
+     &lt;host&gt;代理服务器网址&lt;/host&gt;
+     &lt;port&gt;代理服务器端口&lt;/port&gt;
+     &lt;username&gt;用户名&lt;/username&gt;
+     &lt;password&gt;密码&lt;/password&gt;
+     &lt;nonProxyHosts&gt;local.net|some.host.com&lt;/nonProxyHosts&gt;
+   &lt;/proxy&gt;
+&lt;/proxies&gt;
+</code></pre></div><p>配置远程仓库：</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;mirrors&gt;
+         &lt;mirror&gt;
+                &lt;id&gt;huaweicloud&lt;/id&gt;
+                &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+                &lt;url&gt;https://mirrors.huaweicloud.com/repository/maven/&lt;/url&gt;
+         &lt;/mirror&gt;
+&lt;/mirrors&gt;
+</code></pre></div><h2 id="编译dubbo-2-6-8"><a href="#编译dubbo-2-6-8" class="header-anchor">#</a> 编译Dubbo 2.6.8</h2> <h3 id="获取源码"><a href="#获取源码" class="header-anchor">#</a> 获取源码</h3> <div class="language- extra-class"><pre class="language-text"><code>mkdir /home/Dubbo &amp;&amp; cd /home/Dubbo &amp;&amp; wget https://github.com/apache/dubbo/archive/dubbo-2.6.8.tar.gz
+&amp;&amp; tar -xvf dubbo-2.6.8.tar.gz
+</code></pre></div><h3 id="编译dubbo-rpc-redis模块"><a href="#编译dubbo-rpc-redis模块" class="header-anchor">#</a> 编译dubbo-rpc-redis模块</h3> <div class="language- extra-class"><pre class="language-text"><code>mvn install
+</code></pre></div><p><img src="https://support.huaweicloud.com/prtg-dubbo-kunpengwebs/zh-cn_image_0301675619.png" alt="img"></p> <p>若窗口显示 <strong>BUILD SUCCESS</strong>，则dubbo-rpc-redis模块编译成功。</p> <h3 id="编译dubbo-2-6-8-2"><a href="#编译dubbo-2-6-8-2" class="header-anchor">#</a> 编译Dubbo 2.6.8</h3> <p>/home/Dubbo/dubbo-dubbo-2.6.8/pom.xml文件552行后增加如下内容：</p> <img src="data:image/png;base64,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"> <p>若显示 <strong>BUILD SUCCESS</strong>，则Dubbo 2.6.8编译成功。</p> <img src="/assets/img/Dubbo-2.1cfc06a1.png"> <p>编译完成后的dubbo-2.6.8.jar包保存在“all/target”目录。</p></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/139.8ceea00e.js" defer></script>
+  </body>
+</html>

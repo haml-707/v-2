@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>openEuler-Advisor版本推荐与自动升级介绍</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/136.95a6dcea.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>Leo Fang</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2020-12-01</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>openEuler-Advisor版本推荐与自动升级介绍</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>Leo Fang</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2020-12-01</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>version recommend</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>auto-upgrade</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><h2 id="目录"><a href="#目录" class="header-anchor">#</a> 目录</h2> <ul><li><p>openEuler-Advisor功能与定位</p></li> <li><p>为什么会有openEuler-Advisor项目</p></li> <li><p>openEuler-Advisor基本组成</p></li> <li><p>基本配置与安装</p></li> <li><p>版本推荐与自动升级使用方法</p></li></ul> <hr> <h2 id="openeuler-advisor功能与定位"><a href="#openeuler-advisor功能与定位" class="header-anchor">#</a> openEuler-Advisor功能与定位</h2> <p>openEuler-Advisor, 为社区提供日常辅助功能或提供相关建议的功能集合, <a href="https://gitee.com/openeuler/openEuler-Advisor" target="_blank" rel="noopener noreferrer">主页<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>描述为:</p> <p>Collection of automation tools for easily maintaining openEuler(用于便捷维护openEuler的自动化工具集)</p> <p>因此，该软件的定位是用于自动化维护（查询、巡检、升级、提示等）openEuler软件仓库的一套功能集合</p> <h2 id="为什么会有openeuler-advisor项目"><a href="#为什么会有openeuler-advisor项目" class="header-anchor">#</a> 为什么会有openEuler-Advisor项目</h2> <p>openEuler发行版集成了上游社区的软件，每个软件从被集成到持续维护，都需要一定工作量。而对一个发行版来说，基础数量已经以千为单位，为了考虑生态，更是以万为单位(参考业界社区fedora/ubuntu/openSUSE)，因此总工作量巨大。</p> <p>这种情况下，社区需要一套可以减少总工作量的工具，不但要减少贡献者、维护者的工作量，而且要减少校验者的工作量，因此openEuler-Advisor应运而生。</p> <h2 id="openeuler-advisor基本组成"><a href="#openeuler-advisor基本组成" class="header-anchor">#</a> openEuler-Advisor基本组成</h2> <p>openEuler-Advisor核心模块在advisors目录下，主要提供软件包上游信息查询、版本推荐、软件仓巡检（文件检查、重复软件包检查、软件source地址检查、衰退软件检查等）、自动创建软件仓、软件包自动升级、软件仓自动化review等功能。下面将对各组成模块功能进行简单介绍：</p> <div align="center"><p><img src="/assets/img/advisors-compose.122960ec.png" alt=""></p></div> <ul><li>simple_update_robot: 用于src-openeuler仓库内软件包的自动升级工作，能够自动fork软件仓，下载要升级的源码包，修改spec文件（自动匹配上游社区已合入的补丁），本地obs编译，自动创建PR（包含差异分析报告）及issue等；</li></ul> <div align="center"><p><img src="/assets/img/auto-upgrade.98fb560f.png" alt=""></p></div> <ul><li><p>oa_upgradable: 用于查询软件包上游发布信息及版本推荐等，能够获取软件包当前社区有效的release tags，并通过版本推荐算法，推荐出软件包的最新版本和维护版本，如果需要，可判断当前软件包版本是否需要升级，并创建相关issue；</p></li> <li><p>check_missing_file: 用于检查src-openeuler中各个软件仓进行检查，是否有文件缺失，如果存在，则自动在对应的仓库下创建任务，提示Maintainer进行补充；</p></li> <li><p>check_repeated_repo: 用于检查src-openeuler中是否存在可能重复的软件仓，针对upstream地址相同，软件仓名不同的情况，进行提示，由Maintainer进行审视，确保软件仓整洁及唯一；</p></li> <li><p>check_source_url: 用于检查各个软件包的source地址是否有效，即能否通过source地址下载到有效的源码包，如果不能，则自动为对应的软件仓创建任务，提示Maintainer进行确认与修改；</p></li> <li><p>create_repo/create_repo_with_srpm: 这两个模块提供了批量创建代码仓的功能，后者可以根据rpm包自动获取其Name、Summary、description及upstream等信息；</p></li> <li><p>psrtool: 用于查询软件包归属SIG及某个SIG下所管理的软件包列表信息；</p></li> <li><p>review_tool: 该模块作为代码自动检视工具，可为指定软件仓PR生成代码审视清单，规范PR审视过程，能够自动完成部分检查项的检查工作，为Commiter减轻工作量，保证检视质量；</p></li> <li><p>tc_reminder: 用于自动为TC成员创建相关提示信息，比如社区TC成员列表，PR状态信息等，方便整个社区自动化管理；</p></li> <li><p>which_archived: 用于检查软件包上游社区是否已经处于归档状态，即软件包是否停止维护，从而方便维护团队及时调整维护策略；</p></li></ul> <h2 id="基本配置与安装"><a href="#基本配置与安装" class="header-anchor">#</a> 基本配置与安装</h2> <ul><li>安装软件包依赖:</li></ul> <div class="language- extra-class"><pre class="language-text"><code>pip3 install python-rpm-spec (ver&gt;=0.10)
+pip3 install PyYAML (ver&gt;=5,3.1)
+pip3 install requests (ver&gt;=2.24.0)
+yum install rpmdevtools (ver&gt;=8.3)
+pip3 install beautifulsoup4 (ver&gt;=4.9.3)
+</code></pre></div><ul><li><p>json文件配置:</p> <p>创建json文件: root/.gitee_presonal_token.json</p> <p>json文件格式: {&quot;user&quot;:&quot;gitee用户名&quot;, &quot;access_token&quot;: &quot;token密码&quot;}</p> <p>gitee token密码设置入口: https://gitee.com/profile/personal_access_tokens</p></li> <li><p>gitee ssh配置:</p> <p>如果未配置，请参考: https://gitee.com/help/articles/4181</p></li> <li><p>obs配置:</p> <p>如果未配置，请参考: https://openeuler.org/zh/docs/20.09/docs/ApplicationDev/%E6%9E%84%E5%BB%BARPM%E5%8C%85.html</p></li> <li><p>python环境配置:</p> <p>如果处于开发态，直接使用该工具，首先需要配置Python环境路径: source ./develop_env.sh</p></li></ul> <h2 id="版本推荐与自动升级使用方法"><a href="#版本推荐与自动升级使用方法" class="header-anchor">#</a> 版本推荐与自动升级使用方法</h2> <p>这里主要介绍软件包版本信息查询和推荐，以及软件包自动升级功能的使用:</p> <ul><li><p>oa_upgradable:</p> <p><strong>查询软件包上游社区信息及版本推荐</strong>: python3 oa_upgradable.py pkg_name [-d default_yaml_path] [-p]</p> <p>参数说明: -d指定默认查询所需的yaml地址，yaml配置了软件包基本上游信息，详情可到openEuler-Advisor官网进行了解; -p表示若查询结果显示该软件包可以升级，会自动向软件仓创建issue</p> <p>例如: python3 oa_upgradable.py glibc</p></li> <li><p>simple_update_robot:</p> <p><strong>单软件包手动升级</strong>: python3 simple_update_robot.py pkg_name branch_name [-fc] [-d] [-s] [-n new_version] [-b] [-p]</p> <p>参数说明: -fc表示fork clone软件仓到本地; -d表示下载要升级的源码包; -s表示修改spec进行升级; -n表示要升级的版本; -b表示进行本地编译; -p表示本地验证ok后提交升级PR并创建相应的issue</p> <p>例如: python3 simple_update_robot.py snappy openEuler-20.03-LTS -fc -d -s -b -n 1.8.1</p> <p><strong>单软件包自动升级</strong>: python3 simple_update_robot.py -u pkg pkg_name branch_name [-n new_version]</p> <p>参数说明: -u pkg表示单软件包升级; -n用于指定要升级的版本，若不指定系统自动推荐合适版本</p> <p>例如: python3 simple_update_robot.py -u pkg snappy master</p> <p><strong>多软件包自动升级</strong>: python3 simple_update_robot.py -u repo repo_name branch_name</p> <p>参数说明: -u repo表示多软件包升级，repo_name表示要升级的集合/仓库名，默认先从本地读取同名yaml，若没有则尝试从community中进行读取</p> <p>例如: python3 simple_update_robot.py -u repo src-openeuler master</p></li></ul> <p>用户可以在本地工作目录下配置要升级的repo列表，yaml格式如下:</p> <p>比如: upgrade-example.yaml</p> <div class="language- extra-class"><pre class="language-text"><code>repositories:
+- name: A-Tune
+- name: python-py
+- name: python-ply
+</code></pre></div><p>如果想为某些软件包指定升级版本，可以配置为:</p> <div class="language- extra-class"><pre class="language-text"><code>repositories:
+- name: A-Tune
+  u_ver: x.y.z
+- name: python-py
+- name: python-ply
+</code></pre></div><p>然后通过工具自动升级: python3 simple_update_robot.py -u repo upgrade-example master</p></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/136.95a6dcea.js" defer></script>
+  </body>
+</html>

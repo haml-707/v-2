@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>VFIO设备直通原理（一）</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/311.b75261cc.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>Wang Xingang</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2020-11-29</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>VFIO设备直通原理（一）</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>Wang Xingang</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2020-11-29</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>IOMMU</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>SMMU</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>DMA</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><p>现代系统大多提供DMA和中断重映射功能来确保I/O设备在有限的范围内运行，比如x86平台的AMD-Vi和Intel VT-d。VFIO（Virtual Function I/O）是一个可以将设备I/O、中断和DMA等能力安全的暴露到用户态空间，从而使用用户态驱动实现设备驱动的框架。通过VFIO进行设备直通到虚拟机，可以获得更高的设备I/O性能。</p> <p>实现用户态驱动最关键的问题在于如何安全可控的将设备的DMA能力暴露到用户空间，IOMMU的出现可以限制设备对内存的访问，恶意的设备不能直接读写物理内存，经过IOMMU映射之后才能使用IOVA或者虚拟地址进行访存，由IOMMU来保证访存的安全性。</p> <h2 id="vfio内核组件"><a href="#vfio内核组件" class="header-anchor">#</a> VFIO内核组件</h2> <p>VFIO内核组件主要包括如下图所示，通过设备文件向用户态提供统一访问接口vfio interface层，包括:</p> <ul><li>VFIO container</li> <li>VFIO group</li> <li>VFIO device</li></ul> <div class="language- extra-class"><pre class="language-text"><code>+-----------------------------------------+
+|            vfio interface               |
++-----------------------------------------+
+|  vfio_iommu_driver |       vfio_pci     |
++--------------------+--------------------+
+|        iommu       |       pci_bus      |
++--------------------+--------------------+
+</code></pre></div><p>vfio interface 封装了vfio_iommu_driver和vfio_pci分别和底层的IOMMU、PCI驱动进行交互，vfio_iommu_driver为VFIO提供了IOMMU重映射驱动，向用户态暴露DMA操作，主要是vfio_iommu_type1驱动，利用IOMMU管理IO页表的能力来进行IO重映射。vfio_pci模块封装pci设备驱动并和用户态程序进行配合完成用户态的设备配置模拟、Bar空间重定向及中断重映射等功能。</p> <p>VFIO框架中比较重要的几个概念包括：Container、Group和Device，其相互之间的关系如图所示，一个container可以理解为实际的物理资源集合，每个container中可以有多个group，group描述了设备在物理上的划分，一个group可以有多个device，划分的逻辑取决于硬件上的IOMMU拓扑结构。</p> <div class="language- extra-class"><pre class="language-text"><code>container
++------------------------+
+|    group0    group1    |
+|  +-------+  +------+   |
+|  | dev0  |  | dev2 |   |
+|  | dev1  |  +------+   |
+|  +-------+             |
++------------------------+
+</code></pre></div><p>可以结合内核中vfio.txt文件来理解Container、Group、Device和IOMMU之间的关系。</p> <h2 id="vfio-container"><a href="#vfio-container" class="header-anchor">#</a> VFIO Container</h2> <div class="language-c extra-class"><pre class="language-c"><code><span class="token comment">// container: /dev/vfio/vfio</span>
+<span class="token keyword">struct</span> <span class="token class-name">vfio_container</span> <span class="token punctuation">{</span>
+	<span class="token keyword">struct</span> <span class="token class-name">kref</span>			kref<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">list_head</span>		group_list<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">rw_semaphore</span>		group_lock<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">vfio_iommu_driver</span>	<span class="token operator">*</span>iommu_driver<span class="token punctuation">;</span>
+	<span class="token keyword">void</span>				<span class="token operator">*</span>iommu_data<span class="token punctuation">;</span>
+	bool				noiommu<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>Container是管理内存资源，和IOMMU、DMA及地址空间相关，可以通过打开设备文件/dev/vfio/vfio来获取container对应的文件描述符，在内核vfio/vfio.c中有对应该vfio设备文件的具体操作实现，ioctl主要是可以获取IOMMU相关的信息，vfio会将用户态对IOMMU相关操作发给底层的vfio_iommu驱动进行操作，通过vfio ioctl提供的接口如下：</p> <ul><li>获取API versio</li> <li>设置IOMMU的类型，如设置为常用的VFIO_TYPE1_IOMMU</li> <li>获取IOMMU的信息</li> <li>分配空间并进行DMA映射</li></ul> <div class="language-c extra-class"><pre class="language-c"><code><span class="token keyword">int</span> container<span class="token punctuation">,</span> group<span class="token punctuation">,</span> device<span class="token punctuation">,</span> i<span class="token punctuation">;</span>
+<span class="token keyword">struct</span> <span class="token class-name">vfio_iommu_type1_info</span> iommu_info <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span>argsz <span class="token operator">=</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>iommu_info<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">struct</span> <span class="token class-name">vfio_iommu_type1_dma_map</span> dma_map <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span>argsz <span class="token operator">=</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>dma_map<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* Create a new container */</span>
+container <span class="token operator">=</span> <span class="token function">open</span><span class="token punctuation">(</span><span class="token string">&quot;/dev/vfio/vfio&quot;</span><span class="token punctuation">,</span> O_RDWR<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">ioctl</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> VFIO_GET_API_VERSION<span class="token punctuation">)</span> <span class="token operator">!=</span> VFIO_API_VERSION<span class="token punctuation">)</span>
+    <span class="token comment">/* Unknown API version */</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">ioctl</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> VFIO_CHECK_EXTENSION<span class="token punctuation">,</span> VFIO_TYPE1_IOMMU<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">/* Doesn't support the IOMMU driver we want. */</span>
+
+<span class="token comment">/* Enable the IOMMU model we want */</span>
+<span class="token function">ioctl</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> VFIO_SET_IOMMU<span class="token punctuation">,</span> VFIO_TYPE1_IOMMU<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* Get addition IOMMU info */</span>
+<span class="token function">ioctl</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> VFIO_IOMMU_GET_INFO<span class="token punctuation">,</span> <span class="token operator">&amp;</span>iommu_info<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* Allocate some space and setup a DMA mapping */</span>
+dma_map<span class="token punctuation">.</span>vaddr <span class="token operator">=</span> <span class="token function">mmap</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1024</span><span class="token punctuation">,</span> PROT_READ <span class="token operator">|</span> PROT_WRITE<span class="token punctuation">,</span>
+                MAP_PRIVATE <span class="token operator">|</span> MAP_ANONYMOUS<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+dma_map<span class="token punctuation">.</span>size <span class="token operator">=</span> <span class="token number">1024</span> <span class="token operator">*</span> <span class="token number">1024</span><span class="token punctuation">;</span>
+dma_map<span class="token punctuation">.</span>iova <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">/* 1MB starting at 0x0 from device view */</span>
+dma_map<span class="token punctuation">.</span>flags <span class="token operator">=</span> VFIO_DMA_MAP_FLAG_READ <span class="token operator">|</span> VFIO_DMA_MAP_FLAG_WRITE<span class="token punctuation">;</span>
+
+<span class="token function">ioctl</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> VFIO_IOMMU_MAP_DMA<span class="token punctuation">,</span> <span class="token operator">&amp;</span>dma_map<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="vfio-group"><a href="#vfio-group" class="header-anchor">#</a> VFIO Group</h2> <div class="language-c extra-class"><pre class="language-c"><code><span class="token comment">// group: /dev/vfio/%group_id</span>
+<span class="token keyword">struct</span> <span class="token class-name">vfio_group</span> <span class="token punctuation">{</span>
+	<span class="token keyword">struct</span> <span class="token class-name">kref</span>			kref<span class="token punctuation">;</span>
+	<span class="token keyword">int</span>				minor<span class="token punctuation">;</span>
+	<span class="token class-name">atomic_t</span>			container_users<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">iommu_group</span>		<span class="token operator">*</span>iommu_group<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">vfio_container</span>		<span class="token operator">*</span>container<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">list_head</span>		device_list<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">mutex</span>			device_lock<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">device</span>			<span class="token operator">*</span>dev<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">notifier_block</span>		nb<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">list_head</span>		vfio_next<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">list_head</span>		container_next<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">list_head</span>		unbound_list<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">mutex</span>			unbound_lock<span class="token punctuation">;</span>
+	<span class="token class-name">atomic_t</span>			opened<span class="token punctuation">;</span>
+	<span class="token class-name">wait_queue_head_t</span>		container_q<span class="token punctuation">;</span>
+	bool				noiommu<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">kvm</span>			<span class="token operator">*</span>kvm<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">blocking_notifier_head</span>	notifier<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>Group是IOMMU进行DMA隔离的最小硬件单元，设备属于哪个group取决于IOMMU和设备的物理结构，在设备直通时需要将一个group里的所有设备都分配给一个虚拟机，其实就是多个group可以从属于一个container，而group下的所有设备也随着该group从属于该container。这样能够做到DMA隔离，避免一个container里的device通过DMA来攻击获取另一个container里的数据。</p> <p>对于一个PCI设备0000:06:0d.0::，通过readlink可以在sys文件目录下获取其iommu_group，比如该PCI设备在ID为26的IOMMU group中。</p> <div class="language-shell extra-class"><pre class="language-shell"><code>$ readlink /sys/bus/pci/devices/0000:06:0d.0/iommu_group
+<span class="token punctuation">..</span>/<span class="token punctuation">..</span>/<span class="token punctuation">..</span>/<span class="token punctuation">..</span>/kernel/iommu_groups/26
+</code></pre></div><p>设备挂载在pci bus下，可以使用 vfio-pci 来管理这个group。使用vfio-pci来管理设备时，首先从原来的驱动里unbind该PCI设备，然后将id写入新的vfio-pci路径下，会为这个group创建一个字符设备。</p> <div class="language-shell extra-class"><pre class="language-shell"><code>$ lspci -n -s 0000:06:0d.0
+06:0d.0 0401: <span class="token number">1102</span>:0002 <span class="token punctuation">(</span>rev 08<span class="token punctuation">)</span>
+$ <span class="token builtin class-name">echo</span> 0000:06:0d.0 <span class="token operator">&gt;</span> /sys/bus/pci/devices/0000:06:0d.0/driver/unbind
+$ <span class="token builtin class-name">echo</span> <span class="token number">1102</span> 0002 <span class="token operator">&gt;</span> /sys/bus/pci/drivers/vfio-pci/new_id
+</code></pre></div><p>当设备绑定到vfio之后，在/dev/vfio/路径下面会产生一个新的group id，通过该id可以获取到group，完成以下操作：</p> <ul><li>查询group状态，是否所有设备都绑定到vfio驱动</li> <li>设置group的container</li> <li>根据设备的BDF号为设备分配一个文件描述符</li></ul> <div class="language-c extra-class"><pre class="language-c"><code><span class="token keyword">struct</span> <span class="token class-name">vfio_group_status</span> group_status <span class="token operator">=</span>
+                <span class="token punctuation">{</span> <span class="token punctuation">.</span>argsz <span class="token operator">=</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>group_status<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token comment">/* Open the group */</span>
+group <span class="token operator">=</span> <span class="token function">open</span><span class="token punctuation">(</span><span class="token string">&quot;/dev/vfio/26&quot;</span><span class="token punctuation">,</span> O_RDWR<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* Test the group is viable and available */</span>
+<span class="token function">ioctl</span><span class="token punctuation">(</span>group<span class="token punctuation">,</span> VFIO_GROUP_GET_STATUS<span class="token punctuation">,</span> <span class="token operator">&amp;</span>group_status<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>group_status<span class="token punctuation">.</span>flags <span class="token operator">&amp;</span> VFIO_GROUP_FLAGS_VIABLE<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">/* Group is not viable (ie, not all devices bound for vfio) */</span>
+
+<span class="token comment">/* Add the group to the container */</span>
+<span class="token function">ioctl</span><span class="token punctuation">(</span>group<span class="token punctuation">,</span> VFIO_GROUP_SET_CONTAINER<span class="token punctuation">,</span> <span class="token operator">&amp;</span>container<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* Get a file descriptor for the device */</span>
+device <span class="token operator">=</span> <span class="token function">ioctl</span><span class="token punctuation">(</span>group<span class="token punctuation">,</span> VFIO_GROUP_GET_DEVICE_FD<span class="token punctuation">,</span> <span class="token string">&quot;0000:06:0d.0&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="vfio-device"><a href="#vfio-device" class="header-anchor">#</a> VFIO Device</h2> <div class="language-c extra-class"><pre class="language-c"><code><span class="token keyword">struct</span> <span class="token class-name">vfio_device</span> <span class="token punctuation">{</span>
+	<span class="token keyword">struct</span> <span class="token class-name">kref</span>			kref<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">device</span>			<span class="token operator">*</span>dev<span class="token punctuation">;</span>
+	<span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">vfio_device_ops</span>	<span class="token operator">*</span>ops<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">vfio_group</span>		<span class="token operator">*</span>group<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">list_head</span>		group_next<span class="token punctuation">;</span>
+	<span class="token keyword">void</span>				<span class="token operator">*</span>device_data<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>为了兼顾platform和pci设备，vfio统一对外提供 <code>struct vfio_device</code> 来描述vfio设备，并用device_data来指向如 <code>struct vfio_pci_device</code>。Device即设备，但与真正的物理设备有区别的是，对于一个在硬件上独立的设备，单独构成一个iommu group，而如果是multi-function的设备，多个function之间是互联的，相互可以访问对方的数据，所以必须放到一个group里面。</p> <p>通过group的ioctl操作和设备的的BDF号获取到设备描述符之后，在vfio_pci中有对应描述符的内核操作vfio_pci_ops，这个ops是在vfio_pci设备驱动vfio_pci_probe调用的时候注册到PCI设备的，probe的时候还会将设备加入到对应的group中。vfio_pci设备的ops中比较重要的是 vfio_pci_ioctl函数，提供了如下功能：</p> <ul><li>VFIO_DEVICE_GET_INFO：获取设备信息，region数量、irq数量等</li> <li>VFIO_DEVICE_GET_REGION_INFO：获取vfio_region的信息，包括配置空间的region和bar空间的region等</li> <li>VFIO_DEVICE_GET_IRQ_INFO：获取设备中断相关的信息</li> <li>VFIO_DEVICE_SET_IRQS：完成中断相关的设置</li> <li>VFIO_DEVICE_RESET：设备复位</li> <li>VFIO_DEVICE_GET_PCI_HOT_RESET_INFO：获取PCI设备hot reset信息</li> <li>VFIO_DEVICE_PCI_HOT_RESET：设置PCI设备 hot reset</li> <li>VFIO_DEVICE_IOEVENTFD：设置ioeventfd</li></ul> <p>要暴露设备的能力到用户态空间，要让用户态能够直接访问设备配置空间并处理设备中断，对于PCI设备而言，其配置其配置空间是一个VFIO region，对应着一块MMIO内存，通过建立dma重映射让用户态能够直接访问设备配置空间，另外还需要建立中断重映射以让用户态驱动处理设备中断事件。</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token keyword">struct</span> <span class="token class-name">vfio_device_info</span> device_info <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span>argsz <span class="token operator">=</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>device_info<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* Get a file descriptor for the device */</span>
+device <span class="token operator">=</span> <span class="token function">ioctl</span><span class="token punctuation">(</span>group<span class="token punctuation">,</span> VFIO_GROUP_GET_DEVICE_FD<span class="token punctuation">,</span> <span class="token string">&quot;0000:06:0d.0&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* Test and setup the device */</span>
+<span class="token function">ioctl</span><span class="token punctuation">(</span>device<span class="token punctuation">,</span> VFIO_DEVICE_GET_INFO<span class="token punctuation">,</span> <span class="token operator">&amp;</span>device_info<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> device_info<span class="token punctuation">.</span>num_regions<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">struct</span> <span class="token class-name">vfio_region_info</span> reg <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span>argsz <span class="token operator">=</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>reg<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    reg<span class="token punctuation">.</span>index <span class="token operator">=</span> i<span class="token punctuation">;</span>
+
+    <span class="token function">ioctl</span><span class="token punctuation">(</span>device<span class="token punctuation">,</span> VFIO_DEVICE_GET_REGION_INFO<span class="token punctuation">,</span> <span class="token operator">&amp;</span>reg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/* Setup mappings... read/write offsets, mmaps
+
+        * For PCI devices, config space is a region */</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> device_info<span class="token punctuation">.</span>num_irqs<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">struct</span> <span class="token class-name">vfio_irq_info</span> irq <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token punctuation">.</span>argsz <span class="token operator">=</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>irq<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    irq<span class="token punctuation">.</span>index <span class="token operator">=</span> i<span class="token punctuation">;</span>
+
+    <span class="token function">ioctl</span><span class="token punctuation">(</span>device<span class="token punctuation">,</span> VFIO_DEVICE_GET_IRQ_INFO<span class="token punctuation">,</span> <span class="token operator">&amp;</span>irq<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/* Setup IRQs... eventfds, VFIO_DEVICE_SET_IRQS */</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* Gratuitous device reset and go... */</span>
+<span class="token function">ioctl</span><span class="token punctuation">(</span>device<span class="token punctuation">,</span> VFIO_DEVICE_RESET<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="container-group和device绑定"><a href="#container-group和device绑定" class="header-anchor">#</a> Container,group和device绑定</h2> <p>1.VFIO_SET_IOMMU: Container 绑定 IOMMU:</p> <p>首先,VFIO的Container和IOMMU之间的绑定,通过在用户态通过ioctl调用VFIO_SET_IOMMU完成,绑定意味着将container管理的所有group都attach到IOMMU中,最终会将每个group中的每个设备都attach到IOMMU中,这意味着为设备建立IO页表完成初始化</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token function">ioctl</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> VFIO_SET_IOMMU<span class="token punctuation">,</span> VFIO_TYPE1_IOMMU<span class="token punctuation">)</span>
+    vfio_ioctl_set_iommu
+    	<span class="token function">list_for_each_entry</span><span class="token punctuation">(</span>group<span class="token punctuation">,</span> <span class="token operator">&amp;</span>container<span class="token operator">-&gt;</span>group_list<span class="token punctuation">,</span> container_next<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		ret <span class="token operator">=</span> driver<span class="token operator">-&gt;</span>ops<span class="token operator">-&gt;</span><span class="token function">attach_group</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> group<span class="token operator">-&gt;</span>iommu_group<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            __iommu_attach_group
+            	ret <span class="token operator">=</span> <span class="token function">__iommu_group_for_each_dev</span><span class="token punctuation">(</span>group<span class="token punctuation">,</span> domain<span class="token punctuation">,</span>
+					 iommu_group_do_attach_device<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        __iommu_attach_device
+                            arm_smmu_attach_dev
+                                建立设备的IO页表
+</code></pre></div><p>2.VFIO_GROUP_SET_CONTAINER: 将Group设置到对应的Container:</p> <p>VFIO提供接口由用户态指定Group绑定到哪个Container中,这个绑定操作会将group记录到container的链表中进行管理,并且如果已经设置好了vfio_iommu_driver,会进行group的attach操作,并进而完成该group中的设备的IO页表初始化</p> <div class="language-c extra-class"><pre class="language-c"><code>VFIO_GROUP_SET_CONTAINER<span class="token operator">:</span>
+    vfio_group_set_container
+        driver <span class="token operator">=</span> container<span class="token operator">-&gt;</span>iommu_driver<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>driver<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            ret <span class="token operator">=</span> driver<span class="token operator">-&gt;</span>ops<span class="token operator">-&gt;</span><span class="token function">attach_group</span><span class="token punctuation">(</span>container<span class="token operator">-&gt;</span>iommu_data<span class="token punctuation">,</span>
+                            group<span class="token operator">-&gt;</span>iommu_group<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>ret<span class="token punctuation">)</span>
+                <span class="token keyword">goto</span> unlock_out<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        group<span class="token operator">-&gt;</span>container <span class="token operator">=</span> container<span class="token punctuation">;</span>
+        container<span class="token operator">-&gt;</span>noiommu <span class="token operator">=</span> group<span class="token operator">-&gt;</span>noiommu<span class="token punctuation">;</span>
+        <span class="token function">list_add</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>group<span class="token operator">-&gt;</span>container_next<span class="token punctuation">,</span> <span class="token operator">&amp;</span>container<span class="token operator">-&gt;</span>group_list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>3.Device和Group之间的绑定关系源自设备和IOMMU的物理拓扑结构</p> <h2 id="小结"><a href="#小结" class="header-anchor">#</a> 小结</h2> <p>VFIO内核组件的实现与Linux内核的IOMMU、设备模型等紧密相连，通过抽象出VFIO的概念来完成对Linux内核组件的封装。本文主要通过VFIO的用户态接口的使用来介绍了VFIO的几个基本概念，包括VFIO Container、Group和Device。要让物理设备通过VFIO驱动暴露给用户态，需要完成以下步骤：</p> <ul><li>首先将设备与原有驱动进行解绑，并重新绑定到VFIO驱动，VFIO驱动会为设备指定对应的group，设备属于哪个IOMMU group与设备和IOMMU的物理拓扑结构有关。</li> <li>完成上述绑定之后，用户态驱动就可以通过 <code>/dev/vfio/vfio</code>获取到VFIO 的container，设置vfio_iommu_driver的类型，通过container可以间接访问IOMMU完成dma映射。</li> <li>然后可以通过 <code>/dev/vfio/%group_id</code> 获取到设备所属的group，通过ioctl将该group上的所有设备加入到container中。</li> <li>然后通过group和设备BDF号可以获取到VFIO device的fd，并通过vfio提供的接口访问设备的配置空间和irq信息等，完成在用户态访问物理设备。</li></ul> <p>VFIO设备直通有几个关键问题需要关注,如何访问直通设备的IO地址空间，如何完成中断重映射和DMA重映射让用户态驱动访问物理设备能力.</p> <h2 id="reference"><a href="#reference" class="header-anchor">#</a> Reference</h2> <ul><li>https://www.kernel.org/doc/Documentation/vfio.txt</li> <li>https://kernelgo.org/vfio-introduction.html</li></ul></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/311.b75261cc.js" defer></script>
+  </body>
+</html>

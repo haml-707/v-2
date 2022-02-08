@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Virtio协议概述</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/315.6dae4759.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>Ying Fang</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2020-11-04</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>Virtio协议概述</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>Ying Fang</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2020-11-04</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>Virtualization</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>Virtio</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><h2 id="摘要"><a href="#摘要" class="header-anchor">#</a> 摘要</h2> <p>半虚拟化设备(Virtio Device)在当前云计算虚拟化场景下已经得到了非常广泛的应用，
+并且现在也有越来越多的物理设备也开始支持Virtio协议，即所谓的<code>Virtio Offload</code>，
+通过将virtio协议卸载到硬件上（例如virtio-net网卡卸载，virtio-scsi卸载）让物理机和虚拟机都能够获得加速体验。
+本文中我们来重点了解一下virtio技术中的一些关键点，方便我们加深对半虚拟化的理解。
+本文适合对IO虚拟化有一定了解的人群阅读，本文的目的是对想要了解virtio内部机制的读者提供帮助。</p> <p>在开始了解virtio之前，我们先思考一下几个相关问题：</p> <ul><li>virtio设备有哪几种呈现方式?</li> <li>virtio-pci设备的配置空间都有哪些内容？</li> <li>virtio前端和后端基于共享内存机制进行通信，它是凭什么可以做到无锁的？</li> <li>virtio机制中有那几个关键的数据结构？virtio配置接口存放在哪里？virtio是如何工作的？</li> <li>virtio前后端是如何进行通信的？irqfd和ioeventfd是什么回事儿？在virtio前后端通信中是怎么用到的？</li> <li>virtio设备支持MSIx，在qemu/kvm中具体是怎么实现对MSIx的模拟呢？</li> <li>virtio modern相对于virtio legay多了哪些新特性？</li></ul> <h2 id="_0-简单了解一下virtio-spec协议"><a href="#_0-简单了解一下virtio-spec协议" class="header-anchor">#</a> 0. 简单了解一下Virtio Spec协议</h2> <p>virtio协议标准最早由IBM提出，virtio作为一套标准协议现在有专门的技术委员会进行管理，
+具体的标准可以访问<a href="http://docs.oasis-open.org/virtio/virtio/v1.0/virtio-v1.0.html" target="_blank" rel="noopener noreferrer"><code>virtio</code>官网<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>，
+开发者可以向技术委员会提供新的virtio设备提案（<code>RFC</code>），经过委员会通过后可以增加新的virtio设备类型。</p> <p>组成一个virtio设备的四要素包括：
+<strong>设备状态域，<code>feature bits</code>，设备配置空间，一个或者多个<code>virtqueue</code></strong>。
+其中设备状态域包含6种状态：</p> <ul><li>ACKNOWLEDGE（1）：GuestOS发现了这个设备，并且认为这是一个有效的virtio设备；</li> <li>DRIVER (2) : GuestOS知道该如何驱动这个设备；</li> <li>FAILED (128) : GuestOS无法正常驱动这个设备，Something is wriong；</li> <li>FEATURES_OK (8) : GuestOS认识所有的feature，并且feature协商一完成；</li> <li>DRIVER_OK (4) : 驱动加载完成，设备可以投入使用了；</li> <li>DEVICE_NEEDS_RESET (64) ：设备触发了错误，需要重置才能继续工作。</li></ul> <p><code>feature bits</code>用来标志设备支持那个特性，其中bit0-bit23是特定设备可以使用的<code>feature bits</code>，
+bit24-bit37预给队列和feature协商机制，bit38以上保留给未来其他用途。
+例如：对于virtio-net设备而言，feature bit0表示网卡设备支持checksum校验。
+<code>VIRTIO_F_VERSION_1</code>这个feature bit用来表示设备是否支持virtio 1.0 spec标准。</p> <p>在virtio协议中，所有的设备都使用virtqueue来进行数据的传输。
+<strong>每个设备可以有0个或者多个virtqueue，每个virtqueue占用2个或者更多个4K的物理页</strong>。
+virtqueue有<code>Split Virtqueues</code>和<code>Packed Virtqueues</code>两种模式，
+在<code>Split virtqueues</code>模式下virtqueue被分成若干个部分，
+每个部分都是前端驱动或者后端单向可写的（不能两端同时写）。
+每个virtqueue都有一个16bit的queue size参数，表示队列的总长度。
+每个virtqueue由3个部分组成：</p> <div class="language- extra-class"><pre class="language-text"><code>	+-------------------+--------------------------------+-----------------------+
+	| Descriptor Table  |   Available Ring  (padding)    |       Used Ring       |
+	+-------------------+--------------------------------+-----------------------+
+</code></pre></div><ul><li>Descriptor Table：存放IO传输请求信息；</li> <li>Available Ring：记录了Descriptor Table表中的哪些项被更新了，前端Driver可写但后端只读；</li> <li>Used Ring：记录Descriptor Table表中哪些请求已经被提交到硬件，前端Driver只读但后端可写。</li></ul> <p>整个virtio协议中设备IO请求的工作机制可以简单地概括为：</p> <ol><li>前端驱动将IO请求放到<code>Descriptor Table</code>中，然后将索引更新到<code>Available Ring</code>中，然后kick后端去取数据；</li> <li>后端取出IO请求进行处理，然后结果刷新到<code>Descriptor Table</code>中再更新<code>Using Ring</code>，然后发送中断notify前端。</li></ol> <p>从virtio协议可以了解到<strong>virtio设备支持3种设备呈现模式</strong>：</p> <ul><li>Virtio Over PCI BUS，依旧遵循PCI规范，挂在到PCI总线上，作为virtio-pci设备呈现；</li> <li>Virtio Over MMIO，部分不支持PCI协议的虚拟化平台可以使用这种工作模式，直接挂载到系统总线上；</li> <li>Virtio Over Channel I/O：主要用在s390平台上，virtio-ccw使用这种基于channel I/O的机制。</li></ul> <p>其中，Virtio Over PCI BUS的使用比较广泛，作为PCI设备需按照规范要通过PCI配置空间来向操作系统报告设备支持的特性集合，
+这样操作系统才知道这是一个什么类型的virtio设备，并调用对应的前端驱动和这个设备进行握手，进而将设备驱动起来。
+QEMU会给virtio设备模拟PCI配置空间，对于virtio设备来说PCI Vendor ID固定为0x1AF4，
+PCI Device ID 为 0x1000到0x107F之间的是virtio设备。
+同时，在不支持PCI协议的虚拟化平台上，virtio设备也可以直接通过MMIO进行呈现，
+virtio-spec 4.2 <a href="https://docs.oasis-open.org/virtio/virtio/v1.1/csprd01/virtio-v1.1-csprd01.html#x1-1440002" target="_blank" rel="noopener noreferrer">Virtio Over MMIO<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>有针对virtio-mmio设备呈现方式的详细描述，mmio相关信息可以直接通过内核参数报告给Linux操作系统。
+本文主要基于virtio-pci展开讨论。</p> <p>前面提到virtio设备有<code>feature bits</code>，<code>virtqueue</code>等四要素，那么在virtio-pci模式下是如何呈现的呢？
+从virtio spec来看，老的virtio协议和新的virtio协议在这一块有很大改动。
+virtio legacy（virtio 0.95）协议规定，对应的配置数据结构（virtio common configuration structure）
+应该存放在设备的BAR0里面，我们称之为<code>virtio legay interface</code>，其结构如下：</p> <div class="language- extra-class"><pre class="language-text"><code>                       virtio legacy ==&gt; Mapped into PCI BAR0 
+	+------------------------------------------------------------------+ 
+	|                    Host Feature Bits[0:31]                       | 
+	+------------------------------------------------------------------+
+	|                    Guest Feature Bits[0:31]                      |
+	+------------------------------------------------------------------+
+	|                    Virtqueue Address PFN                         |
+	+---------------------------------+--------------------------------+
+	|           Queue Select          |           Queue Size           |
+	+----------------+----------------+--------------------------------+
+	|   ISR Status   | Device Stat    |           Queue Notify         |
+	+----------------+----------------+--------------------------------+
+	|       MSI Config Vector         |         MSI Queue Vector       |
+	+---------------------------------+--------------------------------+
+</code></pre></div><p>对于新的<code>virtio modern</code>，协议将配置结构划分为5种类型：</p> <div class="language- extra-class"><pre class="language-text"><code>/* Common configuration */ 
+#define VIRTIO_PCI_CAP_COMMON_CFG        1 
+/* Notifications */ 
+#define VIRTIO_PCI_CAP_NOTIFY_CFG        2
+/* ISR Status */ 
+#define VIRTIO_PCI_CAP_ISR_CFG           3 
+/* Device specific configuration */ 
+#define VIRTIO_PCI_CAP_DEVICE_CFG        4 
+/* PCI configuration access */ 
+#define VIRTIO_PCI_CAP_PCI_CFG           5 
+</code></pre></div><p>以上的每种配置结构是直接映射到virtio设备的BAR空间内，那么如何指定每种配置结构的位置呢？
+答案是通过<code>PCI Capability list</code>方式去指定，这和物理PCI设备是一样的，体现了virtio-pci的协议兼容性。</p> <div class="language- extra-class"><pre class="language-text"><code>struct virtio_pci_cap { 
+        u8 cap_vndr;    /* Generic PCI field: PCI_CAP_ID_VNDR */ 
+        u8 cap_next;    /* Generic PCI field: next ptr. */ 
+        u8 cap_len;     /* Generic PCI field: capability length */ 
+        u8 cfg_type;    /* Identifies the structure. */ 
+        u8 bar;         /* Where to find it. */ 
+        u8 padding[3];  /* Pad to full dword. */ 
+        le32 offset;    /* Offset within bar. */ 
+        le32 length;    /* Length of the structure, in bytes. */ 
+};
+</code></pre></div><p>只是略微不同的是，virtio-pci的Capability有一个统一的结构，
+其中<code>cfg_type</code>表示Cap的类型，bar表示这个配置结构被映射到的BAR空间号。
+这样每个配置结构都可以通过BAR空间直接访问，或者通过PCI配置空间的<code>VIRTIO_PCI_CAP_PCI_CFG</code>域进行访问。
+每个Cap的具体结构定义可以参考virtio spec 4.1.4.3小节。</p> <h1 id="_1-前后端数据共享"><a href="#_1-前后端数据共享" class="header-anchor">#</a> 1. 前后端数据共享</h1> <p>传统的纯模拟设备在工作的时候，会触发频繁的陷入陷出，
+而且IO请求的内容要进行多次拷贝传递，严重影响了设备的IO性能。
+virtio为了提升设备的IO性能，采用了共享内存机制，
+<em><strong>前端驱动会提前申请好一段物理地址空间用来存放IO请求，然后将这段地址的GPA告诉QEMU</strong></em>。
+前端驱动在下发IO请求后，QEMU可以直接从共享内存中取出请求，然后将完成后的结果又直接写到虚拟机对应地址上去。
+<strong>整个过程中可以做到直投直取，省去了不必要的数据拷贝开销</strong>。</p> <p><strong><code>Virtqueue</code>是整个virtio方案的灵魂所在</strong>。每个virtqueue都包含3张表，
+<code>Descriptor Table</code>存放了IO请求描述符，<code>Available Ring</code>记录了当前哪些描述符是可用的，
+<code>Used Ring</code>记录了哪些描述符已经被后端使用了。</p> <div class="language- extra-class"><pre class="language-text"><code>                          +------------------------------------+
+                          |       virtio  guest driver         |
+                          +-----------------+------------------+
+                            /               |              ^
+                           /                |               \
+                          put            update             get
+                         /                  |                 \
+                        V                   V                  \
+                   +----------+      +------------+        +----------+
+                   |          |      |            |        |          |
+                   +----------+      +------------+        +----------+
+                   | available|      | descriptor |        |   used   |
+                   |   ring   |      |   table    |        |   ring   |
+                   +----------+      +------------+        +----------+
+                   |          |      |            |        |          |
+                   +----------+      +------------+        +----------+
+                   |          |      |            |        |          |
+                   +----------+      +------------+        +----------+
+                        \                   ^                   ^
+                         \                  |                  /
+                         get             update              put
+                           \                |                /
+                            V               |               /
+                           +----------------+-------------------+
+                           |	   virtio host backend          |
+                           +------------------------------------+
+</code></pre></div><p><code>Desriptor Table</code>中存放的是一个一个的<code>virtq_desc</code>元素，每个<code>virq_desc</code>元素占用16个字节。</p> <div class="language- extra-class"><pre class="language-text"><code>+-----------------------------------------------------------+
+|                        addr/gpa [0:63]                    |
++-------------------------+-----------------+---------------+
+|         len [0:31]      |  flags [0:15]   |  next [0:15]  |
++-------------------------+-----------------+---------------+
+</code></pre></div><p>其中，addr占用64bit存放了单个IO请求的GPA地址信息，例如addr可能表示某个DMA buffer的起始地址。
+len占用32bit表示IO请求的长度，flags的取值有3种，
+<code>VIRTQ_DESC_F_NEXT</code>表示这个IO请求和下一个<code>virtq_desc</code>描述的是连续的，
+<code>IRTQ_DESC_F_WRITE</code>表示这段buffer是write only的，
+<code>VIRTQ_DESC_F_INDIRECT</code>表示这段buffer里面放的内容是另外一组buffer的<code>virtq_desc</code>（相当于重定向），
+next是指向下一个<code>virtq_desc</code>的索引号（前提是<code>VIRTQ_DESC_F_NEXT</code> &amp; flags）。</p> <p><code>Available Ring</code>是前端驱动用来告知后端那些IO buffer是的请求需要处理，每个Ring中包含一个<code>virtq_avail</code>占用8个字节。
+其中，flags取值为<code>VIRTQ_AVAIL_F_NO_INTERRUPT</code>时表示前端驱动告诉后端：
+“当你消耗完一个IO buffer的时候，不要立刻给我发中断”（防止中断过多影响效率）。
+idx表示下次前端驱动要放置<code>Descriptor Entry</code>的地方。</p> <div class="language- extra-class"><pre class="language-text"><code>+--------------+-------------+--------------+---------------------+
+| flags [0:15] |  idx [0:15] |  ring[0:15]  |  used_event [0:15]  |
++--------------+-------------+--------------+---------------------+
+</code></pre></div><p>Used Ring结构稍微不一样，flags的值如果为<code>VIRTIO_F_EVENT_IDX</code>并且前后端协商<code>VIRTIO_F_EVENT_IDX</code> feature成功,
+那么Guest会将used ring index放在available ring的末尾，告诉后端说：
+“Hi 小老弟，当你处理完这个请求的时候，给我发个中断通知我一下”，
+同时host也会将avail_event index放到used ring的末尾，告诉guest说：
+“Hi 老兄，记得把这个idx的请求kick给我哈”。
+<code>VIRTIO_F_EVENT_IDX</code>对virtio通知/中断有一定的优化，在某些场景下能够提升IO性能。</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token comment">/* The Guest publishes the used index for which it expects an interrupt
+ * at the end of the avail ring. Host should ignore the avail-&gt;flags field. */</span>
+<span class="token comment">/* The Host publishes the avail index for which it expects a kick
+ * at the end of the used ring. Guest should ignore the used-&gt;flags field. */</span>
+ 
+<span class="token keyword">struct</span> <span class="token class-name">virtq_used</span> <span class="token punctuation">{</span> 
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">VIRTQ_USED_F_NO_NOTIFY</span>  <span class="token expression"><span class="token number">1</span> </span></span>
+        le16 flags<span class="token punctuation">;</span> 
+        le16 idx<span class="token punctuation">;</span> 
+        <span class="token keyword">struct</span> <span class="token class-name">virtq_used_elem</span> ring<span class="token punctuation">[</span> <span class="token comment">/* Queue Size */</span><span class="token punctuation">]</span><span class="token punctuation">;</span> 
+        le16 avail_event<span class="token punctuation">;</span> <span class="token comment">/* Only if VIRTIO_F_EVENT_IDX */</span> 
+<span class="token punctuation">}</span><span class="token punctuation">;</span> 
+ 
+<span class="token comment">/* le32 is used here for ids for padding reasons. */</span> 
+<span class="token keyword">struct</span> <span class="token class-name">virtq_used_elem</span> <span class="token punctuation">{</span> 
+        <span class="token comment">/* Index of start of used descriptor chain. */</span> 
+        le32 id<span class="token punctuation">;</span> 
+        <span class="token comment">/* Total length of the descriptor chain which was used (written to) */</span> 
+        le32 len<span class="token punctuation">;</span> 
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>原理就到这里，后面会以virtio网卡为例进行详细流程说明。</p> <h2 id="_2-前后端通信机制-irqfd-与-ioeventfd"><a href="#_2-前后端通信机制-irqfd-与-ioeventfd" class="header-anchor">#</a> 2. 前后端通信机制（irqfd 与 ioeventfd）</h2> <p>共享内存方式解决了传统设备IO过程中内存拷贝带来的性能损耗问题，除此之外前端驱动和后端驱动的通信问题也是有可以改进的地方。
+Virtio前后端通信概括起来只有两个方向，即GuestOS通知QEMU和QEMU通知GuestOS。
+当前端驱动准备好IO buffer之后，需要通知后端（QEMU），告诉后端：
+“小老弟，我有一波IO请求已经准备好了，你帮我处理一下”。
+前端通知出去后，就可以等待IO结果了（操作系统可以进行一次调度），这时候vCPU可以去干点其他的事情。
+后端收到消息后开始处理IO请求，当IO请求处理完成之后，后端就通过中断机制通知GuestOS：
+“老哥，你的IO给你处理好了，你来取一下”。
+前后端通信机制如下图所示：</p> <div class="language- extra-class"><pre class="language-text"><code>             +-------------+                +-------------+
+             |             |                |             |
+             |             |                |             |
+             |   GuestOS   |                |     QEMU    |
+             |             |                |             |
+             |             |                |             |
+             +---+---------+                +----+--------+
+                 |     ^                         |    ^
+                 |     |                         |    |
+             +---|-----|-------------------------|----|---+
+             |   |     |                irqfd    |    |   |
+             |   |     +-------------------------+    |   |
+             |   |  ioeventfd                         |   |
+             |   +------------------------------------+   |
+             |                   KVM                      |
+             +--------------------------------------------+
+
+</code></pre></div><p>前端驱动通知后端比较简单，QEMU设置一段特定的MMIO地址空间，前端驱动访问这段MMIO触发VMExit，
+退出到KVM后利用<code>ioeventfd</code>机制通知到用户态的QEMU，QEMU主循环（main_loop poll）
+检测到ioeventfd事件后调用callback进行处理。</p> <div class="language-c extra-class"><pre class="language-c"><code>前端驱动通知后端：
+内核流程mark一下，PCI设备驱动流程这个后面可以学习一下，先扫描PCI bus发现是virtio设备再扫描virtio<span class="token operator">-</span>bus。
+worker_thread <span class="token operator">--</span><span class="token operator">&gt;</span> process_one_work <span class="token operator">--</span><span class="token operator">&gt;</span> pciehp_power_thread <span class="token operator">--</span><span class="token operator">&gt;</span> pciehp_enable_slot <span class="token operator">--</span><span class="token operator">&gt;</span> 
+pciehp_configure_device <span class="token operator">--</span><span class="token operator">&gt;</span> pci_bus_add_devices <span class="token operator">--</span><span class="token operator">&gt;</span> pci_bus_add_device <span class="token operator">--</span><span class="token operator">&gt;</span> device_attach <span class="token operator">--</span><span class="token operator">&gt;</span> 
+__device_attach <span class="token operator">--</span><span class="token operator">&gt;</span> bus_for_each_drv <span class="token operator">--</span><span class="token operator">&gt;</span> __device_attach_driver <span class="token operator">--</span><span class="token operator">&gt;</span> driver_probe_device <span class="token operator">--</span><span class="token operator">&gt;</span> 
+pci_device_probe <span class="token operator">--</span><span class="token operator">&gt;</span> local_pci_probe <span class="token operator">--</span><span class="token operator">&gt;</span> virtio_pci_probe <span class="token operator">--</span><span class="token operator">&gt;</span> register_virtio_device <span class="token operator">--</span><span class="token operator">&gt;</span> 
+device_register <span class="token operator">--</span><span class="token operator">&gt;</span> device_add <span class="token operator">--</span><span class="token operator">&gt;</span> bus_probe_device <span class="token operator">--</span><span class="token operator">&gt;</span> device_initial_probe 
+<span class="token operator">--</span><span class="token operator">&gt;</span> __device_attach <span class="token operator">--</span><span class="token operator">&gt;</span> bus_for_each_drv <span class="token operator">--</span><span class="token operator">&gt;</span> __device_attach_driver <span class="token operator">--</span><span class="token operator">&gt;</span>
+driver_probe_device <span class="token operator">--</span><span class="token operator">&gt;</span> virtio_dev_probe <span class="token operator">--</span><span class="token operator">&gt;</span> <span class="token function">virtnet_probe</span> <span class="token punctuation">(</span>网卡设备驱动加载的入口<span class="token punctuation">)</span>
+
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">virtnet_probe</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">virtio_device</span> <span class="token operator">*</span>vdev<span class="token punctuation">)</span> 
+<span class="token punctuation">{</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token function">virtio_device_ready</span><span class="token punctuation">(</span>vdev<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/**
+ * virtio_device_ready - enable vq use in probe function
+ * @vdev: the device
+ *
+ * Driver must call this to use vqs in the probe function.
+ *
+ * Note: vqs are enabled automatically after probe returns.
+ */</span>
+<span class="token keyword">static</span> <span class="token keyword">inline</span>
+<span class="token keyword">void</span> <span class="token function">virtio_device_ready</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">virtio_device</span> <span class="token operator">*</span>dev<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+        <span class="token keyword">unsigned</span> status <span class="token operator">=</span> dev<span class="token operator">-&gt;</span>config<span class="token operator">-&gt;</span><span class="token function">get_status</span><span class="token punctuation">(</span>dev<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">BUG_ON</span><span class="token punctuation">(</span>status <span class="token operator">&amp;</span> VIRTIO_CONFIG_S_DRIVER_OK<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        dev<span class="token operator">-&gt;</span>config<span class="token operator">-&gt;</span><span class="token function">set_status</span><span class="token punctuation">(</span>dev<span class="token punctuation">,</span> status <span class="token operator">|</span> VIRTIO_CONFIG_S_DRIVER_OK<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token macro property"><span class="token directive-hash">#</span> <span class="token expression">QEMU<span class="token operator">/</span>KVM后端的处理流程如下：</span></span>
+# 前端驱动写Status位，val <span class="token operator">&amp;</span> VIRTIO_CONFIG_S_DRIVER_OK，这时候前端驱动已经ready
+virtio_pci_config_write  <span class="token operator">--</span><span class="token operator">&gt;</span> virtio_ioport_write <span class="token operator">--</span><span class="token operator">&gt;</span> virtio_pci_start_ioeventfd
+<span class="token operator">--</span><span class="token operator">&gt;</span> virtio_bus_set_host_notifier <span class="token operator">--</span><span class="token operator">&gt;</span> virtio_bus_start_ioeventfd <span class="token operator">--</span><span class="token operator">&gt;</span> virtio_device_start_ioeventfd_impl
+<span class="token operator">--</span><span class="token operator">&gt;</span> virtio_bus_set_host_notifier
+    <span class="token operator">--</span><span class="token operator">&gt;</span> virtio_pci_ioeventfd_assign
+        <span class="token operator">--</span><span class="token operator">&gt;</span> memory_region_add_eventfd
+            <span class="token operator">--</span><span class="token operator">&gt;</span> memory_region_transaction_commit
+              <span class="token operator">--</span><span class="token operator">&gt;</span> address_space_update_ioeventfds
+                <span class="token operator">--</span><span class="token operator">&gt;</span> address_space_add_del_ioeventfds
+                  <span class="token operator">--</span><span class="token operator">&gt;</span> kvm_io_ioeventfd_add<span class="token operator">/</span>vhost_eventfd_add
+                    <span class="token operator">--</span><span class="token operator">&gt;</span> kvm_set_ioeventfd_pio
+                      <span class="token operator">--</span><span class="token operator">&gt;</span> <span class="token function">kvm_vm_ioctl</span><span class="token punctuation">(</span>kvm_state<span class="token punctuation">,</span> KVM_IOEVENTFD<span class="token punctuation">,</span> <span class="token operator">&amp;</span>kick<span class="token punctuation">)</span>
+</code></pre></div><p>其实，这就是QEMU的<code>Fast MMIO</code>实现机制。
+我们可以看到，QEMU会为每个设备MMIO对应的MemoryRegion注册一个ioeventfd。
+最后调用了一个KVM_IOEVENTFD ioctl到KVM内核里面，而在KVM内核中会将MMIO对应的（gpa,len,eventfd）信息会注册到KVM_FAST_MMIO_BUS上。
+这样当Guest访问MMIO地址范围退出后（触发<code>EPT Misconfig</code>），KVM会查询一下访问的GPA是否落在某段MMIO地址空间range内部，
+如果是的话就直接写eventfd告知QEMU，QEMU就会从coalesced mmio ring page中取MMIO请求
+（注：pio page和 mmio page是QEMU和KVM内核之间的共享内存页，已经提前mmap好了）。</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">kvm</span><span class="token expression">内核代码virt<span class="token operator">/</span>kvm<span class="token operator">/</span>eventfd<span class="token punctuation">.</span>c中</span></span>
+<span class="token function">kvm_vm_ioctl</span><span class="token punctuation">(</span>KVM_IOEVENTFD<span class="token punctuation">)</span>
+  <span class="token operator">--</span><span class="token operator">&gt;</span> kvm_ioeventfd
+    <span class="token operator">--</span><span class="token operator">&gt;</span> kvm_assign_ioeventfd
+      <span class="token operator">--</span><span class="token operator">&gt;</span> kvm_assign_ioeventfd_idx
+
+<span class="token macro property"><span class="token directive-hash">#</span> <span class="token expression">MMIO处理流程中（handle_ept_misconfig）最后会调用到ioeventfd_write通知QEMU。</span></span>
+<span class="token comment">/* MMIO/PIO writes trigger an event if the addr/val match */</span>
+<span class="token keyword">static</span> <span class="token keyword">int</span>
+<span class="token function">ioeventfd_write</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">kvm_vcpu</span> <span class="token operator">*</span>vcpu<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">kvm_io_device</span> <span class="token operator">*</span>this<span class="token punctuation">,</span> <span class="token class-name">gpa_t</span> addr<span class="token punctuation">,</span>
+                <span class="token keyword">int</span> len<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">void</span> <span class="token operator">*</span>val<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+        <span class="token keyword">struct</span> <span class="token class-name">_ioeventfd</span> <span class="token operator">*</span>p <span class="token operator">=</span> <span class="token function">to_ioeventfd</span><span class="token punctuation">(</span>this<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">ioeventfd_in_range</span><span class="token punctuation">(</span>p<span class="token punctuation">,</span> addr<span class="token punctuation">,</span> len<span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token keyword">return</span> <span class="token operator">-</span>EOPNOTSUPP<span class="token punctuation">;</span>
+
+        <span class="token function">eventfd_signal</span><span class="token punctuation">(</span>p<span class="token operator">-&gt;</span>eventfd<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>不了解<code>MMIO</code>是如何模拟的童鞋，可以结合本站的文章<a href="https://kernelgo.org/mmio.html" target="_blank" rel="noopener noreferrer"><code>MMIO</code>模拟实现分析<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>去了解一下，
+如果还是不懂的可以在文章下面评论。</p> <p><strong>后端通知前端，是通过中断的方式</strong>，QEMU/KVM中有一套完整的中断模拟实现框架，</p> <p>如果对QEMU/KVM中断模拟不熟悉的童鞋，
+建议阅读一下这篇文章：<a href="https://www.binss.me/blog/qemu-note-of-interrupt/" target="_blank" rel="noopener noreferrer"><code>QEMU学习笔记-中断</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>。
+对于virtio-pci设备，可以通过Cap呈现MSIx给虚拟机，这样在前端驱动加载的时候就会尝试去使能MSIx中断，
+后端在这个时候建立起MSIx通道。</p> <p>前端驱动加载(probe)的过程中，会去初始化<code>virtqueue</code>，这个时候会去申请MSIx中断并注册中断处理函数：</p> <div class="language-c extra-class"><pre class="language-c"><code>virtnet_probe
+  <span class="token operator">--</span><span class="token operator">&gt;</span> init_vqs
+    <span class="token operator">--</span><span class="token operator">&gt;</span> virtnet_find_vqs
+      <span class="token operator">--</span><span class="token operator">&gt;</span> vi<span class="token operator">-&gt;</span>vdev<span class="token operator">-&gt;</span>config<span class="token operator">-&gt;</span>find_vqs <span class="token punctuation">[</span>vp_modern_find_vqs<span class="token punctuation">]</span>
+        <span class="token operator">--</span><span class="token operator">&gt;</span> vp_find_vqs
+          <span class="token operator">--</span><span class="token operator">&gt;</span> vp_find_vqs_msix <span class="token comment">// 为每virtqueue申请一个MSIx中断，通常收发各一个队列</span>
+            <span class="token operator">--</span><span class="token operator">&gt;</span> vp_request_msix_vectors <span class="token comment">// 主要的MSIx中断申请逻辑都在这个函数里面</span>
+              <span class="token operator">--</span><span class="token operator">&gt;</span> pci_alloc_irq_vectors_affinity <span class="token comment">// 申请MSIx中断描述符(__pci_enable_msix_range)</span>
+                <span class="token operator">--</span><span class="token operator">&gt;</span> request_irq  <span class="token comment">// 注册中断处理函数</span>
+               
+	       <span class="token comment">// virtio-net网卡至少申请了3个MSIx中断：</span>
+                <span class="token comment">// 一个是configuration change中断（配置空间发生变化后，QEMU通知前端）</span>
+                <span class="token comment">// 发送队列1个MSIx中断，接收队列1MSIx中断</span>
+</code></pre></div><p>在QEMU/KVM这一侧，开始模拟MSIx中断，具体流程大致如下：</p> <div class="language-c extra-class"><pre class="language-c"><code>virtio_pci_config_write
+  <span class="token operator">--</span><span class="token operator">&gt;</span> virtio_ioport_write
+    <span class="token operator">--</span><span class="token operator">&gt;</span> virtio_set_status
+      <span class="token operator">--</span><span class="token operator">&gt;</span> virtio_net_vhost_status
+        <span class="token operator">--</span><span class="token operator">&gt;</span> vhost_net_start
+          <span class="token operator">--</span><span class="token operator">&gt;</span> virtio_pci_set_guest_notifiers
+            <span class="token operator">--</span><span class="token operator">&gt;</span> kvm_virtio_pci_vector_use 
+              <span class="token operator">|</span><span class="token operator">--</span><span class="token operator">&gt;</span> kvm_irqchip_add_msi_route <span class="token comment">//更新中断路由表</span>
+              <span class="token operator">|</span><span class="token operator">--</span><span class="token operator">&gt;</span> kvm_virtio_pci_irqfd_use  <span class="token comment">//使能MSI中断</span>
+                 <span class="token operator">--</span><span class="token operator">&gt;</span> kvm_irqchip_add_irqfd_notifier_gsi
+                   <span class="token operator">--</span><span class="token operator">&gt;</span> kvm_irqchip_assign_irqfd
+                  
+# 申请MSIx中断的时候，会为MSIx分配一个gsi，并为这个gsi绑定一个irqfd，然后调用ioctl KVM_IRQFD注册到内核中。               
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">kvm_irqchip_assign_irqfd</span><span class="token punctuation">(</span>KVMState <span class="token operator">*</span>s<span class="token punctuation">,</span> <span class="token keyword">int</span> fd<span class="token punctuation">,</span> <span class="token keyword">int</span> rfd<span class="token punctuation">,</span> <span class="token keyword">int</span> virq<span class="token punctuation">,</span>
+                                    bool assign<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">struct</span> <span class="token class-name">kvm_irqfd</span> irqfd <span class="token operator">=</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span>fd <span class="token operator">=</span> fd<span class="token punctuation">,</span>
+        <span class="token punctuation">.</span>gsi <span class="token operator">=</span> virq<span class="token punctuation">,</span>
+        <span class="token punctuation">.</span>flags <span class="token operator">=</span> assign <span class="token operator">?</span> <span class="token number">0</span> <span class="token operator">:</span> KVM_IRQFD_FLAG_DEASSIGN<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>rfd <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        irqfd<span class="token punctuation">.</span>flags <span class="token operator">|=</span> KVM_IRQFD_FLAG_RESAMPLE<span class="token punctuation">;</span>
+        irqfd<span class="token punctuation">.</span>resamplefd <span class="token operator">=</span> rfd<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">kvm_irqfds_enabled</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token operator">-</span>ENOSYS<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token function">kvm_vm_ioctl</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> KVM_IRQFD<span class="token punctuation">,</span> <span class="token operator">&amp;</span>irqfd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token macro property"><span class="token directive-hash">#</span> <span class="token expression">KVM内核代码virt<span class="token operator">/</span>kvm<span class="token operator">/</span>eventfd<span class="token punctuation">.</span>c</span></span>
+<span class="token function">kvm_vm_ioctl</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> KVM_IRQFD<span class="token punctuation">,</span> <span class="token operator">&amp;</span>irqfd<span class="token punctuation">)</span>
+  <span class="token operator">--</span><span class="token operator">&gt;</span> kvm_irqfd_assign
+    <span class="token operator">--</span><span class="token operator">&gt;</span> <span class="token function">vfs_poll</span><span class="token punctuation">(</span>f<span class="token punctuation">.</span>file<span class="token punctuation">,</span> <span class="token operator">&amp;</span>irqfd<span class="token operator">-&gt;</span>pt<span class="token punctuation">)</span> <span class="token comment">// 在内核中poll这个irqfd</span>
+
+</code></pre></div><p>从上面的流程可以看出，<strong>QEMU/KVM使用<code>irqfd</code>机制来模拟MSIx中断</strong>，
+即设备申请MSIx中断的时候会为MSIx分配一个gsi（这个时候会刷新irq routing table），
+并为这个gsi绑定一个<code>irqfd</code>，最后在内核中去<code>poll</code>这个<code>irqfd</code>。
+当QEMU处理完IO之后，就写MSIx对应的irqfd，给前端注入一个MSIx中断，告知前端我已经处理好IO了你可以来取结果了。</p> <p>例如，virtio-scsi从前端取出IO请求后会取做DMA操作（DMA是异步的，QEMU协程中负责处理）。
+当DMA完成后QEMU需要告知前端IO请求已完成（Complete），那么怎么去投递这个MSIx中断呢？
+答案是调用<code>virtio_notify_irqfd</code>注入一个MSIx中断。</p> <div class="language-c extra-class"><pre class="language-c"><code>#<span class="token number">0</span>  <span class="token number">0x00005604798d569b</span> in <span class="token function">virtio_notify_irqfd</span> <span class="token punctuation">(</span>vdev<span class="token operator">=</span><span class="token number">0x56047d12d670</span><span class="token punctuation">,</span> vq<span class="token operator">=</span><span class="token number">0x7fab10006110</span><span class="token punctuation">)</span> at  hw<span class="token operator">/</span>virtio<span class="token operator">/</span>virtio<span class="token punctuation">.</span>c<span class="token operator">:</span><span class="token number">1684</span>
+#<span class="token number">1</span>  <span class="token number">0x00005604798adea4</span> in <span class="token function">virtio_scsi_complete_req</span> <span class="token punctuation">(</span>req<span class="token operator">=</span><span class="token number">0x56047d09fa70</span><span class="token punctuation">)</span> at  hw<span class="token operator">/</span>scsi<span class="token operator">/</span>virtio<span class="token operator">-</span>scsi<span class="token punctuation">.</span>c<span class="token operator">:</span><span class="token number">76</span>
+#<span class="token number">2</span>  <span class="token number">0x00005604798aecfb</span> in <span class="token function">virtio_scsi_complete_cmd_req</span> <span class="token punctuation">(</span>req<span class="token operator">=</span><span class="token number">0x56047d09fa70</span><span class="token punctuation">)</span> at  hw<span class="token operator">/</span>scsi<span class="token operator">/</span>virtio<span class="token operator">-</span>scsi<span class="token punctuation">.</span>c<span class="token operator">:</span><span class="token number">468</span>
+#<span class="token number">3</span>  <span class="token number">0x00005604798aee9d</span> in <span class="token function">virtio_scsi_command_complete</span> <span class="token punctuation">(</span>r<span class="token operator">=</span><span class="token number">0x56047ccb0be0</span><span class="token punctuation">,</span> status<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> resid<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span> at  hw<span class="token operator">/</span>scsi<span class="token operator">/</span>virtio<span class="token operator">-</span>scsi<span class="token punctuation">.</span>c<span class="token operator">:</span><span class="token number">495</span>
+#<span class="token number">4</span>  <span class="token number">0x0000560479b397cf</span> in <span class="token function">scsi_req_complete</span> <span class="token punctuation">(</span>req<span class="token operator">=</span><span class="token number">0x56047ccb0be0</span><span class="token punctuation">,</span> status<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span> at hw<span class="token operator">/</span>scsi<span class="token operator">/</span>scsi<span class="token operator">-</span>bus<span class="token punctuation">.</span>c<span class="token operator">:</span><span class="token number">1404</span>
+#<span class="token number">5</span>  <span class="token number">0x0000560479b2b503</span> in <span class="token function">scsi_dma_complete_noio</span> <span class="token punctuation">(</span>r<span class="token operator">=</span><span class="token number">0x56047ccb0be0</span><span class="token punctuation">,</span> ret<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span> at hw<span class="token operator">/</span>scsi<span class="token operator">/</span>scsi<span class="token operator">-</span>disk<span class="token punctuation">.</span>c<span class="token operator">:</span><span class="token number">279</span>
+#<span class="token number">6</span>  <span class="token number">0x0000560479b2b610</span> in <span class="token function">scsi_dma_complete</span> <span class="token punctuation">(</span>opaque<span class="token operator">=</span><span class="token number">0x56047ccb0be0</span><span class="token punctuation">,</span> ret<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span> at hw<span class="token operator">/</span>scsi<span class="token operator">/</span>scsi<span class="token operator">-</span>disk<span class="token punctuation">.</span>c<span class="token operator">:</span><span class="token number">300</span>
+#<span class="token number">7</span>  <span class="token number">0x00005604799b89e3</span> in <span class="token function">dma_complete</span> <span class="token punctuation">(</span>dbs<span class="token operator">=</span><span class="token number">0x56047c6e9ab0</span><span class="token punctuation">,</span> ret<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span> at dma<span class="token operator">-</span>helpers<span class="token punctuation">.</span>c<span class="token operator">:</span><span class="token number">118</span>
+#<span class="token number">8</span>  <span class="token number">0x00005604799b8a90</span> in <span class="token function">dma_blk_cb</span> <span class="token punctuation">(</span>opaque<span class="token operator">=</span><span class="token number">0x56047c6e9ab0</span><span class="token punctuation">,</span> ret<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span> at dma<span class="token operator">-</span>helpers<span class="token punctuation">.</span>c<span class="token operator">:</span><span class="token number">136</span>
+#<span class="token number">9</span>  <span class="token number">0x0000560479cf5220</span> in <span class="token function">blk_aio_complete</span> <span class="token punctuation">(</span>acb<span class="token operator">=</span><span class="token number">0x56047cd77d40</span><span class="token punctuation">)</span> at block<span class="token operator">/</span>block<span class="token operator">-</span>backend<span class="token punctuation">.</span>c<span class="token operator">:</span><span class="token number">1327</span>
+#<span class="token number">10</span> <span class="token number">0x0000560479cf5470</span> in <span class="token function">blk_aio_read_entry</span> <span class="token punctuation">(</span>opaque<span class="token operator">=</span><span class="token number">0x56047cd77d40</span><span class="token punctuation">)</span> at block<span class="token operator">/</span>block<span class="token operator">-</span>backend<span class="token punctuation">.</span>c<span class="token operator">:</span><span class="token number">1387</span>
+#<span class="token number">11</span> <span class="token number">0x0000560479df49c4</span> in <span class="token function">coroutine_trampoline</span> <span class="token punctuation">(</span>i0<span class="token operator">=</span><span class="token number">2095821104</span><span class="token punctuation">,</span> i1<span class="token operator">=</span><span class="token number">22020</span><span class="token punctuation">)</span> at util<span class="token operator">/</span>coroutine<span class="token operator">-</span>ucontext<span class="token punctuation">.</span>c<span class="token operator">:</span><span class="token number">115</span>
+#<span class="token number">12</span> <span class="token number">0x00007fab214d82c0</span> in <span class="token function">__start_context</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> at <span class="token operator">/</span>usr<span class="token operator">/</span>lib64<span class="token operator">/</span>libc<span class="token punctuation">.</span>so<span class="token punctuation">.</span><span class="token number">6</span>
+</code></pre></div><p>在<code>virtio_notify_irqfd</code>函数中，会去写<code>irqfd</code>，给内核发送一个信号。</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token keyword">void</span> <span class="token function">virtio_notify_irqfd</span><span class="token punctuation">(</span>VirtIODevice <span class="token operator">*</span>vdev<span class="token punctuation">,</span> VirtQueue <span class="token operator">*</span>vq<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+     <span class="token comment">/*
+     * virtio spec 1.0 says ISR bit 0 should be ignored with MSI, but
+     * windows drivers included in virtio-win 1.8.0 (circa 2015) are
+     * incorrectly polling this bit during crashdump and hibernation
+     * in MSI mode, causing a hang if this bit is never updated.
+     * Recent releases of Windows do not really shut down, but rather
+     * log out and hibernate to make the next startup faster.  Hence,
+     * this manifested as a more serious hang during shutdown with
+     *
+     * Next driver release from 2016 fixed this problem, so working around it
+     * is not a must, but it's easy to do so let's do it here.
+     *
+     * Note: it's safe to update ISR from any thread as it was switched
+     * to an atomic operation.
+     */</span>
+    <span class="token function">virtio_set_isr</span><span class="token punctuation">(</span>vq<span class="token operator">-&gt;</span>vdev<span class="token punctuation">,</span> <span class="token number">0x1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">event_notifier_set</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>vq<span class="token operator">-&gt;</span>guest_notifier<span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">//写vq-&gt;guest_notifier，即irqfd</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>QEMU写了这个<code>irqfd</code>后，KVM内核模块中的irqfd poll就收到一个<code>POLL_IN</code>事件，然后将MSIx中断自动投递给对应的LAPIC。
+大致流程是：<code>POLL_IN</code> -&gt; <code>kvm_arch_set_irq_inatomic</code> -&gt; <code>kvm_set_msi_irq</code>, <code>kvm_irq_delivery_to_apic_fast</code></p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token keyword">static</span> <span class="token keyword">int</span>
+<span class="token function">irqfd_wakeup</span><span class="token punctuation">(</span><span class="token class-name">wait_queue_entry_t</span> <span class="token operator">*</span>wait<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> mode<span class="token punctuation">,</span> <span class="token keyword">int</span> sync<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token operator">*</span>key<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>flags <span class="token operator">&amp;</span> EPOLLIN<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                idx <span class="token operator">=</span> <span class="token function">srcu_read_lock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>kvm<span class="token operator">-&gt;</span>irq_srcu<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">do</span> <span class="token punctuation">{</span>
+                        seq <span class="token operator">=</span> <span class="token function">read_seqcount_begin</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>irqfd<span class="token operator">-&gt;</span>irq_entry_sc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        irq <span class="token operator">=</span> irqfd<span class="token operator">-&gt;</span>irq_entry<span class="token punctuation">;</span>
+                <span class="token punctuation">}</span> <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">read_seqcount_retry</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>irqfd<span class="token operator">-&gt;</span>irq_entry_sc<span class="token punctuation">,</span> seq<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment">/* An event has been signaled, inject an interrupt */</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">kvm_arch_set_irq_inatomic</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>irq<span class="token punctuation">,</span> kvm<span class="token punctuation">,</span>
+                                             KVM_USERSPACE_IRQ_SOURCE_ID<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span>
+                                             false<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token operator">-</span>EWOULDBLOCK<span class="token punctuation">)</span>
+                        <span class="token function">schedule_work</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>irqfd<span class="token operator">-&gt;</span>inject<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">srcu_read_unlock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>kvm<span class="token operator">-&gt;</span>irq_srcu<span class="token punctuation">,</span> idx<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+</code></pre></div><p>这里还有一点没有想明白，结合代码和调试来看，virtio-blk/virtio-scsi的msi中断走irqfd机制，
+但是virtio-net（不开启vhost的情况下）不走irqfd，而是直接调用<code>virtio_notify</code>/<code>virtio_pci_notify</code>，
+最后通过KVM的ioctl投递中断？
+从代码路径上来看，后者明显路径更长，谁知道原因告诉我一下!!!。
+https://patchwork.kernel.org/patch/9531577/</p> <div class="language- extra-class"><pre class="language-text"><code>Once in virtio_notify_irqfd, once in virtio_queue_guest_notifier_read.
+
+Unfortunately, for virtio-blk + MSI + KVM + old Windows drivers we need the one in virtio_notify_irqfd.
+For virtio-net + vhost + INTx we need the one in virtio_queue_guest_notifier_read. 
+这显然路径更长啊。 
+</code></pre></div><p>Ok，到这里virtio前后端通信机制已经明了，最后一个小节我们以virtio-net为例，梳理一下virtio中的部分核心代码流程。</p> <h2 id="_3-virtio核心代码分析-以virtio-net为例"><a href="#_3-virtio核心代码分析-以virtio-net为例" class="header-anchor">#</a> 3. virtio核心代码分析，以virtio-net为例</h2> <p>这里我们已virtio-net网卡为例，在没有使用vhost的情况下（网卡后端收发包都走QEMU处理），
+后端收发包走vhost的情况下有些不同，后面单独分析。</p> <h3 id="_3-1-前后端握手流程"><a href="#_3-1-前后端握手流程" class="header-anchor">#</a> 3.1 前后端握手流程</h3> <p>QEM模拟PCI设备对GuestOS进行呈现，设备驱动加载的时候尝试去初始化设备。</p> <div class="language-c extra-class"><pre class="language-c"><code># 先在PCI总线上调用probe设备，调用了virtio_pci_probe，然后再virtio<span class="token operator">-</span>bus上调用virtio_dev_probe
+<span class="token macro property"><span class="token directive-hash">#</span> <span class="token directive keyword">virtio</span><span class="token expression">_dev_probe最后调用到virtnet_probe</span></span>
+pci_device_probe <span class="token operator">--</span><span class="token operator">&gt;</span> local_pci_probe <span class="token operator">--</span><span class="token operator">&gt;</span> virtio_pci_probe <span class="token operator">--</span><span class="token operator">&gt;</span> register_virtio_device <span class="token operator">--</span><span class="token operator">&gt;</span> 
+device_register <span class="token operator">--</span><span class="token operator">&gt;</span> device_add <span class="token operator">--</span><span class="token operator">&gt;</span> bus_probe_device <span class="token operator">--</span><span class="token operator">&gt;</span> device_initial_probe 
+<span class="token operator">--</span><span class="token operator">&gt;</span> __device_attach <span class="token operator">--</span><span class="token operator">&gt;</span> bus_for_each_drv <span class="token operator">--</span><span class="token operator">&gt;</span> __device_attach_driver <span class="token operator">--</span><span class="token operator">&gt;</span> driver_probe_device <span class="token operator">--</span><span class="token operator">&gt;</span> 
+virtio_dev_probe <span class="token operator">--</span><span class="token operator">&gt;</span> virtnet_probe
+
+# 在virtio_pci_probe里先尝试以virtio modern方式读取设备配置数据结构，如果失败则尝试virio legacy方式。
+# 对于virtio legacy，我们前面提到了virtio legacy协议规定设备的配置数据结构放在PCI BAR0里面。
+<span class="token comment">/* the PCI probing function */</span>
+<span class="token keyword">int</span> <span class="token function">virtio_pci_legacy_probe</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">virtio_pci_device</span> <span class="token operator">*</span>vp_dev<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+        rc <span class="token operator">=</span> <span class="token function">pci_request_region</span><span class="token punctuation">(</span>pci_dev<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">&quot;virtio-pci-legacy&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//将设备的BAR0映射到物理地址空间</span>
+        vp_dev<span class="token operator">-&gt;</span>ioaddr <span class="token operator">=</span> <span class="token function">pci_iomap</span><span class="token punctuation">(</span>pci_dev<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">//获得BAR0的内核地址</span>
+<span class="token punctuation">}</span>
+
+#对于virtio modern，通过capability方式报告配置数据结构的位置，配置数据结构有<span class="token number">5</span>种类型。
+<span class="token keyword">int</span> <span class="token function">virtio_pci_modern_probe</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">virtio_pci_device</span> <span class="token operator">*</span>vp_dev<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+        <span class="token comment">/* check for a common config: if not, use legacy mode (bar 0). */</span>
+        common <span class="token operator">=</span> <span class="token function">virtio_pci_find_capability</span><span class="token punctuation">(</span>pci_dev<span class="token punctuation">,</span> VIRTIO_PCI_CAP_COMMON_CFG<span class="token punctuation">,</span>
+                                            IORESOURCE_IO <span class="token operator">|</span> IORESOURCE_MEM<span class="token punctuation">,</span>
+                                            <span class="token operator">&amp;</span>vp_dev<span class="token operator">-&gt;</span>modern_bars<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">/* If common is there, these should be too... */</span>
+        isr <span class="token operator">=</span> <span class="token function">virtio_pci_find_capability</span><span class="token punctuation">(</span>pci_dev<span class="token punctuation">,</span> VIRTIO_PCI_CAP_ISR_CFG<span class="token punctuation">,</span>
+                                         IORESOURCE_IO <span class="token operator">|</span> IORESOURCE_MEM<span class="token punctuation">,</span>
+                                         <span class="token operator">&amp;</span>vp_dev<span class="token operator">-&gt;</span>modern_bars<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        notify <span class="token operator">=</span> <span class="token function">virtio_pci_find_capability</span><span class="token punctuation">(</span>pci_dev<span class="token punctuation">,</span> VIRTIO_PCI_CAP_NOTIFY_CFG<span class="token punctuation">,</span>
+                                            IORESOURCE_IO <span class="token operator">|</span> IORESOURCE_MEM<span class="token punctuation">,</span>
+                                            <span class="token operator">&amp;</span>vp_dev<span class="token operator">-&gt;</span>modern_bars<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                            
+        <span class="token comment">/* Device capability is only mandatory for devices that have
+        * device-specific configuration.
+        */</span>
+        device <span class="token operator">=</span> <span class="token function">virtio_pci_find_capability</span><span class="token punctuation">(</span>pci_dev<span class="token punctuation">,</span> VIRTIO_PCI_CAP_DEVICE_CFG<span class="token punctuation">,</span>
+                                            IORESOURCE_IO <span class="token operator">|</span> IORESOURCE_MEM<span class="token punctuation">,</span>
+                                            <span class="token operator">&amp;</span>vp_dev<span class="token operator">-&gt;</span>modern_bars<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        err <span class="token operator">=</span> <span class="token function">pci_request_selected_regions</span><span class="token punctuation">(</span>pci_dev<span class="token punctuation">,</span> vp_dev<span class="token operator">-&gt;</span>modern_bars<span class="token punctuation">,</span>
+                                            <span class="token string">&quot;virtio-pci-modern&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                                        <span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">virtio_pci_common_cfg</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span>
+                                        <span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">virtio_pci_common_cfg</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                                        <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 将配virtio置结构所在的BAR空间MAP到内核地址空间里                                </span>
+        vp_dev<span class="token operator">-&gt;</span>common <span class="token operator">=</span> <span class="token function">map_capability</span><span class="token punctuation">(</span>pci_dev<span class="token punctuation">,</span> common<span class="token punctuation">,</span>
+                                        <span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">virtio_pci_common_cfg</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span>
+                                        <span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">virtio_pci_common_cfg</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                                        <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>                              
+<span class="token punctuation">}</span>
+
+# 接着来到virtio_dev_probe里面看下：
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">virtio_dev_probe</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">device</span> <span class="token operator">*</span>_d<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+        <span class="token comment">/* We have a driver! */</span>
+        <span class="token function">virtio_add_status</span><span class="token punctuation">(</span>dev<span class="token punctuation">,</span> VIRTIO_CONFIG_S_DRIVER<span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment">// 更新status bit，这里要写配置数据结构</span>
+
+        <span class="token comment">/* Figure out what features the device supports. */</span>
+        device_features <span class="token operator">=</span> dev<span class="token operator">-&gt;</span>config<span class="token operator">-&gt;</span><span class="token function">get_features</span><span class="token punctuation">(</span>dev<span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">// 查询后端支持哪些feature bits</span>
+        
+        <span class="token comment">// feature set协商，取交集</span>
+        err <span class="token operator">=</span> <span class="token function">virtio_finalize_features</span><span class="token punctuation">(</span>dev<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        
+        <span class="token comment">// 调用特定virtio设备的驱动程序probe，例如: virtnet_probe, virtblk_probe</span>
+        err <span class="token operator">=</span> drv<span class="token operator">-&gt;</span><span class="token function">probe</span><span class="token punctuation">(</span>dev<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token punctuation">}</span>
+</code></pre></div><p>再看下<code>virtnet_probe</code>里面的一些关键的流程，这里包含了virtio-net网卡前端初始化的主要逻辑。</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">virtnet_probe</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">virtio_device</span> <span class="token operator">*</span>vdev<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+       <span class="token comment">// check后端是否支持多队列，并按情况创建队列</span>
+       <span class="token comment">/* Allocate ourselves a network device with room for our info */</span>
+        dev <span class="token operator">=</span> <span class="token function">alloc_etherdev_mq</span><span class="token punctuation">(</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">virtnet_info</span><span class="token punctuation">)</span><span class="token punctuation">,</span> max_queue_pairs<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        <span class="token comment">// 定义一个网络设备并配置一些属性，例如MAC地址</span>
+        dev<span class="token operator">-&gt;</span>ethtool_ops <span class="token operator">=</span> <span class="token operator">&amp;</span>virtnet_ethtool_ops<span class="token punctuation">;</span>
+	       <span class="token function">SET_NETDEV_DEV</span><span class="token punctuation">(</span>dev<span class="token punctuation">,</span> <span class="token operator">&amp;</span>vdev<span class="token operator">-&gt;</span>dev<span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 
+        <span class="token comment">// 初始化virtqueue</span>
+        err <span class="token operator">=</span> <span class="token function">init_vqs</span><span class="token punctuation">(</span>vi<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        <span class="token comment">// 注册一个网络设备</span>
+        err <span class="token operator">=</span> <span class="token function">register_netdev</span><span class="token punctuation">(</span>dev<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        <span class="token comment">// 写状态位DRIVER_OK，告诉后端，前端已经ready</span>
+        <span class="token function">virtio_device_ready</span><span class="token punctuation">(</span>vdev<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        <span class="token comment">// 将网卡up起来</span>
+        <span class="token function">netif_carrier_on</span><span class="token punctuation">(</span>dev<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>其中关键的流程是<code>init_vqs</code>，在<code>vp_find_vqs_msix</code>流程中会尝试去申请MSIx中断，这里前面已经有分析过了。
+其中，&quot;configuration changed&quot; 中断服务程序<code>vp_config_changed</code>，
+virtqueue队列的中断服务程序是 <code>vp_vring_interrupt</code>。</p> <div class="language-c extra-class"><pre class="language-c"><code>init_vqs <span class="token operator">--</span><span class="token operator">&gt;</span> virtnet_find_vqs <span class="token operator">--</span><span class="token operator">&gt;</span> vi<span class="token operator">-&gt;</span>vdev<span class="token operator">-&gt;</span>config<span class="token operator">-&gt;</span>find_vqs <span class="token operator">--</span><span class="token operator">&gt;</span> vp_modern_find_vqs
+<span class="token operator">--</span><span class="token operator">&gt;</span> vp_find_vqs <span class="token operator">--</span><span class="token operator">&gt;</span> vp_find_vqs_msix
+
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">vp_find_vqs_msix</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">virtio_device</span> <span class="token operator">*</span>vdev<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> nvqs<span class="token punctuation">,</span>
+		<span class="token keyword">struct</span> <span class="token class-name">virtqueue</span> <span class="token operator">*</span>vqs<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token class-name">vq_callback_t</span> <span class="token operator">*</span>callbacks<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+		<span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span> <span class="token keyword">const</span> names<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> bool per_vq_vectors<span class="token punctuation">,</span>
+		<span class="token keyword">const</span> bool <span class="token operator">*</span>ctx<span class="token punctuation">,</span>
+		<span class="token keyword">struct</span> <span class="token class-name">irq_affinity</span> <span class="token operator">*</span>desc<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+        <span class="token comment">/* 为configuration change申请MSIx中断 */</span>
+	err <span class="token operator">=</span> <span class="token function">vp_request_msix_vectors</span><span class="token punctuation">(</span>vdev<span class="token punctuation">,</span> nvectors<span class="token punctuation">,</span> per_vq_vectors<span class="token punctuation">,</span>
+			      per_vq_vectors <span class="token operator">?</span> desc <span class="token operator">:</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> nvqs<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		 <span class="token comment">// 创建队列 --&gt; vring_create_virtqueue --&gt; vring_create_virtqueue_split --&gt; vring_alloc_queue</span>
+	         vqs<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">vp_setup_vq</span><span class="token punctuation">(</span>vdev<span class="token punctuation">,</span> queue_idx<span class="token operator">++</span><span class="token punctuation">,</span> callbacks<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> names<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                ctx <span class="token operator">?</span> ctx<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">:</span> false<span class="token punctuation">,</span>
+                                msix_vec<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token comment">// 每个队列申请一个MSIx中断</span>
+                err <span class="token operator">=</span> <span class="token function">request_irq</span><span class="token punctuation">(</span><span class="token function">pci_irq_vector</span><span class="token punctuation">(</span>vp_dev<span class="token operator">-&gt;</span>pci_dev<span class="token punctuation">,</span> msix_vec<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                                  vring_interrupt<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                                  vp_dev<span class="token operator">-&gt;</span>msix_names<span class="token punctuation">[</span>msix_vec<span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                  vqs<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+</code></pre></div><p><code>vp_setup_vq</code>流程再往下走就开始分配共享内存页，至此建立起共享内存通信通道。
+值得注意的是一路传下来的callbacks参数其实传入了发送队列和接收队列的回调处理函数，
+好家伙，从<code>virtnet_find_vqs</code>一路传递到了<code>__vring_new_virtqueue</code>中最终赋值给了<code>vq-&gt;vq.callback</code>。</p> <div class="language- extra-class"><pre class="language-text"><code>static struct virtqueue *vring_create_virtqueue_split(
+        unsigned int index,
+        unsigned int num,
+        unsigned int vring_align,
+        struct virtio_device *vdev,
+        bool weak_barriers,
+        bool may_reduce_num,
+        bool context,
+        bool (*notify)(struct virtqueue *),
+        void (*callback)(struct virtqueue *),
+        const char *name)
+{
+       /* TODO: allocate each queue chunk individually */
+        for (; num &amp;&amp; vring_size(num, vring_align) &gt; PAGE_SIZE; num /= 2) {
+		// 申请物理页，地址赋值给queue
+                queue = vring_alloc_queue(vdev, vring_size(num, vring_align),
+                                          &amp;dma_addr,
+                                          GFP_KERNEL|__GFP_NOWARN|__GFP_ZERO);
+        }
+
+
+        queue_size_in_bytes = vring_size(num, vring_align);
+        vring_init(&amp;vring, num, queue, vring_align); // 确定 descriptor table, available ring, used ring的位置。
+}
+</code></pre></div><p>我们看下如果<code>virtqueue</code>队列如果收到MSIx中断消息后，会调用哪个<code>hook</code>来处理？</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token class-name">irqreturn_t</span> <span class="token function">vring_interrupt</span><span class="token punctuation">(</span><span class="token keyword">int</span> irq<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token operator">*</span>_vq<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+        <span class="token keyword">struct</span> <span class="token class-name">vring_virtqueue</span> <span class="token operator">*</span>vq <span class="token operator">=</span> <span class="token function">to_vvq</span><span class="token punctuation">(</span>_vq<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">more_used</span><span class="token punctuation">(</span>vq<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">pr_debug</span><span class="token punctuation">(</span><span class="token string">&quot;virtqueue interrupt with no work for %p\n&quot;</span><span class="token punctuation">,</span> vq<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> IRQ_NONE<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">unlikely</span><span class="token punctuation">(</span>vq<span class="token operator">-&gt;</span>broken<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token keyword">return</span> IRQ_HANDLED<span class="token punctuation">;</span>
+
+        <span class="token function">pr_debug</span><span class="token punctuation">(</span><span class="token string">&quot;virtqueue callback for %p (%p)\n&quot;</span><span class="token punctuation">,</span> vq<span class="token punctuation">,</span> vq<span class="token operator">-&gt;</span>vq<span class="token punctuation">.</span>callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>vq<span class="token operator">-&gt;</span>vq<span class="token punctuation">.</span>callback<span class="token punctuation">)</span>
+                vq<span class="token operator">-&gt;</span>vq<span class="token punctuation">.</span><span class="token function">callback</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>vq<span class="token operator">-&gt;</span>vq<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> IRQ_HANDLED<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token function">EXPORT_SYMBOL_GPL</span><span class="token punctuation">(</span>vring_interrupt<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>不难想到中断服务程序里面会调用队列上的callback。
+我们再回过头来看下<code>virtnet_find_vqs</code>，原来接受队列的回调函数是<code>skb_recv_done</code>，发送队列的回调函数是<code>skb_xmit_done</code>。</p> <div class="language- extra-class"><pre class="language-text"><code>static int virtnet_find_vqs(struct virtnet_info *vi)
+{
+       /* Allocate/initialize parameters for send/receive virtqueues */
+        for (i = 0; i &lt; vi-&gt;max_queue_pairs; i++) {
+		callbacks[rxq2vq(i)] = skb_recv_done;
+		callbacks[txq2vq(i)] = skb_xmit_done;
+	}
+}
+</code></pre></div><p>OK，这个小节就到这里。Are you clear ?</p> <h3 id="_3-2-virtio-net网卡收发在virtqueue上的实现"><a href="#_3-2-virtio-net网卡收发在virtqueue上的实现" class="header-anchor">#</a> 3.2 virtio-net网卡收发在virtqueue上的实现</h3> <p>这里以virtio-net为例（非vhost-net模式）来分析一下网卡收发报文在virtio协议上的具体实现。
+virtio-net模式下网卡收发包的流程为：</p> <ul><li>收包：Hardware =&gt; Host Kernel =&gt; Qemu =&gt; Guest</li> <li>发包：Guest =&gt; Host Kernel =&gt; Qemu =&gt; Host Kernel =&gt; Hardware</li></ul> <h4 id="_3-2-1-virtio-net网卡发包"><a href="#_3-2-1-virtio-net网卡发包" class="header-anchor">#</a> 3.2.1 virtio-net网卡发包</h4> <p>前面我们看到virtio-net设备初始化的时候会创建一个<code>net_device</code>设备：
+<code>virtnet_probe</code> -&gt; <code>alloc_etherdev_mq</code>注册了<code>netdev_ops</code> = <code>&amp;virtnet_netdev</code>，
+这里<code>virtnet_netdev</code>是网卡驱动的回调函数集合（收发包和参数设置）。</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token keyword">static</span> <span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">net_device_ops</span> netdev_ops <span class="token operator">=</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span>ndo_open               <span class="token operator">=</span> rio_open<span class="token punctuation">,</span>
+        <span class="token punctuation">.</span>ndo_start_xmit <span class="token operator">=</span> start_xmit<span class="token punctuation">,</span>
+        <span class="token punctuation">.</span>ndo_stop               <span class="token operator">=</span> rio_close<span class="token punctuation">,</span>
+        <span class="token punctuation">.</span>ndo_get_stats          <span class="token operator">=</span> get_stats<span class="token punctuation">,</span>
+        <span class="token punctuation">.</span>ndo_validate_addr      <span class="token operator">=</span> eth_validate_addr<span class="token punctuation">,</span>
+        <span class="token punctuation">.</span>ndo_set_mac_address    <span class="token operator">=</span> eth_mac_addr<span class="token punctuation">,</span>
+        <span class="token punctuation">.</span>ndo_set_rx_mode        <span class="token operator">=</span> set_multicast<span class="token punctuation">,</span>
+        <span class="token punctuation">.</span>ndo_do_ioctl           <span class="token operator">=</span> rio_ioctl<span class="token punctuation">,</span>
+        <span class="token punctuation">.</span>ndo_tx_timeout         <span class="token operator">=</span> rio_tx_timeout<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>网卡发包的时候调用<code>ndo_start_xmit</code>，将TCP/IP上层协议栈扔下来的数据发送出去。
+对应到virtio网卡的回调函数就是<code>start_xmit</code>，从代码看就是将skb发送到virtqueue中，
+然后调用virtqueue_kick通知qemu后端将数据包发送出去。</p> <p>Guest内核里面的virtio-net驱动发包：</p> <div class="language-c extra-class"><pre class="language-c"><code>内核驱动 virtio_net<span class="token punctuation">.</span>c
+start_xmit
+	<span class="token comment">// 将skb放到virtqueue队列中</span>
+ 	<span class="token operator">-&gt;</span> xmit_skb <span class="token operator">-&gt;</span> sg_init_table<span class="token punctuation">,</span>virtqueue_add_outbuf <span class="token operator">-&gt;</span> virtqueue_add
+	<span class="token comment">// kick通知qemu后端去取</span>
+	virtqueue_kick_prepare <span class="token operator">&amp;&amp;</span> virtqueue_notify 
+	<span class="token comment">// kick次数加1</span>
+	sq<span class="token operator">-&gt;</span>stats<span class="token punctuation">.</span>kicks<span class="token operator">++</span>
+</code></pre></div><p>Guest Kick后端从KVM中VMExit出来退出到Qemu用户态（走的是ioeventfd）由Qemu去将数据发送出去。
+大致调用的流程是：
+<code>virtio_queue_host_notifier_read</code> -&gt; <code>virtio_net_handle_tx_bh</code> -&gt; <code>virtio_net_flush_tx</code>
+-&gt; <code>virtqueue_pop</code>拿到发包(skb) -&gt; <code>qemu_sendv_packet_async</code></p> <div class="language-c extra-class"><pre class="language-c"><code>Qemu代码virtio<span class="token operator">-</span>net相关代码<span class="token operator">:</span>
+virtio_queue_host_notifier_read <span class="token operator">-&gt;</span> virtio_queue_notify_vq
+    <span class="token operator">-&gt;</span> vq<span class="token operator">-&gt;</span>handle_output <span class="token operator">-&gt;</span> virtio_net_handle_tx_bh 队列注册的时候，回注册回调函数
+        <span class="token operator">-&gt;</span> qemu_bh_schedule <span class="token operator">-&gt;</span> virtio_net_tx_bh
+            <span class="token operator">-&gt;</span> virtio_net_flush_tx
+	        <span class="token operator">-&gt;</span> virtqueue_pop
+		<span class="token operator">-&gt;</span> qemu_sendv_packet_async <span class="token comment">// 报文放到发送队列上，写tap设备的fd去发包</span>
+		    <span class="token operator">-&gt;</span> tap_receive_iov <span class="token operator">-&gt;</span> tap_write_packet
+		    
+<span class="token comment">// 最后调用 tap_write_packet 把数据包发给tap设备投递出去</span>
+</code></pre></div><h4 id="_3-2-2-virtio-net网卡收包"><a href="#_3-2-2-virtio-net网卡收包" class="header-anchor">#</a> 3.2.2 virtio-net网卡收包</h4> <p>网卡收包的时候，tap设备先收到报文，对应的virtio-net网卡tap设备fd变为可读，
+Qemu主循环收到POLL_IN事件调用回调函数收包。</p> <div class="language-c extra-class"><pre class="language-c"><code>tap_send <span class="token operator">-&gt;</span> qemu_send_packet_async <span class="token operator">-&gt;</span> qemu_send_packet_async_with_flags
+    <span class="token operator">-&gt;</span> qemu_net_queue_send
+        <span class="token operator">-&gt;</span> qemu_net_queue_deliver
+	    <span class="token operator">-&gt;</span> qemu_deliver_packet_iov
+	        <span class="token operator">-&gt;</span> nc_sendv_compat
+		    <span class="token operator">-&gt;</span> virtio_net_receive
+		        <span class="token operator">-&gt;</span> virtio_net_receive_rcu
+</code></pre></div><p>virtio-net网卡收报最终调用了<code>virtio_net_receive_rcu</code>，
+和发包类似都是调用<code>virtqueue_pop</code>从前端获取virtqueue element，
+将报文数据填充到vring中然后<code>virtio_notify</code>注入中断通知前端驱动取结果。</p> <p>这里不得不吐槽一下，为啥收包函数取名要叫<code>tap_send</code>。</p> <h2 id="_4-参考文献"><a href="#_4-参考文献" class="header-anchor">#</a> 4. 参考文献</h2> <ol><li><a href="https://docs.oasis-open.org/virtio/virtio/v1.1/csprd01/virtio-v1.1-csprd01.html" target="_blank" rel="noopener noreferrer">virtio spec v1.1 <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li> <li><a href="https://ozlabs.org/~rusty/virtio-spec/virtio-paper.pdf" target="_blank" rel="noopener noreferrer">Towards a De-Facto Standard For Virtual<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li> <li>https://github.com/qemu/qemu/blob/master/hw/net/virtio-net.c</li> <li>https://github.com/torvalds/linux/blob/master/drivers/net/virtio_net.c</li></ol></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/315.6dae4759.js" defer></script>
+  </body>
+</html>

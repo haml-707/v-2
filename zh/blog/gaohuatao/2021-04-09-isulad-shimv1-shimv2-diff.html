@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>kata shimV2中监控容器退出机制的实现方案分析</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/135.2a07d1e9.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>高华涛</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2021-04-09</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>kata shimV2中监控容器退出机制的实现方案分析</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>高华涛</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2021-04-09</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>iSulad</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>容器</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>shimv2</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><p>当前shim有shimV1和shimV2两种实现架构，shimV1作为传统shim的实现方案，主要被用作容器引擎和runtime的中间层，实现io、signals等的转发；最新版本的shimV2，在shimV1的基础上集成了runtime的功能，缩短了容器创建的调用链， 在某些场景能够有效降低底噪开销。在本文中的shimV2 默认使用的是<a href="https://github.com/kata-containers/runtime/tree/master/containerd-shim-v2" target="_blank" rel="noopener noreferrer">containerd-shim-kata-v2<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>，以此为分析对象，分别分析了iSulad和containerd中对pause和container(业务容器）两种类型的容器退出监控流程的实现方式。</p> <h3 id="shimv2介绍"><a href="#shimv2介绍" class="header-anchor">#</a> shimV2介绍</h3> <p>在shimV1架构中，安全容器的启动涉及kata-shim、 kata-runtime、  kata-proxy、kata-agent组件以及用于创建虚机的qemu组件。在shimV2架构中，将shim、proxy和runtime集成到一个二进制中，当启动pause容器和在pause中启动业务容器时，host os中只存在一个containerd-shim-kata-v2进程和qemu-kvm进程，也就是说pause容器和其中的业务容器共用同一个containerd-shim-kata-v2进程和虚拟机。<a href="https://github.com/kata-containers/documentation/blob/master/design/architecture.md" target="_blank" rel="noopener noreferrer">shimV2和shimV1架构对比<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>如下。shimV1在单pause+多业务容器场景，每启动一个pause或者业务容器都有一个containerd-shim或者isulad-shim、kata-shim进程被拉起，pause和其中的业务容器共用kata-proxy(非vsock)进程和虚机进程（2N+1）。然而， shimV2在单pause+多业务容器场景中，host os中只有一个containerd-shim-kata-v2进程和qemu-kvm进程，调用链更短， 总体底噪更低，特别是当pause中业务容器数量增加时，低底噪优势将更加明显。</p> <p><img src="/assets/img/2021-04-09-isulad-shimv2-arch-1.cd990794.png" alt=""></p> <h3 id="isulad与shimv1和shimv2关系"><a href="#isulad与shimv1和shimv2关系" class="header-anchor">#</a> iSulad与shimV1和shimV2关系</h3> <ol><li><p>iSulad中shimv1的实现</p> <p>isulad-shim组件作为iSulad中shimv1的实现方案，代码在iSulad仓库中，随iSulad一起编译安装；可用于对接不同的OCI Runtime， 如runc、kata-runtime.</p></li> <li><p>iSulad中shimv2的实现</p> <p>当前iSulad对接shimv2仍处于调试阶段，shimV2分为containerd-shim-kata-v2和containerd-shim-runc-v2两种实现，本文以containerd-shim-kata-v2作为对象，分析在shimv2场景下，安全容器的退出监控实现机制。</p></li> <li><p>shimv1和shimv2的区别如下图所示</p></li></ol> <p><img src="/assets/img/2021-04-09-isulad-shimv2-shimv2-differences.3c0ea142.png" alt="shimv-shimv2-diff"></p> <h3 id="isulad中容器退出监控剖析"><a href="#isulad中容器退出监控剖析" class="header-anchor">#</a> iSulad中容器退出监控剖析</h3> <p>以isulad-shim为例，iSulad中通过epoll机制监控每个isulad-shim进程中开启的exit_fifo fd是否关闭，isulad-shim在监控到容器退出后将其退出码写入此fifo， 在iSulad中读取并设置容器退出状态，业务容器和pause容器均会打开一个exit_fifo fd。对于pause容器和业务容器这两种CRI流程的容器会分别拉起独立的isulad-shim进程。</p> <p>iSulad  | &lt;==&gt; isulad-shim &lt;==&gt; container init</p> <p>iSulad  | &lt;==&gt; isulad-shim &lt;==&gt; pause init</p> <p>iSulad中在start 容器流程中开启exit_fifo的读端fd并加入epoll监控， 关键代码如下：</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token keyword">int</span> <span class="token function">do_start_container</span><span class="token punctuation">(</span><span class="token class-name">container_t</span> <span class="token operator">*</span>cont<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>console_fifos<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> bool reset_rm<span class="token punctuation">,</span> <span class="token class-name">pid_ppid_info_t</span> <span class="token operator">*</span>pid_info<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token function">runtime_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">do_post_start_on_success</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">container_supervisor_add_exit_monitor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">supervisor_handler_lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    	    <span class="token function">epoll_loop_add_handler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="containerd中容器退出监控"><a href="#containerd中容器退出监控" class="header-anchor">#</a> containerd中容器退出监控</h3> <p>containerd在启动容器并监控其退出状态时不再使用fifo来实现而是使用rpc调用中的Wait方法， 启动pause容器、业务容器以及调用容器exec命令时，均会在containerd中开启一个协程来获取其退出状态。containerd重启后，connect方法实现将全部容器的wait方法进行重建。</p> <ul><li>start sandbox和start container监控流程</li></ul> <p>代码文件：containerd/vendor/github.com/containerd/cri/pkg/server/events.go</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token comment">// eventMonitor monitors containerd event and updates internal state correspondingly.</span>
+<span class="token comment">// TODO(random-liu): Handle event for each container in a separate goroutine.</span>
+<span class="token keyword">type</span> eventMonitor <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	c  <span class="token operator">*</span>criService
+	ch <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token operator">*</span>events<span class="token punctuation">.</span>Envelope
+	<span class="token comment">// exitCh receives container/sandbox exit events from exit monitors.</span>
+	exitCh  <span class="token keyword">chan</span> <span class="token operator">*</span>eventtypes<span class="token punctuation">.</span>TaskExit
+	errCh   <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token builtin">error</span>
+	ctx     context<span class="token punctuation">.</span>Context
+	cancel  context<span class="token punctuation">.</span>CancelFunc
+	backOff <span class="token operator">*</span>backOff
+<span class="token punctuation">}</span>
+<span class="token comment">// container 监控退出</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>criService<span class="token punctuation">)</span> <span class="token function">StartContainer</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> r <span class="token operator">*</span>runtime<span class="token punctuation">.</span>StartContainerRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span>retRes <span class="token operator">*</span>runtime<span class="token punctuation">.</span>StartContainerResponse<span class="token punctuation">,</span> retErr <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// wait is a long running background request, no timeout needed. //ght container这里监听</span>
+	exitCh<span class="token punctuation">,</span> err <span class="token operator">:=</span> task<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span>ctrdutil<span class="token punctuation">.</span><span class="token function">NamespacedContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    
+    <span class="token comment">// start the monitor after updating container state, this ensures that</span>
+	<span class="token comment">// event monitor receives the TaskExit event and update container state</span>
+	<span class="token comment">// after this.</span>
+	c<span class="token punctuation">.</span>eventMonitor<span class="token punctuation">.</span><span class="token function">startExitMonitor</span><span class="token punctuation">(</span>context<span class="token punctuation">.</span><span class="token function">Background</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> id<span class="token punctuation">,</span> task<span class="token punctuation">.</span><span class="token function">Pid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> exitCh<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// RunPodSandbox creates and starts a pod-level sandbox. Runtimes should ensure</span>
+<span class="token comment">// the sandbox is in ready state.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>criService<span class="token punctuation">)</span> <span class="token function">RunPodSandbox</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> r <span class="token operator">*</span>runtime<span class="token punctuation">.</span>RunPodSandboxRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token boolean">_</span> <span class="token operator">*</span>runtime<span class="token punctuation">.</span>RunPodSandboxResponse<span class="token punctuation">,</span> retErr <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// wait is a long running background request, no timeout needed.</span>
+	exitCh<span class="token punctuation">,</span> err <span class="token operator">:=</span> task<span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span>ctrdutil<span class="token punctuation">.</span><span class="token function">NamespacedContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">// start the monitor after adding sandbox into the store, this ensures</span>
+	<span class="token comment">// that sandbox is in the store, when event monitor receives the TaskExit event.</span>
+	<span class="token comment">//</span>
+	<span class="token comment">// TaskOOM from containerd may come before sandbox is added to store,</span>
+	<span class="token comment">// but we don't care about sandbox TaskOOM right now, so it is fine.</span>
+	c<span class="token punctuation">.</span>eventMonitor<span class="token punctuation">.</span><span class="token function">startExitMonitor</span><span class="token punctuation">(</span>context<span class="token punctuation">.</span><span class="token function">Background</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> id<span class="token punctuation">,</span> task<span class="token punctuation">.</span><span class="token function">Pid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> exitCh<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>containerd/process.go</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token comment">// containerd/process.go 监控container exec等进程退出</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>p <span class="token operator">*</span>process<span class="token punctuation">)</span> <span class="token function">Wait</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">&lt;-</span><span class="token keyword">chan</span> ExitStatus<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	c <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> ExitStatus<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+	<span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">defer</span> <span class="token function">close</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+		r<span class="token punctuation">,</span> err <span class="token operator">:=</span> p<span class="token punctuation">.</span>task<span class="token punctuation">.</span>client<span class="token punctuation">.</span><span class="token function">TaskService</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Wait</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> <span class="token operator">&amp;</span>tasks<span class="token punctuation">.</span>WaitRequest<span class="token punctuation">{</span>
+			ContainerID<span class="token punctuation">:</span> p<span class="token punctuation">.</span>task<span class="token punctuation">.</span>id<span class="token punctuation">,</span>
+			ExecID<span class="token punctuation">:</span>      p<span class="token punctuation">.</span>id<span class="token punctuation">,</span>
+		<span class="token punctuation">}</span><span class="token punctuation">)</span>
+		<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+			c <span class="token operator">&lt;-</span> ExitStatus<span class="token punctuation">{</span>
+				code<span class="token punctuation">:</span> UnknownExitStatus<span class="token punctuation">,</span>
+				err<span class="token punctuation">:</span>  err<span class="token punctuation">,</span>
+			<span class="token punctuation">}</span>
+			<span class="token keyword">return</span>
+		<span class="token punctuation">}</span>
+		c <span class="token operator">&lt;-</span> ExitStatus<span class="token punctuation">{</span>
+			code<span class="token punctuation">:</span>     r<span class="token punctuation">.</span>ExitStatus<span class="token punctuation">,</span>
+			exitedAt<span class="token punctuation">:</span> r<span class="token punctuation">.</span>ExitedAt<span class="token punctuation">,</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token keyword">return</span> c<span class="token punctuation">,</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>containerd重新获取shim pid，与shimV1不同的是这里的shim pid并不是作为容器的ppid， 因此在容器进程无法正常kill时，不能通过kill shim pid来强制容器退出。</li></ul> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token punctuation">(</span>m <span class="token operator">*</span>TaskManager<span class="token punctuation">)</span> <span class="token function">loadTasks</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+  <span class="token keyword">func</span> <span class="token function">loadShim</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
+	<span class="token keyword">func</span> <span class="token punctuation">(</span>s <span class="token operator">*</span>shim<span class="token punctuation">)</span> <span class="token function">Connect</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+	response<span class="token punctuation">,</span> err <span class="token operator">:=</span> s<span class="token punctuation">.</span>task<span class="token punctuation">.</span><span class="token function">Connect</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> <span class="token operator">&amp;</span>task<span class="token punctuation">.</span>ConnectRequest<span class="token punctuation">{</span>
+		ID<span class="token punctuation">:</span> s<span class="token punctuation">.</span><span class="token function">ID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	<span class="token punctuation">}</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> err
+	<span class="token punctuation">}</span>
+	s<span class="token punctuation">.</span>taskPid <span class="token operator">=</span> <span class="token function">int</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span>TaskPid<span class="token punctuation">)</span> <span class="token comment">// 获取shim的pid</span>
+	<span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+
+</code></pre></div><h3 id="containerd-kata-shim-v2代码分析"><a href="#containerd-kata-shim-v2代码分析" class="header-anchor">#</a> containerd-kata-shim-v2代码分析</h3> <ol><li>ttrpc 服务端入口：</li></ol> <p>文件containerd-shim-v2/service.go中定义了containerd-kata-shim-v2作为ttrpc服务端监听来自容器引擎的ttrpc调用的入口函数并实现了容器退出状态的监控、io和信号转发等操作。</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token comment">// service is the shim implementation of a remote shim over GRPC</span>
+<span class="token keyword">type</span> service <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	mu          sync<span class="token punctuation">.</span>Mutex
+	eventSendMu sync<span class="token punctuation">.</span>Mutex
+
+	<span class="token comment">// pid Since this shimv2 cannot get the container processes pid from VM,</span>
+	<span class="token comment">// thus for the returned values needed pid, just return this shim's</span>
+	<span class="token comment">// pid directly.</span>
+	pid <span class="token builtin">uint32</span>
+
+	ctx        context<span class="token punctuation">.</span>Context
+	sandbox    vc<span class="token punctuation">.</span>VCSandbox
+	containers <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token operator">*</span>container <span class="token comment">// pause和container容器全部保存在这里</span>
+	config     <span class="token operator">*</span>oci<span class="token punctuation">.</span>RuntimeConfig
+	events     <span class="token keyword">chan</span> <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token comment">// publish使用 128缓冲</span>
+	monitor    <span class="token keyword">chan</span> <span class="token builtin">error</span> <span class="token comment">// 监控sandbox即虚机的状态</span>
+
+	cancel <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// ctx cancel</span>
+
+	ec <span class="token keyword">chan</span> exit <span class="token comment">// 保存了容器推出码 pid等信息， 32缓冲， shim中协程检查进程写入events，向上publish</span>
+	id <span class="token builtin">string</span><span class="token comment">// io.containerd.kata.v2</span>
+<span class="token punctuation">}</span>
+</code></pre></div><ul><li>service 实现了ttrpc server和shim管理的接口</li></ul> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">type</span> TaskService <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+	<span class="token function">State</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>StateRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>StateResponse<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">Create</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>CreateTaskRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>CreateTaskResponse<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">Start</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>StartRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>StartResponse<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">Delete</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>DeleteRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>DeleteResponse<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">Pids</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>PidsRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>PidsResponse<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">Pause</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>PauseRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>google_protobuf1<span class="token punctuation">.</span>Empty<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">Resume</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>ResumeRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>google_protobuf1<span class="token punctuation">.</span>Empty<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">Checkpoint</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>CheckpointTaskRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>google_protobuf1<span class="token punctuation">.</span>Empty<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">Kill</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>KillRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>google_protobuf1<span class="token punctuation">.</span>Empty<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">Exec</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>ExecProcessRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>google_protobuf1<span class="token punctuation">.</span>Empty<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">ResizePty</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>ResizePtyRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>google_protobuf1<span class="token punctuation">.</span>Empty<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">CloseIO</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>CloseIORequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>google_protobuf1<span class="token punctuation">.</span>Empty<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">Update</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>UpdateTaskRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>google_protobuf1<span class="token punctuation">.</span>Empty<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    <span class="token comment">// 获取容器退出状态</span>
+	<span class="token function">Wait</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>WaitRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>WaitResponse<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">Stats</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>StatsRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>StatsResponse<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    <span class="token comment">// 获取shim pid</span>
+	<span class="token function">Connect</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>ConnectRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>ConnectResponse<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+    <span class="token comment">// 取消全部context子任务并停止containerd-shim-kata-v2进程</span>
+	<span class="token function">Shutdown</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> req <span class="token operator">*</span>ShutdownRequest<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>google_protobuf1<span class="token punctuation">.</span>Empty<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// Shim server interface</span>
+<span class="token keyword">type</span> Shim <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+	shimapi<span class="token punctuation">.</span>TaskService
+	<span class="token function">Cleanup</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>shimapi<span class="token punctuation">.</span>DeleteResponse<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+	<span class="token function">StartShim</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> id<span class="token punctuation">,</span> containerdBinary<span class="token punctuation">,</span> containerdAddress <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="isulad通过containerd-shim-kata-v2运行容器"><a href="#isulad通过containerd-shim-kata-v2运行容器" class="header-anchor">#</a> iSulad通过containerd-shim-kata-v2运行容器</h3> <ul><li>启动pause容器。</li></ul> <div class="language-bash extra-class"><pre class="language-bash"><code>isula run -tid --runtime io.containerd.kata.v2 --network none --annotation io.kubernetes.docker.type<span class="token operator">=</span>podsandbox <span class="token operator">&lt;</span>pause-image<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>command<span class="token operator">&gt;</span>
+</code></pre></div><p>此处获取pod的sandbox-id。</p> <ul><li>创建业务容器并加入到这个pod中</li></ul> <div class="language-bash extra-class"><pre class="language-bash"><code>isula run -tid --runtime io.containerd.kata.v2 --network none --annotation io.kubernetes.docker.type<span class="token operator">=</span>container --annotation io.kubernetes.sandbox.id<span class="token operator">=</span><span class="token operator">&lt;</span>sandbox-id<span class="token operator">&gt;</span> busybox <span class="token operator">&lt;</span>command<span class="token operator">&gt;</span>
+</code></pre></div><h3 id="containerd通过containerd-shim-kata-v2运行容器"><a href="#containerd通过containerd-shim-kata-v2运行容器" class="header-anchor">#</a> containerd通过containerd-shim-kata-v2运行容器</h3> <p>自行安装cri-tools工具，本文使用github.com上master分支编译安装。</p> <ul><li>containerd配置：</li></ul> <p>containerd配置文件/etc/containerd/config.toml中增加如下一段用来配置kata参数</p> <div class="language-toml extra-class"><pre class="language-toml"><code><span class="token punctuation">[</span><span class="token table class-name">plugins.&quot;io.containerd.grpc.v1.cri&quot;.containerd.runtimes</span><span class="token punctuation">]</span>
+//
+        <span class="token punctuation">[</span><span class="token table class-name">plugins.&quot;io.containerd.grpc.v1.cri&quot;.containerd.runtimes.kata</span><span class="token punctuation">]</span>
+          <span class="token key property">runtime_type</span> <span class="token punctuation">=</span> <span class="token string">&quot;io.containerd.kata.v2&quot;</span>
+          <span class="token key property">pod_annotations</span> <span class="token punctuation">=</span> <span class="token punctuation">[</span><span class="token string">&quot;com.github.containers.virtcontainers.sandbox_cpu&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;com.github.containers.virtcontainers.sandbox_mem&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;com.github.containers.virtcontainers.static_devices&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;com.github.containers.virtcontainers.sandbox_drivers&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;com.github.containers.virtcontainers.boot_cgroup&quot;</span><span class="token punctuation">]</span>
+          <span class="token key property">container_annotations</span> <span class="token punctuation">=</span> <span class="token punctuation">[</span><span class="token string">&quot;com.github.containers.virtcontainers.storage_spec&quot;</span><span class="token punctuation">]</span>
+//
+        <span class="token punctuation">[</span><span class="token table class-name">plugins.&quot;io.containerd.grpc.v1.cri&quot;.containerd.runtimes.runc</span><span class="token punctuation">]</span>
+          <span class="token key property">base_runtime_spec</span> <span class="token punctuation">=</span> <span class="token string">&quot;&quot;</span>
+
+</code></pre></div><ul><li>安装cni插件：</li></ul> <p>参考如下教程，自行编译plugins</p> <div class="language- extra-class"><pre class="language-text"><code>https://github.com/containerd/containerd/blob/master/script/setup/install-cni
+</code></pre></div><ul><li>指定runtime运行pod:</li></ul> <div class="language-bash extra-class"><pre class="language-bash"><code>$ crictl -i unix:///var/run/containerd/containerd.sock -r unix:///var/run/containerd/containerd.sock runp --runtime kata sandbox-config.json
+$ <span class="token function">cat</span> sandbox-config.json
+<span class="token punctuation">{</span>
+    <span class="token string">&quot;metadata&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+            <span class="token string">&quot;name&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;nginx-sandbox&quot;</span>,
+            <span class="token string">&quot;namespace&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;default&quot;</span>,
+            <span class="token string">&quot;attempt&quot;</span><span class="token builtin class-name">:</span> <span class="token number">1</span>,
+            <span class="token string">&quot;uid&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;hdishd83djaidwnduwk28bcsb&quot;</span>
+        <span class="token punctuation">}</span>,
+    <span class="token string">&quot;image&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+        <span class="token string">&quot;image&quot;</span><span class="token builtin class-name">:</span> <span class="token string">&quot;docker.io/library/busybox:latest&quot;</span>
+    <span class="token punctuation">}</span>,
+    <span class="token string">&quot;linux&quot;</span><span class="token builtin class-name">:</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre></div><hr> <p>Author:高华涛</p></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/135.2a07d1e9.js" defer></script>
+  </body>
+</html>

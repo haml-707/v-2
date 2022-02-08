@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>第五期Linux内核源码结构-1</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/97.a20efcf0.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>罗宇哲</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2020-08-06</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>第五期Linux内核源码结构-1</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>罗宇哲</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2020-08-06</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>Linux</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>内核</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>源码</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><p><em>作者：罗宇哲，中国科学院软件研究所智能软件研究中心</em></p> <p>在上一期中，我们介绍了Linux内核发展的历史，也介绍了与其相关的UNIX和GNU的相关知识。从这一期开始，我们将介绍Linux内核的源码结构。我们将先根据Linux源码的目录结构进行分析，到本文章发布前，Linux 4.19的最新版本为Linux 4.19.94，我们将依据openEuler开源社区源码并参考Linux 4.19.94版内核源码进行分析。</p> <h3 id="一、linux内核源码的目录结构分析"><a href="#一、linux内核源码的目录结构分析" class="header-anchor">#</a> 一、Linux内核源码的目录结构分析</h3> <p>下图列出了截至文章发表前openEuler开源社区kernel目录下的目录结构[5]：</p> <img src="/assets/img/Directory-structure-1.75d3d048.png"> <img src="/assets/img/Directory-structure-2.e3223c07.png"> <img src="data:image/png;base64,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"> <p>其中各个文件夹中<strong>源代码的功能</strong>如下表所示[1][3]：</p> <table><thead><tr><th><strong>目录/文件名</strong></th> <th><strong>源码功能简介</strong></th></tr></thead> <tbody><tr><td><code>/Documentation</code></td> <td>说明文档，对每个目录的具体作用进行说明。</td></tr> <tr><td><code>/arch</code></td> <td>不同CPU架构下的核心代码。其中的每一个子目录都代表Linux支持的CPU架构。</td></tr> <tr><td><code>/block</code></td> <td>块设备通用函数。</td></tr> <tr><td><code>/certs</code></td> <td>与证书相关。</td></tr> <tr><td><code>/crypto</code></td> <td>常见的加密算法的C语言实现代码，譬如crc32、md5、sha1等。</td></tr> <tr><td><code>/drivers</code></td> <td>内核中所有设备的驱动程序，其中的每一个子目录对应一种设备驱动。</td></tr> <tr><td><code>/include</code></td> <td>内核编译通用的头文件。</td></tr> <tr><td><code>/init</code></td> <td>内核初始化的核心代码。</td></tr> <tr><td><code>/ipc</code></td> <td>内核中进程间的通信代码。</td></tr> <tr><td><code>/kernel</code></td> <td>内核的核心代码，此目录下实现了大多数Linux系统的内核函数。与处理器架构相关的内核代码在<code>/kernel/$ARCH/kernel</code>。</td></tr> <tr><td><code>/lib</code></td> <td>内核共用的函数库，与处理器架构相关的库在<code>/kernel/$ARCH/lib</code>。</td></tr> <tr><td><code>/mm</code></td> <td>内存管理代码，譬如页式存储管理内存的分配和释放等。与具体处理器架构相关的内存管理代码位于<code>/arch/$ARCH/mm</code>目录下。</td></tr> <tr><td><code>/net</code></td> <td>网络通信相关代码。</td></tr> <tr><td><code>/samples</code></td> <td>示例代码。</td></tr> <tr><td><code>/scripts</code></td> <td>用于内核配置的脚本文件，用于实现内核配置的图形界面。</td></tr> <tr><td><code>/security</code></td> <td>安全性相关的代码。</td></tr> <tr><td><code>/sound</code></td> <td>与音频有关的代码，包括与音频有关的驱动程序[2]。</td></tr> <tr><td><code>/tools</code></td> <td>Linux中的常用工具。</td></tr> <tr><td><code>/usr</code></td> <td>该目录中的代码为内核尚未完全启动时执行用户空间代码提供了支持。</td></tr> <tr><td><code>/virt</code></td> <td>此文件夹包含了虚拟化代码，它允许用户一次运行多个操作系统。</td></tr> <tr><td><code>COPYING</code></td> <td>许可和授权信息。</td></tr> <tr><td><code>CREDITS</code></td> <td>贡献者列表。</td></tr> <tr><td><code>Kbuild</code></td> <td>内核设定脚本，可以对内核中的变量进行设定。</td></tr> <tr><td><code>Kconfig</code></td> <td>配置哪些文件编译，那些文件不用编译[4]。</td></tr> <tr><td><code>Makefile</code></td> <td>该文件将编译参数、编译所需的文件和必要的信息传给编译器。</td></tr></tbody></table> <h3 id="二、结语"><a href="#二、结语" class="header-anchor">#</a> 二、结语</h3> <p>本期我们根据openEuler的目录，并参考Linux目录结构简要介绍了openEuler kernel中各个子目录的功能，下一期我们将结合Linux 内核的Kernel Map介绍<strong>Linux内核的基本功能和抽象层级</strong>。</p> <p>参考文献</p> <p>[1] https://www.cnblogs.com/CaesarTao/p/10600462.html</p> <p>[2] http://blog.chinaunix.net/uid-30374564-id-5571674.html</p> <p>[3] https://blog.csdn.net/wangyachao0803/article/details/81380882</p> <p>[4] https://blog.csdn.net/jianwen_hi/article/details/53398141</p> <p>[5] https://gitee.com/openeuler/kernel</p></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/97.a20efcf0.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>【开源软件供应链点亮计划】Qemu Fuzzer学习</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/273.326ee43b.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>cascades</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2021-08-15</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>【开源软件供应链点亮计划】Qemu Fuzzer学习</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>cascades</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2021-08-15</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>Qemu</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>Virtio</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>summer2021</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><h1 id="qemu-fuzzer学习"><a href="#qemu-fuzzer学习" class="header-anchor">#</a> Qemu Fuzzer学习</h1> <blockquote><p>本文章来自于<a href="https://summer.iscas.ac.cn/" target="_blank" rel="noopener noreferrer">开源软件供应链点亮计划<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>的openEuler社区项目
+项目名称：<a href="https://gitee.com/openeuler-competition/summer2021-112" target="_blank" rel="noopener noreferrer">No.112 qemu设备fuzz测试完善<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p></blockquote> <h2 id="前言"><a href="#前言" class="header-anchor">#</a> 前言</h2> <p>一提到 Qemu + Fuzz 的组合，我首先想起的是AFL的Qemu模式，或者是各种使用虚拟化技术对IoT设备进行Fuzzing的工具。</p> <p>而本文学习的是Qemu自身的Fuzzing框架，即对Hypervisor的Fuzzing。它借助Qtest框架模拟Guest OS对设备的读写，并使用LibFuzzer的启发式算法提供数据驱动。该框架最早源于<a href="https://summerofcode.withgoogle.com/archive/2019/projects/6200259867312128/" target="_blank" rel="noopener noreferrer"><code>Google Summer of Code 2019</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>项目，在Qemu5.0.0版本后被加入到master分支中。</p> <h2 id="qemu-设备模拟原理"><a href="#qemu-设备模拟原理" class="header-anchor">#</a> Qemu 设备模拟原理</h2> <p><a href="https://www.qemu.org/" target="_blank" rel="noopener noreferrer"><code>Qemu</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>是一款开源的虚拟化和仿真工具，由<a href="https://bellard.org/" target="_blank" rel="noopener noreferrer"><code>Fabrice Bellard</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>实现。Qemu支持两种模式的仿真：</p> <ul><li><code>system mode</code>：对于CPU，内存以及外设的全系统仿真，提供KVM，Hyper-V等加速方式</li> <li><code>user mode</code>：通过指令翻译在一种架构的CPU上运行另一种CPU架构的二进制程序</li></ul> <p>首先需要理解虚拟化的本质在于：使用一个用户态的程序，在只使用用户态内存的情况下，来处理模拟设备对内存以及其他特殊硬件的访问。由于Qemu需要仿真不同架构，不同指令集的设备，所以其采用了OOP的编程思想，实现了<code>Qemu Object Model</code>来描述设备模型。</p> <ul><li>设备模型：每个模拟出来的设备都对应一个TypeInfo对象，由设备名唯一标识，并存储在hash table中</li> <li>设备启动：启动设备需要经过设备注册，设备类型初始化，设备实例化等步骤，</li> <li>指令翻译：真正运行时，Qemu通过TCG（软件）或者KVM（硬件）等方式，接受模拟设备的指令，并翻译到物理设备上执行。这样会带来性能开销，相比起来硬件虚拟化带来的开销更低</li> <li>内存模拟：Qemu负责提供内存映射给客户机。当客户机访问这部分内存以便写磁盘时，Qemu会捕获访问，并且将请求传送给qemu的IDE控制器设备模型，模型会解析I/O请求并且通过宿主机的系统调用来模拟指令。最终将客户机的内存拷贝至宿主机的磁盘中。</li></ul> <p>总之，在Guest OS中，它认为自己可以直接和Host OS上的硬件设备打交道，Qemu充当了中间人的角色，可以用下图来概括：</p> <div class="language-asciidoc= extra-class"><pre class="language-text"><code>+----------+ +----------+ +----------+ +----------+ +----------+
+| UserSpace| | UserSpace| | UserSpace| | UserSpace| | UserSpace|
++----------+ +----------+ +----------+ +----------+ +----------+
+|  Linux   | | Mac OS   | | Windows  | | Linux    | | Solaris  |
++----------+ +----------+ +----------+ +----------+ +----------+
+|  Drivers | | Drivers  | | Drivers  | | Drivers  | | Drivers  |
++----------+ +----------+ +----------+ +----------+ +----------+
++----------+ +----------+ +----------+ +----------+ +----------+
+| QEMU x86 | | QEMU x86 | | QEMU ARM | | QEMU PPC | | QEMU MIPS|
++----------+ +----------+ +----------+ +----------+ +----------+
++----------+-+----------+-+----------+-+----------+-+----------+
+|               Host System:Linux,Mac OS,Windows               |
++--------------------------------------------------------------+
++--------------------------------------------------------------+
+|         Hardware:CPU,memory,disk,networking,USB,etc          |
++--------------------------------------------------------------+
+</code></pre></div><blockquote><p>关于Qemu设备模拟的方法，可以参考<a href="LLVMFuzzerTestOneInput"><code>User Documentation</code></a>
+关于Qemu设备模拟的理解，可以参考<a href="https://www.qemu.org/2018/02/09/understanding-qemu-devices/" target="_blank" rel="noopener noreferrer"><code>understanding Qemu devices</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>
+Qemu作者的论文：<a href="https://www.usenix.org/legacy/event/usenix05/tech/freenix/full_papers/bellard/bellard.pdf#:~:text=We%20present%20the%20internals%20of%20QEMU%2C%20a%20fast,one%20target%20CPU%20can%20be%20runon%20another%20CPU." target="_blank" rel="noopener noreferrer"><code>QEMU, a Fast and Portable Dynamic Translator</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p></blockquote> <h2 id="qemu-fuzzer-的使用方法"><a href="#qemu-fuzzer-的使用方法" class="header-anchor">#</a> Qemu Fuzzer 的使用方法</h2> <p><a href="https://qemu.readthedocs.io/en/latest/devel/fuzzing.html" target="_blank" rel="noopener noreferrer">文档说明<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <h3 id="实验环境"><a href="#实验环境" class="header-anchor">#</a> 实验环境</h3> <p>采用了本机的WSL上的Docker环境</p> <div class="language-bash= extra-class"><pre class="language-text"><code>root@31b23c4c00b7:~/qemu# lscpu
+Architecture:                    x86_64
+CPU op-mode(s):                  32-bit, 64-bit
+Byte Order:                      Little Endian
+CPU(s):                          16
+root@31b23c4c00b7:~/qemu# cat /etc/os-release
+NAME=&quot;Ubuntu&quot;
+VERSION=&quot;20.04.2 LTS (Focal Fossa)&quot;
+</code></pre></div><h4 id="环境问题"><a href="#环境问题" class="header-anchor">#</a> 环境问题</h4> <ul><li>描述：Qemu的Fuzzing还没有适配AArch64架构，虽然编译成功，但运行报错。</li></ul> <p><img src="https://img-blog.csdnimg.cn/img_convert/2161923b370fbd9f89318104b70fad11.png" alt=""></p> <ul><li>解决方案：适配AArch64下的Qemu Fuzzing正是本项目要做的内容，但在学习阶段，还是采用x86环境来运行。</li></ul> <h4 id="版本问题"><a href="#版本问题" class="header-anchor">#</a> 版本问题</h4> <ul><li><p>描述：官网给出的示例使用的是clang-8，而最新的clang版本已经来到了clang-14，如果采用较新的版本，则会在编译阶段报错（原因为开启了Werror）。</p></li> <li><p>解决方案：</p> <ul><li>（推荐）直接采用包管理器（apt/dnf）安装clang</li> <li>git checkout到LLVM8-10之间的版本</li> <li>到<a href="https://releases.llvm.org/" target="_blank" rel="noopener noreferrer">官方Release页面<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>下载LLVM8-10之间版本的源代码</li></ul></li></ul> <div class="language-bash= extra-class"><pre class="language-text"><code># sudo apt/dnf search xxx 可以查看包管理器中包含的软件以及对应版本，默认为clang-10
+sudo apt/dnf install clang llvm compiler-rt
+</code></pre></div><h4 id="docker打包"><a href="#docker打包" class="header-anchor">#</a> Docker打包</h4> <p>为了方便部署，采用了docker的形式来配置实验环境：<a href="https://hub.docker.com/repository/docker/cascadessjtu/qemu_fuzz" target="_blank" rel="noopener noreferrer">镜像地址<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>。</p> <h3 id="简单使用"><a href="#简单使用" class="header-anchor">#</a> 简单使用</h3> <p>配置好环境后，通过如下命令编译运行Fuzzing程序，即显示LibFuzzer的输出。</p> <div class="language-bash= extra-class"><pre class="language-text"><code>CC=clang-10 CXX=clang++-10 ./configure --enable-sanitizers --enable-fuzzing
+# qemu-fuzz-isa isa为模拟设备的架构
+make qemu-fuzz-i386 qemu-fuzz-aarch64
+# 查看可用的Fuzzing对象
+build/qemu-fuzz-i386 --fuzz-target=FUZZ_NAME
+</code></pre></div><p>除了上述命令外，Qemu Fuzzer还支持LibFuzzer的编译指令，可以通过<code>-help=1</code>来查看</p> <p>对于Fuzzing的结果，可以考虑采用<a href="https://qemu.readthedocs.io/en/latest/devel/fuzzing.html#generating-coverage-reports" target="_blank" rel="noopener noreferrer"><code>Clang Sanitizer</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>查看。该工具需要使用CORPUS参数，并对编译指令进行一定的修改。在Fuzzing结束后，通过<code>llvm-cov</code>命令将生成的<code>default.profraw</code>文件转化为<code>.html</code>的可视化文件。</p> <h3 id="添加自定义fuzzer"><a href="#添加自定义fuzzer" class="header-anchor">#</a> 添加自定义Fuzzer</h3> <p>添加一个新的Fuzzer需要以下三个步骤：</p> <ol><li>编写Fuzzer源文件<code>foo-device-fuzz.c</code>，放在<code>tests/qtest/fuzz</code>目录下</li> <li>参考已有的Fuzzer，使用libqos和libqtest中的API与模拟设备通信</li> <li>在<code>tests/qtest/fuzz/meson.build</code>文件中注册该Fuzzer</li></ol> <h3 id="通用fuzzer"><a href="#通用fuzzer" class="header-anchor">#</a> 通用Fuzzer</h3> <p>为某些特定的设备类型写Fuzzer是非常费时费力的事情，尤其是那些libqos并没有包含的设备驱动。Qemu提供了<code>generic-fuzz</code>的选项，用于对所有设备进行初步的Fuzzing，包括设备的PIO，MMIO和DMA。如果要启用generic-fuzz，至少需要设置以下两个环境变量：</p> <ul><li><code>QEMU_FUZZ_ARGS=</code>：配置设备所需要的参数，比如网卡，用户名</li> <li><code>QEMU_FUZZ_OBJECTS</code>=：采用字符串匹配的方式来指定Fuzzing的内存区域。可以用<code>./qemu-fuzz-i386 --fuzz-target=generic-fuzz -runs=0</code>来检查匹配到的内存区域。如果匹配到的内存区域越多，Fuzzing的<code>input-space</code>就越大，越难发现导致该设备crash的输入，所以<code>MemoryRegion</code>的选取要适度。</li></ul> <h3 id="集成oss-fuzz"><a href="#集成oss-fuzz" class="header-anchor">#</a> 集成OSS-Fuzz</h3> <p>OSS-Fuzz是集成式的Fuzzing工具，它默认对所有的对象进行Fuzz。由于通用Fuzzer的启动需要额外对环境变量进行设置，所以Qemu在<code>tests/qtest/fuzz/generic_fuzz_configs.h</code>文件中自定义了一些设备类型，用于OSS-Fuzz。开发者可以在该文件中添加新的设备类型，官方也提供了用于搭建环境的<a href="https://github.com/google/oss-fuzz/blob/master/projects/qemu/Dockerfile" target="_blank" rel="noopener noreferrer"><code>Dockerfile</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>。</p> <h3 id="crash复现工具"><a href="#crash复现工具" class="header-anchor">#</a> crash复现工具</h3> <p>当复现crash的时候，需要不包含Fuzzer的Qemu，这样可以过滤调误报，并增强调试功能。可以使用OSS-Fuzz的脚本来创建一个<code>one-line reproducer</code>。</p> <h3 id="fuzzer生命周期"><a href="#fuzzer生命周期" class="header-anchor">#</a> Fuzzer生命周期</h3> <p>Qemu Fuzzer为LibFuzzer提供了两处入口点，在LibFuzzer自己的main函数之后调用：</p> <ul><li><code>LLVMFuzzerInitialize</code>：Fuzzing开始前调用，初始化环境</li> <li><code>LLVMFuzzerTestOneInput</code>：每个Fuzzing任务运行时调用，提供输入并在Fuzzing结束后重置状态</li></ul> <p>因为Fuzzer的进程会在每次Fuzzing运行后被重置（reset），所以Qemu的状态也需要重置，有两种方法来实现重置，各有优劣。</p> <ul><li><code>Reboot</code>：在每次运行之间重启Guest OS</li> <li><code>Fork</code>：在子进程中运行test case，和AFL的<code>fork-server</code>模式很相似</li></ul> <h2 id="qemu-fuzzer的依赖库"><a href="#qemu-fuzzer的依赖库" class="header-anchor">#</a> Qemu Fuzzer的依赖库</h2> <p>Qemu Fuzzer实现主要依赖的是libqtest和libqos两个库，它们的关系可以参考<a href="https://www.linux-kvm.org/images/4/43/03x09-TestingQEMU.pdf" target="_blank" rel="noopener noreferrer"><code>Testing QEMU emulated devices using qtest</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>，这篇文章介绍了qtest的基本原理，提供的API函数，并给出了添加testcase的方法。</p> <h3 id="libqtest"><a href="#libqtest" class="header-anchor">#</a> libqtest</h3> <ul><li><a href="https://github.com/qemu/qemu/tree/master/tests/qtest/libqtest.c" target="_blank" rel="noopener noreferrer">代码路径<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li> <li><a href="https://qemu.readthedocs.io/en/latest/devel/qtest.html" target="_blank" rel="noopener noreferrer">文档说明<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul> <p>Qtest是一个用于对Qemu模拟出的硬件设备做单元测试的框架，它由<code>Qtest Client</code>，<code>Qtest Server</code>两部分组成。两者之间通过UNIX Socket通信，支持PIO，MMIO，中断，QMP等指令。</p> <ul><li><code>Qtest Client</code>：它是为某个设备编写的驱动程序，按照自底向上的封装顺序，它依赖于glib单元测试框架，libqtest，libqos和qgraph。如果需要添加新的测试程序，需要如下四个步骤：
+<ol><li>在Qtest目录下编写新的测试代码<code>tests/qtest/foo-test.c</code></li> <li>在Makefile.include中添加编译指令</li> <li>编译：<code>make tests/qtest/foo-test.c</code></li> <li>运行：</li></ol> <div class="language-bash= extra-class"><pre class="language-text"><code>QTEST_LOG=1 QTEST_QEMU_BINARY=i386-softmmu/qemu-system-i386 tests/qtest/foo-test`
+</code></pre></div></li> <li><code>Qtest Server</code>：它和TCG，KVM的功能类似，是一种加速器（accelerator），通过编译指令<code>-machine accel=qtest</code>注册。在普通的使用场景中，VCPU直接和虚拟硬件交互；而测试场景中，Qtest直接和虚拟硬件交互，充当了Qtest Client和虚拟硬件的中间角色。Qtest用于验证设备的行为是否正确，实际上并没有启动Guest OS。</li></ul> <p>运行时，<code>libqtest.c</code>将启动Qemu为子进程。Qemu的启动主函数在<code>vl.c</code>中，在测试场景中，调用<code>qtest.c</code>的<code>qtest_init()</code>函数，初始化Qtest Server。</p> <p>两者的关系可以用下图表示：</p> <div class="language-asciidoc= extra-class"><pre class="language-text"><code>+----------------+  socket  +----------------+----------------------+
+|  Qtest Client  +----------&gt;  Qtest Server  |                      |
++----------------+          +-------+--------+                      |
++----------------+                  |        |         Qemu         |
+|  Qgraph        |               PIO|MMIO    |                      |
++----------------+                  |        |                      |
++----------------+          +-------v--------+----------------------+
+|  libqos        |          |          Hardware Emulation           |
++----------------+          +---------------------------------------+
++----------------+
+|  libqtest      |
++----------------+
++----------------+
+|  glib test     |
++----------------+
+</code></pre></div><h3 id="libqos"><a href="#libqos" class="header-anchor">#</a> libqos</h3> <ul><li><a href="https://github.com/qemu/qemu/tree/master/tests/qtest/libqos/libqos.c" target="_blank" rel="noopener noreferrer">代码路径<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li> <li><a href="https://qemu.readthedocs.io/en/latest/devel/qtest.html?highlight=libqos" target="_blank" rel="noopener noreferrer">文档说明<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul> <p>libqos是用于编写qtest case的设备驱动框架，提供了关于<code>memory</code>，<code>PCI</code>，<code>virtio</code>的API函数。它的功能主要有以下两个：</p> <ul><li>相当于总线的wrapper，为每类总线都实现了特定的函数</li> <li>统一了设备访问的模型，简化了开发者的工作</li></ul> <h2 id="qemu-fuzzer-的整体流程"><a href="#qemu-fuzzer-的整体流程" class="header-anchor">#</a> Qemu Fuzzer 的整体流程</h2> <ul><li><a href="https://github.com/qemu/qemu/tree/master/tests/qtest/fuzz" target="_blank" rel="noopener noreferrer">代码路径<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li> <li><a href="https://qemu.readthedocs.io/en/latest/devel/fuzzing.html" target="_blank" rel="noopener noreferrer">文档说明<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></li></ul> <p>以上的两个依赖库都是为Qemu的功能性测试设计，依赖于测试输入的选取。而Fuzzing正是通过对输入增加随机性和变异算法来提高测试输入的质量。从而可以使用LibFuzzer对Qtest的输入进行HOOK，提高Qtest的测试效率。综上所述，Qemu Fuzzer的整体结构如图所示。</p> <p><img src="https://img-blog.csdnimg.cn/img_convert/f269d3ace4fe504117d7fe4e2a253375.png" alt=""></p> <p>从源代码的角度来看：</p> <ul><li><code>fuzz.h</code>：定义了实现一个Fuzz Target用到的接口和数据结构，以及与LibFuzzer之间的交互</li> <li><code>fork_fuzz.h</code>：定义了并发Fuzzer之间的共享内存</li> <li><code>qos_fuzz.h</code>：定义了libqos在qtest上的进一步封装的接口</li> <li><code>generic_fuzz_configs.h</code>：定义了通用的Fuzzer设置</li> <li><code>virtio_xxx_fuzz.h</code>：实现了virtio设备（net，blk，scsi）的Fuzz Target</li></ul> <h2 id="qemu-fuzzer-的用例分析"><a href="#qemu-fuzzer-的用例分析" class="header-anchor">#</a> Qemu Fuzzer 的用例分析</h2> <p>Qemu的<a href="https://wiki.qemu.org/Documentation/GettingStartedDevelopers" target="_blank" rel="noopener noreferrer"><code>Developer documentation</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>中写道：</p> <blockquote><p>QEMU does not have a high level design description document - only the source code tells the full story.</p></blockquote> <p>所以作为Qemu的开发者，阅读源码非常关键。本节以virtio-net设备为例，分析Qemu Fuzzing的流程，代码路径为<a href="https://github.com/qemu/qemu/tree/master/tests/qtest/fuzz/virtio_net_fuzz.c" target="_blank" rel="noopener noreferrer"><code>tests/qtest/fuzz/virto_net_fuzz.c</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>。virtio是一种半虚拟化的技术，需要Host OS提供对设备的emulation，Guest OS负责对设备的驱动。工作模式如下图所示：</p> <p><img src="https://img-blog.csdnimg.cn/img_convert/8cbe7f371f062202bb88928900b3a481.png" alt=""></p> <p>实现方面，以自顶向下的逻辑进行说明：</p> <ul><li>首先，实现注册函数<code>register_virtio_net_fuzz_targets()</code>。使用libqos提供的<code>fuzz_add_qos_target()</code>函数添加了三个Fuzzing对象。该函数是libqos对于<code>fuzz_add_target()</code>函数的wrapper，其原型如下：</li></ul> <div class="language-cpp= extra-class"><pre class="language-text"><code>void fuzz_add_qos_target(
+        FuzzTarget *fuzz_opts,
+        const char *interface,
+        QOSGraphTestOptions *opts
+        );
+</code></pre></div><ul><li>最后，修改<a href="https://github.com/qemu/qemu/tree/master/tests/qtest/fuzz/fuzz.c" target="_blank" rel="noopener noreferrer"><code>meson.build</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>文件，添加条件编译选项。</li></ul> <p>接下来，以<code>virtio-net-socket</code>为主，对Fuzzing对象的参数以及参数中涉及到的函数进行分析</p> <ul><li><code>virtio-net-socket</code>：</li></ul> <div class="language-cpp= extra-class"><pre class="language-text"><code>fuzz_add_qos_target(&amp;(FuzzTarget){
+        .name = &quot;virtio-net-socket&quot;,
+        .description = &quot;Fuzz the virtio-net virtual queues. Fuzz incoming &quot;
+        &quot;traffic using the socket backend&quot;,
+        .pre_fuzz = &amp;virtio_net_pre_fuzz,
+        .fuzz = virtio_net_fork_fuzz,},
+        &quot;virtio-net&quot;,
+        &amp;(QOSGraphTestOptions){.before = virtio_net_test_setup_socket}
+        );
+</code></pre></div><p>第一个参数为指向FuzzTarget的临时对象的指针。该对象由<a href="https://github.com/qemu/qemu/tree/master/tests/qtest/fuzz/fuzz.c" target="_blank" rel="noopener noreferrer"><code>fuzz.h</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>定义，含标识信息和许多与Fuzzing特性相关的回调函数。介绍如下：</p> <div class="language-asciidoc= extra-class"><pre class="language-text"><code>+-------------+-----------------------------------------------------------+-------------------------------------------------------------------------+
+| Field       | Declaration                                               | Description                                                             |
++-------------+-----------------------------------------------------------+-------------------------------------------------------------------------+
+| name        | const char *name                                          | target identifier (passed to --fuzz-target=)                            |
++-------------+-----------------------------------------------------------+-------------------------------------------------------------------------+
+| description | const char *description                                   | help text                                                               |
++-------------+-----------------------------------------------------------+-------------------------------------------------------------------------+
+| pre_fuzz    | void(*pre_fuzz)(QTestState *)                             | will run once, after QEMU has been initialized, prior to the fuzz-loop. |
+|             |                                                           | eg: detect the memory map                                               |
+|             |                                                           | Can be NULL                                                             |
++-------------+-----------------------------------------------------------+-------------------------------------------------------------------------+
+| fuzz        | void(*fuzz)(QTestState *, const unsigned char *, size_t); | accepts and executes an input from LibFuzzer.                           |
+|             |                                                           | this is repeatedly executed during the fuzzing loop.                    |
+|             |                                                           | Its should handle setup, input execution and cleanup.                   |
+|             |                                                           | Cannot be NULL                                                          |
++-------------+-----------------------------------------------------------+-------------------------------------------------------------------------+
+</code></pre></div><p>其中，<code>virtio_net_pre_fuzz</code>初始化了qos path和fork fuzz用到的共享内存。<code>virtio_net_fork_fuzz</code>首先fork出子进程，并调用<code>virtio_net_fuzz_multi</code>函数。该函数用自定义的<code>vq_action</code>来管理随机数据，根据数据包到来情况，将其加入<code>virtioqueue</code>中，并kick out出去。随后运行主循环。</p> <p>第二个参数表示使用的设备接口名称，这里统一为virtio-net。</p> <p>第三个参数为<a href="https://github.com/qemu/qemu/tree/master/tests/qtest/libqos/qgraph.h" target="_blank" rel="noopener noreferrer"><code>qgraph.h</code><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>提供的关于测试选项的结构体。其中<code>before</code>参数接受原型为<code>QOSBeforeTest</code>的函数。<code>virtio_net_test_setup_socket</code>函数指定了Qemu网络设备的后端为socket。它负责和虚拟设备通信，并将虚拟设备的数据包发送到宿主机的网络设备中。</p> <ul><li><code>virtio-net-socket-check-use</code></li></ul> <div class="language-cpp= extra-class"><pre class="language-text"><code>fuzz_add_qos_target(&amp;(FuzzTarget){
+        .name = &quot;virtio-net-socket-check-used&quot;,
+        .description = &quot;Fuzz the virtio-net virtual queues. Wait for the &quot;
+        &quot;descriptors to be used. Timeout may indicate improperly handled &quot;
+        &quot;input&quot;,
+        .pre_fuzz = &amp;virtio_net_pre_fuzz,
+        .fuzz = virtio_net_fork_fuzz_check_used,},
+        &quot;virtio-net&quot;,
+        &amp;(QOSGraphTestOptions){.before = virtio_net_test_setup_socket}
+        );
+</code></pre></div><p><code>virtio_net_fork_fuzz_check_used</code>和<code>virtio_net_fork_fuzz</code>非常相似，不同之处在于调用<code>virtio_net_fuzz_multi</code>函数的时候使用了<code>true</code>。</p> <ul><li><code>cirtio-net-slirp</code></li></ul> <div class="language-cpp= extra-class"><pre class="language-text"><code>fuzz_add_qos_target(&amp;(FuzzTarget){
+        .name = &quot;virtio-net-slirp&quot;,
+        .description = &quot;Fuzz the virtio-net virtual queues with the slirp &quot;
+        &quot; backend. Warning: May result in network traffic emitted from the &quot;
+        &quot; process. Run in an isolated network environment.&quot;,
+        .pre_fuzz = &amp;virtio_net_pre_fuzz,
+        .fuzz = virtio_net_fork_fuzz,},
+        &quot;virtio-net&quot;,
+        &amp;(QOSGraphTestOptions){.before = virtio_net_test_setup_user}
+        );
+</code></pre></div><p><code>virtio_net_test_setup_user</code>指定了网络后端的类型为user</p> <h2 id="qemu-fuzzer-案例-cve-2017-12809"><a href="#qemu-fuzzer-案例-cve-2017-12809" class="header-anchor">#</a> Qemu Fuzzer 案例 CVE-2017-12809</h2> <p>最后，简要分析一个<a href="https://unit42.paloaltonetworks.com/unit42-palo-alto-networks-discovers-new-qemu-vulnerability/" target="_blank" rel="noopener noreferrer">由LibFuzzer发现<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>的Qemu上的CVE漏洞。</p> <ul><li>漏洞描述：该漏洞属于拒绝服务类。当通过IDE硬盘和CD/DVD-ROM模拟器来构建Guest OS时，Guest OS中的特权用户可以通过清除一个空的CDROM设备驱动，造成空指针解引用，进而导致Qemu进程崩溃。</li> <li>漏洞代码： 在<code>hw/ide/core.c</code>文件中调用<code>blk_aio_flush()</code>函数前没有检查<code>s-&gt;blk</code>是否为空</li></ul> <div class="language-asciidoc= extra-class"><pre class="language-text"><code>---
+ hw/ide/core.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/hw/ide/core.c b/hw/ide/core.c
+index 0b48b64d3a..bea39536b0 100644
+--- a/hw/ide/core.c
++++ b/hw/ide/core.c
+@@ -1063,7 +1063,15 @@ static void ide_flush_cache(IDEState *s)
+     s-&gt;status |= BUSY_STAT;
+     ide_set_retry(s);
+     block_acct_start(blk_get_stats(s-&gt;blk), &amp;s-&gt;acct, 0, BLOCK_ACCT_FLUSH);
+-    s-&gt;pio_aiocb = blk_aio_flush(s-&gt;blk, ide_flush_cb, s);
++
++    if (blk_bs(s-&gt;blk)) {
++        s-&gt;pio_aiocb = blk_aio_flush(s-&gt;blk, ide_flush_cb, s);
++    } else {
++        /* XXX blk_aio_flush() crashes when blk_bs(blk) is NULL, remove this
++         * temporary workaround when blk_aio_*() functions handle NULL blk_bs.
++         */
++        ide_flush_cb(s, 0);
++    }
+ }
+ 
+ static void ide_cfata_metadata_inquiry(IDEState *s)
+-- 
+</code></pre></div><ul><li><a href="https://lists.gnu.org/archive/html/qemu-devel/2017-08/msg01989.html" target="_blank" rel="noopener noreferrer">漏洞修复<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>：除了在漏洞发生部分增加条件判断以外，还在<code>tests/ide-test.c</code>中增加了测试代码</li></ul> <div class="language-asciidoc= extra-class"><pre class="language-text"><code>---
+ tests/ide-test.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/tests/ide-test.c b/tests/ide-test.c
+index bfd79ddbdc..aa9de065fc 100644
+--- a/tests/ide-test.c
++++ b/tests/ide-test.c
+@@ -689,6 +689,24 @@ static void test_flush_nodev(void)
+     ide_test_quit();
+ }
+ 
++static void test_flush_empty_drive(void)
++{
++    QPCIDevice *dev;
++    QPCIBar bmdma_bar, ide_bar;
++
++    ide_test_start(&quot;-device ide-cd,bus=ide.0&quot;);
++    dev = get_pci_device(&amp;bmdma_bar, &amp;ide_bar);
++
++    /* FLUSH CACHE command on device 0 */
++    qpci_io_writeb(dev, ide_bar, reg_device, 0);
++    qpci_io_writeb(dev, ide_bar, reg_command, CMD_FLUSH_CACHE);
++
++    /* Just testing that qemu doesn't crash... */
++
++    free_pci_device(dev);
++    ide_test_quit();
++}
++
+ static void test_pci_retry_flush(void)
+ {
+     test_retry_flush(&quot;pc&quot;);
+@@ -954,6 +972,7 @@ int main(int argc, char **argv)
+ 
+     qtest_add_func(&quot;/ide/flush&quot;, test_flush);
+     qtest_a
+     cd qemu
+     git checkout stable-2.10dd_func(&quot;/ide/flush/nodev&quot;, test_flush_nodev);
++    qtest_add_func(&quot;/ide/flush/empty_drive&quot;, test_flush_empty_drive);
+     qtest_add_func(&quot;/ide/flush/retry_pci&quot;, test_pci_retry_flush);
+     qtest_add_func(&quot;/ide/flush/retry_isa&quot;, test_isa_retry_flush);
+ 
+-- 
+</code></pre></div><ul><li>漏洞复现：找到patch前的commit版本，加上新增test中的测试用例，运行qtest程序：</li></ul> <div class="language-bash= extra-class"><pre class="language-text"><code># 不能直接wget对应的release版本，因为受影响的版本都被修复了
+git clone https://gitlab.com/qemu-project/qemu.git;cd qemu
+git checkout stable-2.10
+# 从mailing list中获取patch的作者，找对应的commit
+git log --author=Hajnoczi
+git reset --hard=4da97120d51a4383aa96d741a2b837f8c4bbcd0b
+# 构建
+mkdir build;cd build;../configure ----disable-werror
+make qtest
+</code></pre></div><p>其实Qemu虚拟机逃逸漏洞已经常见于CTF比赛和CVE中了，比如知名的<a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-14364" target="_blank" rel="noopener noreferrer">CVE-2020-14364<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p> <blockquote><p>有错误之处请批评指正，作者联系方式：<a href="https://cascadeschen.cn" target="_blank" rel="noopener noreferrer">cascades-sjtu<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></p></blockquote></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/273.326ee43b.js" defer></script>
+  </body>
+</html>

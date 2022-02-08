@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Linux下的内存交换</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/285.02b91510.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>李群圣</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2020-11-24</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>Linux下的内存交换</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>李群圣</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2020-11-24</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>内存交换</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>Linux</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>KVM</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><h1 id="linux下的内存交换"><a href="#linux下的内存交换" class="header-anchor">#</a> Linux下的内存交换</h1> <h3 id="摘要"><a href="#摘要" class="header-anchor">#</a> 摘要：</h3> <p>  内存交换是减缓内存使用压力常用的一种技术手段，KVM等hypervisor可以显式地通知宿主机系统是否允许进行内存交换，从而平衡运行时的效率和内存大小。本文的目的是通过概括内存交换的原理，介绍KVM中的内存交换机制，进而深化对内存管理的理解。</p> <h2 id="_1-内存交换"><a href="#_1-内存交换" class="header-anchor">#</a> 1. 内存交换</h2> <p>  内存交换是指当系统内存使用压力较大时，内核可以将一部分暂时不能运行（如受到阻塞）的进程内存页换出到外存中，释放这部分内存，供系统分配给新的进程或是将部分外存中的进程页换入。当程序需要访问被换出的内存时，内核又再次将换出的页重新载入，确保不会发生访问错误。内存页的换入与换出的时间较长，实际上是在以时间换空间。</p> <p>  内存交换所换出的内存页分为两种，文件映射页（file-backed page）和匿名页（anonymous page）。在交换时，文件映射页直接通过文件进行读写，而匿名页包含了堆、栈、数据段等，不以文件的形式存在，无法与磁盘文件直接交换， 需要硬盘划分出额外的交换分区进行读写。</p> <h2 id="_2-kvm中通知机制"><a href="#_2-kvm中通知机制" class="header-anchor">#</a> 2. KVM中通知机制</h2> <p>  为了在虚拟机中实现内存交换，宿主机系统（Linux）需要有一套通知机制（notifier）来通知KVM哪一块内存进行了换入换出。</p> <p>  在硬件辅助的虚拟化中，hypervisor将直接通过EPT页表进行虚拟机物理地址到宿主机物理地址的转换，而不需要经过宿主机的虚拟地址。以qemu为例，qemu本身具有自己的宿主机虚拟地址空间，其运行的虚拟机则有自己的物理地址空间，而Linux系统进行内存交换时，改变的是宿主机物理地址上的页面。因此，qemu本身的页面被换出时，再次访问该内存，Linux可以根据pte的内容，知道这个地址被换出到了外存，进而执行相应的换入操作；当虚拟机物理地址对应的宿主机物理地址所在的页面被换出时，再次访问该页面，将经由KVM通过EPT页表直接查询宿主机物理地址，不经Linux系统，即使是该内存被换出，KVM也会直接访问EPT中保存的原有地址空间。</p> <p>  作为扩展，2008年Linux引入了MMU通知程序，本质上是通过回调函数的方式获取Linux系统的通知，当Linux系统中发生某些特定的事情时，就会调用这些回调函数。以Linux4.19中的KVM模块代码为例，它们定义在如下的结构中，其中release是当相关的mm_struct消失时，对KVM的最后一次回调：</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token keyword">static</span> <span class="token keyword">const</span> <span class="token keyword">struct</span> <span class="token class-name">mmu_notifier_ops</span> kvm_mmu_notifier_ops <span class="token operator">=</span> <span class="token punctuation">{</span>
+
+	<span class="token punctuation">.</span>flags			<span class="token operator">=</span> MMU_INVALIDATE_DOES_NOT_BLOCK<span class="token punctuation">,</span>
+	<span class="token punctuation">.</span>invalidate_range_start	<span class="token operator">=</span> kvm_mmu_notifier_invalidate_range_start<span class="token punctuation">,</span>
+	<span class="token punctuation">.</span>invalidate_range_end	<span class="token operator">=</span> kvm_mmu_notifier_invalidate_range_end<span class="token punctuation">,</span>
+	<span class="token punctuation">.</span>clear_flush_young	<span class="token operator">=</span> kvm_mmu_notifier_clear_flush_young<span class="token punctuation">,</span>
+	<span class="token punctuation">.</span>clear_young		<span class="token operator">=</span> kvm_mmu_notifier_clear_young<span class="token punctuation">,</span>
+	<span class="token punctuation">.</span>test_young		<span class="token operator">=</span> kvm_mmu_notifier_test_young<span class="token punctuation">,</span>
+	<span class="token punctuation">.</span>change_pte		<span class="token operator">=</span> kvm_mmu_notifier_change_pte<span class="token punctuation">,</span>
+	<span class="token punctuation">.</span>release		<span class="token operator">=</span> kvm_mmu_notifier_release<span class="token punctuation">,</span>
+
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>  KVM可以通过如下代码来通知Linux系统，将其notifier注册到Linux系统中：</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">kvm_init_mmu_notifier</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">kvm</span> <span class="token operator">*</span>kvm<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	kvm<span class="token operator">-&gt;</span>mmu_notifier<span class="token punctuation">.</span>ops <span class="token operator">=</span> <span class="token operator">&amp;</span>kvm_mmu_notifier_ops<span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token function">mmu_notifier_register</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>kvm<span class="token operator">-&gt;</span>mmu_notifier<span class="token punctuation">,</span> current<span class="token operator">-&gt;</span>mm<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>  注册函数如下所示，参数mm是与给定的地址空间相关联的mm_struct结构，只有当这些地址空间发生变化时，Linux才会通知KVM，而与KVM无关的地址空间则没有必要进行统治，以此来提高notifier的效率。</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token keyword">int</span> <span class="token function">mmu_notifier_register</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">mmu_notifier</span> <span class="token operator">*</span>mn<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">mm_struct</span> <span class="token operator">*</span>mm<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">return</span> <span class="token function">do_mmu_notifier_register</span><span class="token punctuation">(</span>mn<span class="token punctuation">,</span> mm<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="_3-内存交换的实现"><a href="#_3-内存交换的实现" class="header-anchor">#</a> 3. 内存交换的实现</h2> <h4 id="_3-1-换出的时机"><a href="#_3-1-换出的时机" class="header-anchor">#</a> 3.1 换出的时机</h4> <p>  内存换出的时机有两个：</p> <ol><li>内核唤醒kswapd内核线程进行慢速回收，并进行水位标记（watermark）控制（watermark）。</li></ol> <p>  以内存剩余量为水位的大小，内核中存在三个水位标记</p> <p>  1）	high：内存剩余较多，使用压力不大；</p> <p>  2） low：当剩余内存减少到low水位时，表示当前内存压力较大，内核唤醒kswapd内核线程进行回收，直到再次上升到high水位；</p> <p>  3）min：最小水位，内存减少到min水位时，内存严重不足，面临很大的使用压力，内核将会阻塞当前进程，并进行内存回收；小于min的内存非特殊情况不会被使用。</p> <ol><li>通过drop_cache进行回收；慢速回收需要内存不足时开始换出，drop_cache则可以主动发起回收。</li></ol> <h4 id="_3-2-swap-cache"><a href="#_3-2-swap-cache" class="header-anchor">#</a> 3.2 swap cache</h4> <p>  内存与硬盘之间存在着swap cache，但是与cpu与内存之间的cache不同。swap cache一方面通过缓存的方式将交换过程与文件系统相关联，使得我们可以通过文件系统抽象接口完成交换；另一方面成为换入换出过程中的共享资源，在换出过程中，其page frame是在swap cache中供进程访问，通过锁机制可以达到同步效果，防止某一进程进行换出，而另一个进程进行换入的情况。</p> <h4 id="_3-3-内存的换出"><a href="#_3-3-内存的换出" class="header-anchor">#</a> 3.3 内存的换出</h4> <p>  以匿名页的换出为例，文件映射页类似，换出过程如下：</p> <p>  1）首先检查匿名页是否在Swap cache中，如果不在Swap cache中，将该页加入到Swap cache中；</p> <p>  2）内核通过反向映射，找到该匿名页对应的所有PTE页表，并解除映射关系，与Swap分区中的新页面重新建立映射关系；</p> <p>  3）映射完成之后，如果脏页已经回刷完成，则内核将匿名页从Swap cache中删除，该页的引用数量降为0，可以被内核回收利用，至此完成了从内存到硬盘的页面交换。</p> <div class="language-c extra-class"><pre class="language-c"><code><span class="token comment">/*
+ * shrink_page_list() returns the number of reclaimed pages
+ */</span>
+<span class="token keyword">static</span> <span class="token keyword">unsigned</span> <span class="token keyword">long</span> <span class="token function">shrink_page_list</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">list_head</span> <span class="token operator">*</span>page_list<span class="token punctuation">,</span>
+				      <span class="token keyword">struct</span> <span class="token class-name">pglist_data</span> <span class="token operator">*</span>pgdat<span class="token punctuation">,</span>
+				      <span class="token keyword">struct</span> <span class="token class-name">scan_control</span> <span class="token operator">*</span>sc<span class="token punctuation">,</span>
+				      <span class="token keyword">enum</span> <span class="token class-name">ttu_flags</span> ttu_flags<span class="token punctuation">,</span>
+				      <span class="token keyword">struct</span> <span class="token class-name">reclaim_stat</span> <span class="token operator">*</span>stat<span class="token punctuation">,</span>
+				      bool force_reclaim<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">list_empty</span><span class="token punctuation">(</span>page_list<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+		<span class="token comment">/*
+		 * 是匿名页但不在swap cache中，将该页加入到swap cache中
+		 */</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">PageAnon</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">PageSwapBacked</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">PageSwapCache</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+				<span class="token comment">// add_to_swap()为匿名页分配swap空间，并将该页添加到swap cache中</span>
+				<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">add_to_swap</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+					<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+				<span class="token punctuation">}</span>
+
+				may_enter_fs <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+				<span class="token comment">/* Adding to swap updated mapping */</span>
+				mapping <span class="token operator">=</span> <span class="token function">page_mapping</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">unlikely</span><span class="token punctuation">(</span><span class="token function">PageTransHuge</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token punctuation">}</span>
+
+		<span class="token comment">/*
+		 * 尝试解除所有映射，try_to_unmap通过反向映射查找该页的所有PTE并解除映射
+		 */</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">page_mapped</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">enum</span> <span class="token class-name">ttu_flags</span> flags <span class="token operator">=</span> ttu_flags <span class="token operator">|</span> TTU_BATCH_FLUSH<span class="token punctuation">;</span>
+
+			<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">unlikely</span><span class="token punctuation">(</span><span class="token function">PageTransHuge</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+				flags <span class="token operator">|=</span> TTU_SPLIT_HUGE_PMD<span class="token punctuation">;</span>
+			<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">try_to_unmap</span><span class="token punctuation">(</span>page<span class="token punctuation">,</span> flags<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				nr_unmap_fail<span class="token operator">++</span><span class="token punctuation">;</span>
+				<span class="token keyword">goto</span> activate_locked<span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">PageDirty</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+			<span class="token comment">// pageout函数将该页写回交换分区</span>
+
+			<span class="token keyword">switch</span> <span class="token punctuation">(</span><span class="token function">pageout</span><span class="token punctuation">(</span>page<span class="token punctuation">,</span> mapping<span class="token punctuation">,</span> sc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+			<span class="token keyword">case</span> PAGE_SUCCESS<span class="token operator">:</span>
+				<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+				mapping <span class="token operator">=</span> <span class="token function">page_mapping</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token keyword">case</span> PAGE_CLEAN<span class="token operator">:</span>
+				<span class="token punctuation">;</span> <span class="token comment">/* try to free the page below */</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">PageAnon</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token function">PageSwapBacked</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>mapping <span class="token operator">||</span> <span class="token operator">!</span><span class="token function">__remove_mapping</span><span class="token punctuation">(</span>mapping<span class="token punctuation">,</span> page<span class="token punctuation">,</span> true<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment">// 调用__remove_mapping将page-&gt;_count清0，加入到free_page中，释放该页</span>
+			<span class="token keyword">goto</span> keep_locked<span class="token punctuation">;</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token keyword">return</span> nr_reclaimed<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="_3-4-内存的换入"><a href="#_3-4-内存的换入" class="header-anchor">#</a> 3.4 内存的换入</h4> <p>  当被换出的页面再次被访问时，触发page fault异常处理，内核通过在换出时写入的页表内容，将换出的内存页重新换入。在linux中，调用do_swap_page函数完成页面换入操作。</p> <p>  换入的过程如下：</p> <p>  1）查找swap cache中是否存在所查找的页面，如果存在，则根据swap cache引用的内存页，重新映射并更新页表；如果不存在，则分配新的内存页，并添加到swap cache的引用中，更新内存页内容完成后，更新页表。</p> <p>  2）换入操作结束后，对应swap area的页引用减一，当减少到0时，代表没有任何进程引用了该页，可以进行回收。</p> <div class="language-c extra-class"><pre class="language-c"><code>linux<span class="token operator">-</span><span class="token number">4.19</span><span class="token operator">/</span>mm<span class="token operator">/</span>memory<span class="token punctuation">.</span>c
+
+<span class="token comment">/*
+ * We enter with non-exclusive mmap_sem (to exclude vma changes,
+ * but allow concurrent faults), and pte mapped but not yet locked.
+ * We return with pte unmapped and unlocked.
+ *
+ * We return with the mmap_sem locked or unlocked in the same cases
+ * as does filemap_fault().
+ */</span>
+<span class="token class-name">vm_fault_t</span> <span class="token function">do_swap_page</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">vm_fault</span> <span class="token operator">*</span>vmf<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token keyword">struct</span> <span class="token class-name">vm_area_struct</span> <span class="token operator">*</span>vma <span class="token operator">=</span> vmf<span class="token operator">-&gt;</span>vma<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">page</span> <span class="token operator">*</span>page <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token operator">*</span>swapcache<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">mem_cgroup</span> <span class="token operator">*</span>memcg<span class="token punctuation">;</span>
+	<span class="token class-name">swp_entry_t</span> entry<span class="token punctuation">;</span>
+	<span class="token class-name">pte_t</span> pte<span class="token punctuation">;</span>
+	<span class="token keyword">int</span> locked<span class="token punctuation">;</span>
+	<span class="token keyword">int</span> exclusive <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token class-name">vm_fault_t</span> ret <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">pte_unmap_same</span><span class="token punctuation">(</span>vma<span class="token operator">-&gt;</span>vm_mm<span class="token punctuation">,</span> vmf<span class="token operator">-&gt;</span>pmd<span class="token punctuation">,</span> vmf<span class="token operator">-&gt;</span>pte<span class="token punctuation">,</span> vmf<span class="token operator">-&gt;</span>orig_pte<span class="token punctuation">)</span><span class="token punctuation">)</span>
+		<span class="token keyword">goto</span> out<span class="token punctuation">;</span>
+
+	entry <span class="token operator">=</span> <span class="token function">pte_to_swp_entry</span><span class="token punctuation">(</span>vmf<span class="token operator">-&gt;</span>orig_pte<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//根据pte返回swap空间的入口entry</span>
+	
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	
+	page <span class="token operator">=</span> <span class="token function">lookup_swap_cache</span><span class="token punctuation">(</span>entry<span class="token punctuation">,</span> vma<span class="token punctuation">,</span> vmf<span class="token operator">-&gt;</span>address<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// 在swap cache中寻找entry对应的page</span>
+	swapcache <span class="token operator">=</span> page<span class="token punctuation">;</span>
+
+	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>page<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">struct</span> <span class="token class-name">swap_info_struct</span> <span class="token operator">*</span>si <span class="token operator">=</span> <span class="token function">swp_swap_info</span><span class="token punctuation">(</span>entry<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>si<span class="token operator">-&gt;</span>flags <span class="token operator">&amp;</span> SWP_SYNCHRONOUS_IO <span class="token operator">&amp;&amp;</span>
+			<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+			<span class="token comment">/*
+			 * 如果在cache中找不到page，则在swap area中查找，分配新的内存页并从swap area中读入；
+			 */</span>
+			page <span class="token operator">=</span> <span class="token function">swapin_readahead</span><span class="token punctuation">(</span>entry<span class="token punctuation">,</span> GFP_HIGHUSER_MOVABLE<span class="token punctuation">,</span>
+						vmf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			swapcache <span class="token operator">=</span> page<span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		
+		ret <span class="token operator">=</span> VM_FAULT_MAJOR<span class="token punctuation">;</span>
+		<span class="token function">count_vm_event</span><span class="token punctuation">(</span>PGMAJFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">count_memcg_event_mm</span><span class="token punctuation">(</span>vma<span class="token operator">-&gt;</span>vm_mm<span class="token punctuation">,</span> PGMAJFAULT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">PageHWPoison</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token punctuation">}</span>
+
+	locked <span class="token operator">=</span> <span class="token function">lock_page_or_retry</span><span class="token punctuation">(</span>page<span class="token punctuation">,</span> vma<span class="token operator">-&gt;</span>vm_mm<span class="token punctuation">,</span> vmf<span class="token operator">-&gt;</span>flags<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// 给page加锁</span>
+	
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+	vmf<span class="token operator">-&gt;</span>pte <span class="token operator">=</span> <span class="token function">pte_offset_map_lock</span><span class="token punctuation">(</span>vma<span class="token operator">-&gt;</span>vm_mm<span class="token punctuation">,</span> vmf<span class="token operator">-&gt;</span>pmd<span class="token punctuation">,</span> vmf<span class="token operator">-&gt;</span>address<span class="token punctuation">,</span>
+			<span class="token operator">&amp;</span>vmf<span class="token operator">-&gt;</span>ptl<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// 获取一个pte的entry，重新建立映射</span>
+	
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+	pte <span class="token operator">=</span> <span class="token function">mk_pte</span><span class="token punctuation">(</span>page<span class="token punctuation">,</span> vma<span class="token operator">-&gt;</span>vm_page_prot<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+	<span class="token comment">/* ksm created a completely new copy */</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">unlikely</span><span class="token punctuation">(</span>page <span class="token operator">!=</span> swapcache <span class="token operator">&amp;&amp;</span> swapcache<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token function">page_add_new_anon_rmap</span><span class="token punctuation">(</span>page<span class="token punctuation">,</span> vma<span class="token punctuation">,</span> vmf<span class="token operator">-&gt;</span>address<span class="token punctuation">,</span> false<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">mem_cgroup_commit_charge</span><span class="token punctuation">(</span>page<span class="token punctuation">,</span> memcg<span class="token punctuation">,</span> false<span class="token punctuation">,</span> false<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">lru_cache_add_active_or_unevictable</span><span class="token punctuation">(</span>page<span class="token punctuation">,</span> vma<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+		<span class="token function">do_page_add_anon_rmap</span><span class="token punctuation">(</span>page<span class="token punctuation">,</span> vma<span class="token punctuation">,</span> vmf<span class="token operator">-&gt;</span>address<span class="token punctuation">,</span> exclusive<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">mem_cgroup_commit_charge</span><span class="token punctuation">(</span>page<span class="token punctuation">,</span> memcg<span class="token punctuation">,</span> true<span class="token punctuation">,</span> false<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">activate_page</span><span class="token punctuation">(</span>page<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token function">swap_free</span><span class="token punctuation">(</span>entry<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">// 减少该swap area的entry上的引用计数</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token keyword">return</span> ret<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+</code></pre></div></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/285.02b91510.js" defer></script>
+  </body>
+</html>

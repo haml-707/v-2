@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>musl源码分析--fopen简介</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/102.00fec2f6.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>wangshuo</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2021-05-19</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>musl源码分析--fopen简介</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>wangshuo</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2021-05-19</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>musl</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>fopen</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><h1 id="前言"><a href="#前言" class="header-anchor">#</a> 前言</h1> <p>musl是在Linux系统调用API之上构建的C标准库的实现，其中包括在基本语言标准POSIX中定义的接口，以及广泛认可的扩展。相比于glibc，musl轻巧，快速，简单并且协议友好，本文将以musl的fopen为切入点，结合源码介绍musl对文件的基本操作。
+<br><br></p> <h1 id="数据结构"><a href="#数据结构" class="header-anchor">#</a> 数据结构</h1> <p>musl涉及文件的关键数据结构如下，该结构体即为我们平时使用的FILE，本文重点关注4个函数指针（close、read、write和seek）和5个位置指针（读两个：rpos、rend，写三个：wend、wpos和wbase）即可。</p> <div class="language- extra-class"><pre class="language-text"><code>struct _IO_FILE {
+	unsigned flags;
+	unsigned char *rpos, *rend;
+	int (*close)(FILE *);
+	unsigned char *wend, *wpos;
+	unsigned char *mustbezero_1;
+	unsigned char *wbase;
+	size_t (*read)(FILE *, unsigned char *, size_t);
+	size_t (*write)(FILE *, const unsigned char *, size_t);
+	off_t (*seek)(FILE *, off_t, int);
+	unsigned char *buf;
+	size_t buf_size;
+	FILE *prev, *next;
+	int fd;
+	int pipe_pid;
+	long lockcount;
+	int mode;
+	volatile int lock;
+	int lbf;
+	void *cookie;
+	off_t off;
+	char *getln_buf;
+	void *mustbezero_2;
+	unsigned char *shend;
+	off_t shlim, shcnt;
+	FILE *prev_locked, *next_locked;
+	struct __locale_struct *locale;
+};
+</code></pre></div><p><br><br></p> <h1 id="接口"><a href="#接口" class="header-anchor">#</a> 接口</h1> <h2 id="fopen"><a href="#fopen" class="header-anchor">#</a> fopen</h2> <p>fopen的源码如下，逻辑非常简单，判断打开的模式，然后使用open系统调用从内核获取一个fd，随后通过__fdopen函数将fd封装为一个FILE，并为4个函数指针（close、read、write和seek）挂上默认的函数。<br>
+FILE初始状态可以用下图表示。最前面一段即为FILE的主体，接下来是一个名为UNGET的预留区域处理不缓冲时的场景（默认8字节），接下来便是musl预留的一段缓冲区，默认1024字节。</p> <div class="language- extra-class"><pre class="language-text"><code>FILE *fopen(const char *restrict filename, const char *restrict mode)
+{
+	FILE *f;
+	int fd;
+	int flags;
+
+	/* Check for valid initial mode character */
+	if (!strchr(&quot;rwa&quot;, *mode)) {
+		errno = EINVAL;
+		return 0;
+	}
+
+	/* Compute the flags to pass to open() */
+	flags = __fmodeflags(mode);
+
+	fd = sys_open(filename, flags, 0666);
+	if (fd &lt; 0) return 0;
+	if (flags &amp; O_CLOEXEC)
+		__syscall(SYS_fcntl, fd, F_SETFD, FD_CLOEXEC);
+
+	f = __fdopen(fd, mode);
+	if (f) return f;
+
+	__syscall(SYS_close, fd);
+	return 0;
+}
+
+...
+
+FILE *__fdopen(int fd, const char *mode)
+{
+	...
+
+	/* Allocate FILE+buffer or fail */
+	if (!(f=malloc(sizeof *f + UNGET + BUFSIZ))) return 0;
+
+	/* Zero-fill only the struct, not the buffer */
+	memset(f, 0, sizeof *f);
+
+	...
+
+	f-&gt;fd = fd;
+	f-&gt;buf = (unsigned char *)f + sizeof *f + UNGET;
+	f-&gt;buf_size = BUFSIZ;
+
+	...
+
+	/* Initialize op ptrs. No problem if some are unneeded. */
+	f-&gt;read = __stdio_read;
+	f-&gt;write = __stdio_write;
+	f-&gt;seek = __stdio_seek;
+	f-&gt;close = __stdio_close;
+
+	...
+
+}
+</code></pre></div><p><br><br></p> <center><img src="/assets/img/original.173706f2.jpg" style="zoom:50%;"></center> <br><br> <h2 id="fclose"><a href="#fclose" class="header-anchor">#</a> fclose</h2> <p>fclose函数源码如下，这里只列出了关键步骤。将写缓冲的内容刷入文件，通过f-&gt;close(f)调用真正的close函数__stdio_close，通过系统调用关闭fd对应的文件，然后释放掉外部封装的数据结构。</p> <div class="language- extra-class"><pre class="language-text"><code>int fclose(FILE *f)
+{
+	int r;
+	
+	FLOCK(f);
+	r = fflush(f);
+	r |= f-&gt;close(f);
+	FUNLOCK(f);
+
+	...
+
+	free(f-&gt;getln_buf);
+	free(f);
+
+	return r;
+}
+
+...
+
+int __stdio_close(FILE *f)
+{
+	return syscall(SYS_close, __aio_close(f-&gt;fd));
+}
+</code></pre></div><p><br><br></p> <h2 id="fread"><a href="#fread" class="header-anchor">#</a> fread</h2> <p>分析fread的时候我们把顺序反过来，先看_IO_FILE中的read成员，上文已提过该成员为指针函数，在fopen的时候初始化，fread最终会调用该函数，其源码如下。其核心思想是在满足用户读取len长度内容到buf之外，预读一部分到FILE中的缓冲区。<br>
+从iov结构体数组的初始化可知，第一个元素是用户的buf，第二个是FILE的缓冲区，即先读出给用户，然后再读到缓冲区，读到缓冲区的内容默认小于等于1023，为何不是1024？<br>
+让我们把视线重新放回到iov的初始化，其中第一个元素的起始地址确实是用户的地址，但是长度实际上减去了1，即iov[0]最多只会读出len - 1个元素，最后一个元素会放入iov[1]，在结尾时重新赋给buf[len - 1]，这么做的目的是使rpos指针在读取后偏移一个字节从而表明FILE的缓冲区已经有预读的内容。预读之后的指针情况可以用下图表示（与写相关的三个指针此时为空）。<br> <center><img src="/assets/img/read.244f44c0.jpg" style="zoom:50%;"></center> <br><br></p> <div class="language- extra-class"><pre class="language-text"><code>size_t __stdio_read(FILE *f, unsigned char *buf, size_t len)
+{
+	struct iovec iov[2] = {
+		{ .iov_base = buf, .iov_len = len - !!f-&gt;buf_size },
+		{ .iov_base = f-&gt;buf, .iov_len = f-&gt;buf_size }
+	};
+	ssize_t cnt;
+
+	cnt = iov[0].iov_len ? syscall(SYS_readv, f-&gt;fd, iov, 2)
+		: syscall(SYS_read, f-&gt;fd, iov[1].iov_base, iov[1].iov_len);
+	if (cnt &lt;= 0) {
+		f-&gt;flags |= cnt ? F_ERR : F_EOF;
+		return 0;
+	}
+	if (cnt &lt;= iov[0].iov_len) return cnt;
+	cnt -= iov[0].iov_len;
+	f-&gt;rpos = f-&gt;buf;
+	f-&gt;rend = f-&gt;buf + cnt;
+	if (f-&gt;buf_size) buf[len-1] = *f-&gt;rpos++;
+	return len;
+}
+</code></pre></div><p><br><br></p> <p>接下来看fread函数，其源码如下。上文提到每次__stdio_read都会预读一部分内容，因此fread会优先通过memcpy从缓冲区读，如果读完仍不满足用户需求才会调用__stdio_read从文件中读取。</p> <div class="language- extra-class"><pre class="language-text"><code>size_t fread(void *restrict destv, size_t size, size_t nmemb, FILE *restrict f)
+{
+	unsigned char *dest = destv;
+	size_t len = size*nmemb, l = len, k;
+	if (!size) nmemb = 0;
+
+	FLOCK(f);
+
+	f-&gt;mode |= f-&gt;mode-1;
+
+	if (f-&gt;rpos != f-&gt;rend) {
+		/* First exhaust the buffer. */
+		k = MIN(f-&gt;rend - f-&gt;rpos, l);
+		memcpy(dest, f-&gt;rpos, k);
+		f-&gt;rpos += k;
+		dest += k;
+		l -= k;
+	}
+	
+	/* Read the remainder directly */
+	for (; l; l-=k, dest+=k) {
+		k = __toread(f) ? 0 : f-&gt;read(f, dest, l);
+		if (!k) {
+			FUNLOCK(f);
+			return (len-l)/size;
+		}
+	}
+
+	FUNLOCK(f);
+	return nmemb;
+}
+</code></pre></div><p><br><br></p> <p>这里提一下fread在调用__stdio_read之前调用的一个函数__toread，其源码如下。该函数可以理解为读写模式的切换，如果上一次是写，由于读写共用一个缓冲区，因此需要先把写缓存刷入文件并把写相关的三个指针清零，然后再执行读操作，此外，__toread函数还负责判断文件是否可读。</p> <div class="language- extra-class"><pre class="language-text"><code>int __toread(FILE *f)
+{
+	f-&gt;mode |= f-&gt;mode-1;
+	if (f-&gt;wpos != f-&gt;wbase) f-&gt;write(f, 0, 0);
+	f-&gt;wpos = f-&gt;wbase = f-&gt;wend = 0;
+	if (f-&gt;flags &amp; F_NORD) {
+		f-&gt;flags |= F_ERR;
+		return EOF;
+	}
+	f-&gt;rpos = f-&gt;rend = f-&gt;buf + f-&gt;buf_size;
+	return (f-&gt;flags &amp; F_EOF) ? EOF : 0;
+}
+</code></pre></div><p><br><br></p> <h2 id="fwrite"><a href="#fwrite" class="header-anchor">#</a> fwrite</h2> <p>同样还是先从__stdio_write来看，源码如下。其核心思想是先把用户buf中的内容写入到FILE提供的缓冲区，写满了之后才会往文件中写，相较__stdio_read来说比较简单，在完成一次__stdio_write并且未写满缓冲区的情况下，FILE的指针位置如下图所示。</p> <div class="language- extra-class"><pre class="language-text"><code>size_t __stdio_write(FILE *f, const unsigned char *buf, size_t len)
+{
+	struct iovec iovs[2] = {
+		{ .iov_base = f-&gt;wbase, .iov_len = f-&gt;wpos-f-&gt;wbase },
+		{ .iov_base = (void *)buf, .iov_len = len }
+	};
+	struct iovec *iov = iovs;
+	size_t rem = iov[0].iov_len + iov[1].iov_len;
+	int iovcnt = 2;
+	ssize_t cnt;
+	for (;;) {
+		cnt = syscall(SYS_writev, f-&gt;fd, iov, iovcnt);
+		if (cnt == rem) {
+			f-&gt;wend = f-&gt;buf + f-&gt;buf_size;
+			f-&gt;wpos = f-&gt;wbase = f-&gt;buf;
+			return len;
+		}
+		if (cnt &lt; 0) {
+			f-&gt;wpos = f-&gt;wbase = f-&gt;wend = 0;
+			f-&gt;flags |= F_ERR;
+			return iovcnt == 2 ? 0 : len-iov[0].iov_len;
+		}
+		rem -= cnt;
+		if (cnt &gt; iov[0].iov_len) {
+			cnt -= iov[0].iov_len;
+			iov++; iovcnt--;
+		}
+		iov[0].iov_base = (char *)iov[0].iov_base + cnt;
+		iov[0].iov_len -= cnt;
+	}
+}
+</code></pre></div><p><br><br></p> <center><img src="/assets/img/write.d3da0b9c.jpg" style="zoom:50%;"></center> <br><br>
+接下来看fwirte函数，其源码如下。同样也是先通过__towrite切换模式，如果写缓冲区的剩余空间不足，则会调用__stdio_write，由上文可知，此时是先刷缓冲区的内容，然后才操作用户buf的内容。如果缓冲区空间充足则直接通过memcpy写入缓冲区。
+<div class="language- extra-class"><pre class="language-text"><code>size_t __fwritex(const unsigned char *restrict s, size_t l, FILE *restrict f)
+{
+	size_t i=0;
+
+	if (!f-&gt;wend &amp;&amp; __towrite(f)) return 0;
+
+	if (l &gt; f-&gt;wend - f-&gt;wpos) return f-&gt;write(f, s, l);
+
+	if (f-&gt;lbf &gt;= 0) {
+		/* Match /^(.*\n|)/ */
+		for (i=l; i &amp;&amp; s[i-1] != '\n'; i--);
+		if (i) {
+			size_t n = f-&gt;write(f, s, i);
+			if (n &lt; i) return n;
+			s += i;
+			l -= i;
+		}
+	}
+
+	memcpy(f-&gt;wpos, s, l);
+	f-&gt;wpos += l;
+	return l+i;
+}
+
+size_t fwrite(const void *restrict src, size_t size, size_t nmemb, FILE *restrict f)
+{
+	size_t k, l = size*nmemb;
+	if (!size) nmemb = 0;
+	FLOCK(f);
+	k = __fwritex(src, l, f);
+	FUNLOCK(f);
+	return k==l ? nmemb : k/size;
+}
+</code></pre></div><p><br><br></p> <p>类似于__toread，__towrite用作切换到写操作，源码如下。这里其实有个bug，我们在下文细说。</p> <div class="language- extra-class"><pre class="language-text"><code>int __towrite(FILE *f)
+{
+	f-&gt;mode |= f-&gt;mode-1;
+	if (f-&gt;flags &amp; F_NOWR) {
+		f-&gt;flags |= F_ERR;
+		return EOF;
+	}
+	/* Clear read buffer (easier than summoning nasal demons) */
+	f-&gt;rpos = f-&gt;rend = 0;
+
+	/* Activate write through the buffer. */
+	f-&gt;wpos = f-&gt;wbase = f-&gt;buf;
+	f-&gt;wend = f-&gt;buf + f-&gt;buf_size;
+
+	return 0;
+}
+</code></pre></div><p><br><br></p> <h1 id="一点不足"><a href="#一点不足" class="header-anchor">#</a> 一点不足</h1> <p>如果仔细对比__towrite和__toread的代码可以发现，二者其实并不“对称”，具体来说，__toread即切换到写之前会通过f-&gt;write(f, 0, 0)将写缓冲刷到文件，但是__towrite即切换到写时则是简单粗暴地把读相关的指针（rpos、rend）清理，这样做会有什么问题呢？我们看以下操作：<br></p> <table><thead><tr><th style="text-align:center;"><div style="width:30pt;">步骤</div></th> <th style="text-align:center;"><div style="width:50pt;">动作</div></th> <th style="text-align:center;"><div style="width:50pt;">期望pos</div></th> <th style="text-align:center;"><div style="width:50pt;">实际pos</div></th></tr></thead> <tbody><tr><td style="text-align:center;"><div style="width:30pt;">1</div></td> <td style="text-align:center;"><div style="width:50pt;">写30</div></td> <td style="text-align:center;"><div style="width:50pt;">30</div></td> <td style="text-align:center;"><div style="width:50pt;">30</div></td></tr> <tr><td style="text-align:center;"><div style="width:30pt;">2</div></td> <td style="text-align:center;"><div style="width:50pt;">返回开头</div></td> <td style="text-align:center;"><div style="width:50pt;">0</div></td> <td style="text-align:center;"><div style="width:50pt;">0</div></td></tr> <tr><td style="text-align:center;"><div style="width:30pt;">3</div></td> <td style="text-align:center;"><div style="width:50pt;">读15</div></td> <td style="text-align:center;"><div style="width:50pt;">15</div></td> <td style="text-align:center;"><div style="width:50pt;">15</div></td></tr> <tr><td style="text-align:center;"><div style="width:30pt;">4</div></td> <td style="text-align:center;"><div style="width:50pt;">写15</div></td> <td style="text-align:center;"><div style="width:50pt;">30</div></td> <td style="text-align:center;"><div style="width:50pt;">45</div></td></tr></tbody></table> <p><br><br></p> <p>如果在第4步执行完时通过fgetpos获取当前文件指针的位置，则会发现并非期望的30，而是45，事实上，第4步期望是覆盖文件的后15字节，实际上变成了追加写15字节，pos自然是45，这是为什么？<br>
+由上文可知，fread实际上会预读一部分内容，因此当我们在第三步读15时，实际上fread读了30即整个文件，至于这一步为何没有问题，可以看以下代码：</p> <div class="language- extra-class"><pre class="language-text"><code>off_t __ftello_unlocked(FILE *f)
+{
+	off_t pos = f-&gt;seek(f, 0,
+		(f-&gt;flags &amp; F_APP) &amp;&amp; f-&gt;wpos != f-&gt;wbase
+		? SEEK_END : SEEK_CUR);
+	if (pos &lt; 0) return pos;
+
+	/* Adjust for data in buffer. */
+	if (f-&gt;rend)
+		pos += f-&gt;rpos - f-&gt;rend;
+	else if (f-&gt;wbase)
+		pos += f-&gt;wpos - f-&gt;wbase;
+	return pos;
+}
+</code></pre></div><p><br><br></p> <p>fgetpos最终调用了__ftello_unlocked，该函数通过系统调用从内核获取文件pos的真实位置，然后会做一个矫正，具体来说，我们在第3步做了读操作，因此读指针rend非空，__ftello_unlocked会减去多读的内容，因此第3步没问题。但是到第4步，由于__towrite简单粗暴地把读指针清空，写的15字节内容直接放入了FILE的缓冲区，下一次读时这15字节会直接追加到文件的末尾。
+<br>
+对于这个问题，处理方式也很简单，在__towrite清理读指针之前把pos移动回多读之前的位置即可。<br><br></p> <h1 id="小结"><a href="#小结" class="header-anchor">#</a> 小结</h1> <p>本文结合musl的源码分析了fopen相关的接口实现。相较于glibc，musl的代码浅显易懂，当然也存在考虑不完善的问题。<br> <br></p> <h1 id="文章推荐"><a href="#文章推荐" class="header-anchor">#</a> 文章推荐</h1> <p>glibc malloc系列文章：<br>
+    原理简析：<br>
+     https://www.openeuler.org/zh/blog/wangshuo/glibc+malloc%E5%8E%9F%E7%90%86%E7%AE%80%E6%9E%90/glibc+malloc%E5%8E%9F%E7%90%86%E7%AE%80%E6%9E%90.html <br>
+    数据结构：<br>
+     https://www.openeuler.org/zh/blog/wangshuo/glibc+malloc%E6%BA%90%E7%A0%81%E7%AE%80%E6%9E%90.html <br>
+    malloc：<br>
+     https://www.openeuler.org/zh/blog/wangshuo/glibc+malloc%E6%BA%90%E7%A0%81%E7%AE%80%E6%9E%90(%E4%BA%8C).html <br>
+    free：<br>
+     https://www.openeuler.org/zh/blog/wangshuo/glibc+malloc%E6%BA%90%E7%A0%81%E7%AE%80%E6%9E%90(%E4%B8%89).html <br> <br></p> <p>glibc问题定位与分析系列文章：<br>
+    memcpy 1k字节x86_64虚拟机性能下降分析：<br>
+     https://www.openeuler.org/zh/blog/wangshuo/memcpy_1k%E5%AD%97%E8%8A%82x86_64%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%80%A7%E8%83%BD%E4%B8%8B%E9%99%8D%E5%88%86%E6%9E%90.html <br>
+    调用栈问题分析：<br>
+     https://www.openeuler.org/zh/blog/wangshuo/glibc%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D--%E6%8E%A8%E6%A0%88%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90.html <br> <br></p> <p>    glibc locale使用简析：<br>
+     https://www.openeuler.org/zh/blog/wangshuo/glibc%20locale%E4%BD%BF%E7%94%A8%E7%AE%80%E6%9E%90/glibc+locale%E4%BD%BF%E7%94%A8%E7%AE%80%E6%9E%90.html <br></p></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/102.00fec2f6.js" defer></script>
+  </body>
+</html>

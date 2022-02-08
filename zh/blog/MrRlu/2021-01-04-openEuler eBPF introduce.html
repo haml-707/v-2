@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>eBPF introduce</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/47.36ecd736.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>luzhihao</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2021-01-04</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>eBPF introduce</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>luzhihao</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2021-01-04</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>kernel</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>eBPF</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><h1 id="ebpf-introduce"><a href="#ebpf-introduce" class="header-anchor">#</a> eBPF introduce</h1> <h2 id="ebpf-发展历程"><a href="#ebpf-发展历程" class="header-anchor">#</a> eBPF 发展历程</h2> <ul><li>1992年：BPF全称Berkeley Packet Filter，诞生初衷提供一种内核中自定义报文过滤的手段（类汇编），提升抓包效率。（tcpdump）</li> <li>2011年：linux kernel 3.2版本对BPF进行重大改进，引入BPF JIT，使其性能得到大幅提升。</li> <li>2014年： linux kernel 3.15版本，BPF扩展成eBPF，其功能范畴扩展至：内核跟踪、性能调优、协议栈QoS等方面。与之配套改进包括：扩展BPF ISA指令集、提供高级语言（C）编程手段、提供MAP机制、提供Help机制、引入Verifier机制等。</li> <li>2016年：linux kernel 4.8版本，eBPF支持XDP，进一步拓展该技术在网络领域的应用。随后Netronome公司提出eBPF硬件卸载方案。</li> <li>2018年：linux kernel 4.18版本，引入BTF，将内核中BPF对象（Prog/Map）由字节码转换成统一结构对象，这有利于eBPF对象与Kernel版本的配套管理，为eBPF的发展奠定基础。</li> <li>2018年：从kernel 4.20版本开始，eBPF成为内核最活跃的项目之一，新增特性包括：sysctrl hook、flow dissector、struct_ops、lsm hook、ring buffer等。场景范围覆盖容器、安全、网络、跟踪等。</li></ul> <h2 id="ebpf原理及功能介绍"><a href="#ebpf原理及功能介绍" class="header-anchor">#</a> eBPF原理及功能介绍</h2> <h3 id="宏观视角"><a href="#宏观视角" class="header-anchor">#</a> 宏观视角</h3> <p>从宏观视角看eBPF，我们将其与kernel进行对比看，便于我们更粗粒度的理解eBPF原理：</p> <ul><li>内核的本质是事件驱动机制，事件由系统调用/系统中断产生。</li> <li>eBPF也是事件驱动机制，其采用sandbox技术，与内核隔离。从原理上两者相近，只是能力不同而已。</li></ul> <img src="/assets/img/2021-01-04-openEuler eBPF introduce-01.054639a6.png"> <h3 id="微观视角"><a href="#微观视角" class="header-anchor">#</a> 微观视角</h3> <p>归纳其软件架构特点：</p> <ul><li>采用sandbox技术，旁挂于内核，与用户态应用软件、内核、内核模块（网卡驱动）、Device编程、Host加速等均有交互。</li> <li>通过Helper/hook机制，eBPF与内核可以交换数据/逻辑；通过Map/eBPF Prog机制,eBPF可以与应用程序交换数据/逻辑。最终效果：应用可以通过eBPF改变内核数据/逻辑，或者说用户程序将运行在内核态。</li> <li>用户编程接口：有限能力的高级语言（c/go/rust）编写eBPF Prog。</li> <li>编译方式：通过Clang将其编译成eBPF定义的ISA指令，再由Host/Device JIT翻译成机器指令。</li></ul> <img src="/assets/img/2021-01-04-openEuler eBPF introduce-02.aa9e71ef.png"> <h3 id="ebpf主要功能介绍"><a href="#ebpf主要功能介绍" class="header-anchor">#</a> eBPF主要功能介绍</h3> <table><thead><tr><th><strong>特性</strong></th> <th><strong>引入版本</strong></th> <th><strong>功能介绍</strong></th> <th><strong>应用场景</strong></th></tr></thead> <tbody><tr><td>Tc-bpf</td> <td>4.1</td> <td>eBPF重构内核流分类</td> <td>网络</td></tr> <tr><td>XDP</td> <td>4.8</td> <td>网络数据面编程技术（主要面向L2/L3层业务）</td> <td>网络</td></tr> <tr><td>Cgroup socket</td> <td>4.10</td> <td>Cgroup内socket支持eBPF扩展逻辑</td> <td>容器</td></tr> <tr><td>AF_XDP</td> <td>4.18</td> <td>网络原始报文直送用户态（类似DPDK）</td> <td>网络</td></tr> <tr><td>Sockmap</td> <td>4.20</td> <td>支持socket短接</td> <td>容器</td></tr> <tr><td>Device  JIT</td> <td>4.20</td> <td>JIT/ISA解耦，host可以编译指定device形态的ISA指令</td> <td>异构编程</td></tr> <tr><td>Cgroup sysctl</td> <td>5.2</td> <td>Cgroup内支持控制系统调用权限</td> <td>容器</td></tr> <tr><td>Struct ops  Prog ext</td> <td>5.3</td> <td>内核逻辑可动态替换  eBPF  Prog可动态替换</td> <td>框架基础</td></tr> <tr><td>Bpf trampoline</td> <td>5.5</td> <td>三种用途：  1.内核中代替K(ret)probe,性能更优  2.eBPF  Prog中使用，解决eBPF Prog调试问题  3.实现eBPF  Prog动态链接功能（未来功能）</td> <td>性能跟踪</td></tr> <tr><td>KRSI（lsm + eBPF）</td> <td>5.7</td> <td>内核运行时安全策略可定制</td> <td>安全</td></tr> <tr><td>Ring  buffer</td> <td>5.8</td> <td>提供CPU间共享的环形buffer，并能实现跨CPU的事件保序记录。用以代替perf/ftrace等buffer。</td> <td>跟踪/性能分析</td></tr></tbody></table> <p>备注：BPF社区还在快速发展中，众多高级特性可以参考kernel社区。</p> <h2 id="ebpf应用场景介绍"><a href="#ebpf应用场景介绍" class="header-anchor">#</a> eBPF应用场景介绍</h2> <h3 id="网络场景"><a href="#网络场景" class="header-anchor">#</a> 网络场景</h3> <p>在网络加速场景中，DPDK技术大行其道，在某些场景DPDK成了唯一选择。XDP的出现为厂商提供了一种新的选择，借助于kernel eBPF社区的蓬勃发展，为网络加速场景注入了一股清流。下面我们总结下两种差异：</p> <ul><li>[ ] DPDK优势/价值：优势（性能、生态）、价值（带动硬件销售）
+<strong>性能</strong>：总体上XDP性能全面弱于DPDK（但是差距不大），注意：只是比较DPDK/XDP自身性能
+<strong>生态</strong>：DPDK历经多年发展，生态体现在：驱动支持丰富、基础库丰富（无锁队列、大页内存、多核调度、性能分析工具等）、协议支持丰富（社区强大，例如VPP，支持众多协议ARP/VLAN/IP/MPLS等）
+<strong>价值</strong>：将网络类专有硬件的工作转嫁给软件实现，进而拓展硬件厂商市场范围。</li> <li>[ ] XDP优势：可编程、内核协同工作
+<strong>可编程</strong>：在网络硬件智能化趋势下，可编程可以适用多种场景。
+<strong>内核协同</strong>：XDP并不是完全bypass kernel，所以在必要的时候可以与内核协同工作，利于网络统一管理、部署。</li> <li>[ ] DPDK一些固有缺陷：
+<strong>独占Device</strong>：设备利用率低。
+<strong>部署复杂</strong>：由于独占Device，网络部署需要与OS协议栈协同部署。
+<strong>开发困难</strong>：DPDK定位就是网络数据面开发包，所以它对使用者要求具备专业网络知识、专业硬件知识，所以入门门槛高。
+<strong>端到端性能不高</strong>：DPDK只是提供数据包从NIC到用户态软件的零拷贝，但是用户态传输协议依然需要CPU参与。所以端到端性能不高。</li></ul> <img src="/assets/img/2021-01-04-openEuler eBPF introduce-03.6d99f7ec.png"> <h4 id="polycube项目介绍"><a href="#polycube项目介绍" class="header-anchor">#</a> Polycube项目介绍</h4> <ul><li>[ ] Polycube项目目标是：
+重构网络数据面，通过XDP技术实现bypass内核的网络数据面。
+北向提供可编程接口，实现网络可编程的事实标准，可被不同解决方案集成（包括网络安全场景、容器场景、虚拟网络场景等）。
+南向可以逐步实现硬件offload，便于适配各种智能网卡。</li> <li>[ ] Polycube使用场景包括：
+VNF场景
+容器网络数据面
+通用网络基础设施（包括iptables、lvs、nat等等）
+…</li></ul> <img src="/assets/img/2021-01-04-openEuler eBPF introduce-04.309aeba5.png"> <p>VNF场景示例：</p> <img src="/assets/img/2021-01-04-openEuler eBPF introduce-05.b83c309d.png"> <h3 id="容器场景"><a href="#容器场景" class="header-anchor">#</a> 容器场景</h3> <p>背景：云原生场景中容器比虚拟化技术有着更好的低底噪、轻便、易管理等优点，基本已经成为云原生应用的事实标准。容器场景对网络需求实际是应用对网络的需求，即面向应用的网络服务。</p> <ul><li>[ ] 云原生应用特点以及对网络的诉求：
+生命周期短：要求提供基于PoD静态身份信息实施的网络安全策略。（不能基于IP/Port）
+租户间隔离：要求提供API级别的网络隔离策略。
+ServiceMesh拓扑管理：要求提供side-car加速。
+服务入口位置透明：要求提供跨集群Ingress服务能力。
+安全策略跨集群：要求网络安全策略能够在集群间共享、继承。
+服务实例冗余保证高可用性：要求提供L3/4层LB能力。</li></ul> <h4 id="cilium项目介绍"><a href="#cilium项目介绍" class="header-anchor">#</a> Cilium项目介绍</h4> <p>Cilium 是一个纯开源软件，该软件用于透明地保护使用 Linux 容器管理平台（如 Docker 和 Kubernetes）部署的应用程序服务之间的网络连接。</p> <p>Cilium 以eBPF作为其技术基础，为容器场景带来高性能、灵活、安全的容器网络解决方案。举例说明其功能：</p> <p>功能1：使用K8S label代替IP/Port作为容器微隔离的标签</p> <img src="/assets/img/2021-01-04-openEuler eBPF introduce-06.f1fcb113.png"> <p>功能2：使用sockmap技术代替loopback环回通信，进而加速side-car</p> <img src="/assets/img/2021-01-04-openEuler eBPF introduce-07.eba0d418.png"> <h3 id="云原生运维场景"><a href="#云原生运维场景" class="header-anchor">#</a> 云原生运维场景</h3> <p>背景：容器场景的维测要求与内核提供的维测手段存在相当GAP，虽然内核维测手段种类繁多，但是诸多技术均是站在内核视角提供维测数据，无法支撑容器场景的维测需。
+解决方案：采用eBPF技术实现微服务视角的数据采集，实现容器平台的运维功能。行业里面比较成熟的项目sysdig/hubble。</p> <img src="/assets/img/2021-01-04-openEuler eBPF introduce-08.aa396172.png"> <h3 id="内核逻辑自定义-定制tcp拥塞算法"><a href="#内核逻辑自定义-定制tcp拥塞算法" class="header-anchor">#</a> 内核逻辑自定义（定制TCP拥塞算法）</h3> <p>参考：https://lwn.net/Articles/811631/</p> <p>从表现上看，就是BPF可以“任意”重定义内核中struct xxx_ops结构体，5.6版本目前已经支持TCP拥塞算法的定制。</p> <p>如果使用？</p> <ol><li><p>C or rust 语言定义TCP拥塞算法，参考bpf_cubic.c</p></li> <li><p>clang编译拥塞算法成elf文件</p></li> <li><p>bpftool加载elf文件（参考代码struct_ops.c）</p> <p>~ bpftool struct_ops register &lt;elf&gt;</p></li></ol> <p>价值：TCP拥塞算法在CDN这类场景存在大量定制诉求。衍生下，比如file ops，也可以由BPF自定义访问策略。</p> <p>“Linux内核正在迈向 BPF runtime 微内核方向发展” -- Toke Høiland-Jørgensen</p> <h3 id="安全场景"><a href="#安全场景" class="header-anchor">#</a> 安全场景</h3> <p>背景：Linux系统的运行安全始终是在动态平衡中，系统安全性通常要评估两方面的契合度：signals（系统中一些异常活动迹象）、mitigation（针对signals的一些补救措施）。内核中的signal/mitigation设置散布在多个地方，配置时费时费力。
+解决方案：引入eBPF，提供一些eBPF Helper实现“unified policy API”，由API来统一配置signal和mitigation。</p> <img src="/assets/img/2021-01-04-openEuler eBPF introduce-09.59721b31.png"> <h2 id="ebpf趋势及其背后动机"><a href="#ebpf趋势及其背后动机" class="header-anchor">#</a> eBPF趋势及其背后动机</h2> <h3 id="应用场景归纳"><a href="#应用场景归纳" class="header-anchor">#</a> 应用场景归纳</h3> <ul><li>Bypass内核：比如网络数据路径的bypass、系统调用bypass。</li> <li>内核逻辑定制：比如安全逻辑的定制、容器安全控制、网络TC定制等</li> <li>内核状态窥探：比如结合特定业务领域运维功能（包括容器、AI、大数据等）</li> <li>改造内核基础设施：比如改造内核协议栈iptables、lvs等</li> <li>性能监控：分布式系统的性能分析等。</li> <li>…</li></ul> <h3 id="发展趋势"><a href="#发展趋势" class="header-anchor">#</a> 发展趋势</h3> <ul><li>[ ] eBPF技术朝着几个方向发展：
+eBPF虚机的能力逐渐增强：支持有限循环、支持批量报文处理、支持批量MAP操作能力、支持更多指令数量、支持更大的stack、支持更多种类指令。
+开发界面逐渐友好：支持runtime debuging、支持Compile-Once Run-Everywhere、支持更多高级语言lib库。
+内核向eBPF开放的窗口逐渐放大：最早支持单向互动kernel-&gt;eBPF；后来支持双向互动kernel&lt;-&gt;eBPF；最新可以支持重定义内核逻辑。</li> <li>[ ] eBPF的应用场景趋势：
+网络方面：广泛应用在TC、协议栈加速、安全、硬件offload、虚拟化/容器网络。
+系统运维：可生产环境部署的运维系统、可视化运维系统。
+其他：文件系统、安全等领域。</li> <li>[ ] 行业正在发生的：
+Intel提出高性能XDP概念，通过网卡预处理携带meta-data，提升XDP性能。
+Google提出弹性TrafficShaping概念，使用eBPF技术重新打造高性能网络QoS，旨在解决TC root lock、逐包QoS等固有问题。
+CloudFlare提出可编程socket的概念，通过eBPF技术旨在解决百万级链接场景socket操作性能耗时大的问题。
+Redhat提出bpfilter项目，通过eBPF技术旨在重新实现iptables，使用户无感知的替换iptables。
+VMWare提出ovs-ebpf项目，通过eBPF技术加速OVS。</li></ul> <h3 id="发展背后动机"><a href="#发展背后动机" class="header-anchor">#</a> 发展背后动机</h3> <ul><li>原因1：内核的设计做了太多的抽象（解决用户态API稳定、硬件差异兼容的问题），而抽象的代价是性能开销大。在硬件性能大幅提升后，这个问题就凸显出来。</li> <li>原因2：内核经过长期发展，代码规模已经超过3千万，代码复杂度高，带来的问题是不易扩展新功能。</li> <li>原因3：内核属于社区开源代码，其发展路径并不受商业公司约束。带来的问题是商业公司在内核上的投入被社区绑定。（google曾经评估重新打造一个内核的代价，旨在代替linux内核）</li> <li>eBPF特点：内核逻辑可定制、用户态开发代码、内核状态可窥探正是上述原因的发展结果。
+社区活跃厂商：
+Facebook
+Cilium
+Netronome
+Redhat
+Google
+…</li></ul> <img src="/assets/img/2021-01-04-openEuler eBPF introduce-10.af26855d.png"> <h3 id="总结"><a href="#总结" class="header-anchor">#</a> 总结</h3> <p>我们就用2句话总结吧~</p> <p>&quot;BPF is eating the world.”-- Marek Majkowski
+Let’s change the world!  -- openEuler and all Geeks</p> <h2 id="openeuler-ebpf落地情况"><a href="#openeuler-ebpf落地情况" class="header-anchor">#</a> openEuler eBPF落地情况</h2> <p>openEuler LTS版本 kernel 4.19 ，openEuler 创新版本 kernel 5.4。</p> <p>除了上游社区eBPF特性/Bugfix回合openEuler社区之外，openEuler致力于基于eBPF技术打造开放式高性能数据数据面底座，为下游厂商提供更便捷的业务创新方式。</p> <p>具体情况请移步openEuler <a href="https://gitee.com/openeuler/community/tree/master/sig/sig-high-performance-network" target="_blank" rel="noopener noreferrer">高性能网络sig<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a>交流。</p></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/47.36ecd736.js" defer></script>
+  </body>
+</html>

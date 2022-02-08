@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>pkgship 2.1.0 移植指南（openEuler 20.03 LTS SP1）</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/299.0a83d3d4.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>randy1568</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2021-12-29</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>pkgship 2.1.0 移植指南（openEuler 20.03 LTS SP1）</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>randy1568</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2021-12-29</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>pkgship</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>Porting Guide</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><h1 id="pkgship-2-1-0-移植指南-openeuler-20-03-lts-sp1"><a href="#pkgship-2-1-0-移植指南-openeuler-20-03-lts-sp1" class="header-anchor">#</a> pkgship 2.1.0 移植指南 (openEuler 20.03 LTS SP1)</h1> <h2 id="简介"><a href="#简介" class="header-anchor">#</a> 简介</h2> <blockquote><p>pkgship是一款管理OS软件包依赖关系，提供依赖和被依赖关系完整图谱的查询工具，pkgship提供软件包依赖查询、生命周期管理、补丁查询等功能。</p></blockquote> <h3 id="选用版本"><a href="#选用版本" class="header-anchor">#</a> 选用版本</h3> <blockquote><p>2.1.0</p></blockquote> <h2 id="检查当前系统版本信息"><a href="#检查当前系统版本信息" class="header-anchor">#</a> 检查当前系统版本信息</h2> <div class="language-shell extra-class"><pre class="language-shell"><code><span class="token function">cat</span> /etc/os-release
+</code></pre></div><h2 id="兼容性检查"><a href="#兼容性检查" class="header-anchor">#</a> 兼容性检查</h2> <blockquote><p>使用x2openEuler对工具目录中的pkgship-2.1.0 RPM包进行分析</p></blockquote> <div class="language-shell extra-class"><pre class="language-shell"><code>x2openEuler scan pkgship-2.1.0-7.oe1.noarch.rpm
+</code></pre></div><blockquote><p>根据依赖报告可知，移植到openEuler 20.03-LTS-sp1需要解决不同python版本的依赖相关问题</p></blockquote> <h1 id="源码包安装"><a href="#源码包安装" class="header-anchor">#</a> 源码包安装</h1> <h2 id="安装流程"><a href="#安装流程" class="header-anchor">#</a> 安装流程</h2> <ul><li>安装依赖包</li> <li>配置yum源</li> <li>获取pkgship的源码包pkgship-2.1.0.tar.gz</li> <li>解压源码包</li> <li>修改部分源码内容以便和python3.7兼容</li> <li>使用安装脚本setup.py安装pkgship</li> <li>成功安装</li></ul> <h2 id="安装pkgship"><a href="#安装pkgship" class="header-anchor">#</a> 安装pkgship</h2> <ul><li>安装依赖包</li></ul> <div class="language-shell extra-class"><pre class="language-shell"><code><span class="token punctuation">[</span>root@master ~<span class="token punctuation">]</span><span class="token comment"># yum install -y libffi-devel</span>
+
+
+<span class="token punctuation">[</span>root@master ~<span class="token punctuation">]</span><span class="token comment"># vim requirements.txt</span>
+
+<span class="token assign-left variable">prettytable</span><span class="token operator">==</span><span class="token number">0.7</span>.2
+<span class="token assign-left variable">Flask_RESTful</span><span class="token operator">==</span><span class="token number">0.3</span>.8
+<span class="token assign-left variable">Flask_Session</span><span class="token operator">==</span><span class="token number">0.3</span>.1
+<span class="token assign-left variable">Flask_Script</span><span class="token operator">==</span><span class="token number">2.0</span>.6
+<span class="token assign-left variable">Flask_Limiter</span><span class="token operator">==</span><span class="token number">1.4</span>
+<span class="token assign-left variable">Flask</span><span class="token operator">==</span><span class="token number">1.1</span>.2
+<span class="token assign-left variable">marshmallow</span><span class="token operator">==</span><span class="token number">3.5</span>.1
+<span class="token assign-left variable">PyYAML</span><span class="token operator">==</span><span class="token number">5.3</span>.1
+<span class="token assign-left variable">gevent</span><span class="token operator">==</span><span class="token number">20.12</span>.1
+<span class="token assign-left variable">requests</span><span class="token operator">==</span><span class="token number">2.21</span>.0
+<span class="token assign-left variable">uwsgi</span><span class="token operator">==</span><span class="token number">2.0</span>.18
+<span class="token assign-left variable">elasticsearch</span><span class="token operator">==</span><span class="token number">7.10</span>.1
+<span class="token assign-left variable">redis</span><span class="token operator">==</span><span class="token number">3.5</span>.3
+<span class="token assign-left variable">retrying</span><span class="token operator">==</span><span class="token number">1.3</span>.3
+
+<span class="token punctuation">[</span>root@master ~<span class="token punctuation">]</span><span class="token comment"># pip3 install -r requirements.txt</span>
+</code></pre></div><ul><li>配置yum源</li></ul> <div class="language-shell extra-class"><pre class="language-shell"><code><span class="token punctuation">[</span>root@master ~<span class="token punctuation">]</span><span class="token comment"># cd /etc/yum.repos.d/</span>
+<span class="token punctuation">[</span>root@master yum.repos.d<span class="token punctuation">]</span><span class="token comment"># vim openEuler.repo</span>
+<span class="token punctuation">[</span>openeuler<span class="token punctuation">]</span>
+<span class="token assign-left variable">name</span><span class="token operator">=</span>openEuler-21.03
+<span class="token assign-left variable">baseurl</span><span class="token operator">=</span>http://119.3.219.20:82/openEuler:/21.03/standard_aarch64/
+<span class="token assign-left variable">enabled</span><span class="token operator">=</span><span class="token number">1</span>
+<span class="token assign-left variable">gpgcheck</span><span class="token operator">=</span><span class="token number">0</span>
+
+
+<span class="token punctuation">[</span>fedora<span class="token punctuation">]</span>
+<span class="token assign-left variable">name</span><span class="token operator">=</span>fedora
+<span class="token assign-left variable">baseurl</span><span class="token operator">=</span>https://mirrors.huaweicloud.com/fedora/releases/30/Everything/aarch64/os/
+<span class="token assign-left variable">enabled</span><span class="token operator">=</span><span class="token number">0</span>
+<span class="token assign-left variable">gpgcheck</span><span class="token operator">=</span><span class="token number">0</span>
+
+<span class="token punctuation">[</span>elasticsearch<span class="token punctuation">]</span>
+<span class="token assign-left variable">name</span><span class="token operator">=</span>Elasticsearch repository <span class="token keyword">for</span> <span class="token number">7</span>.x packages
+<span class="token assign-left variable">baseurl</span><span class="token operator">=</span>https://artifacts.elastic.co/packages/7.x/yum
+<span class="token assign-left variable">gpgcheck</span><span class="token operator">=</span><span class="token number">1</span>
+<span class="token assign-left variable">gpgkey</span><span class="token operator">=</span>https://artifacts.elastic.co/GPG-KEY-elasticsearch
+<span class="token assign-left variable">enabled</span><span class="token operator">=</span><span class="token number">1</span>
+<span class="token assign-left variable">autorefresh</span><span class="token operator">=</span><span class="token number">1</span>
+<span class="token assign-left variable">type</span><span class="token operator">=</span>rpm-md
+
+</code></pre></div><ul><li>获取源码包</li></ul> <blockquote><p>从 https://gitee.com/src-openeuler/pkgship?_from=gitee_search 获取pkgship-2.1.0.tar.gz源码包。</p></blockquote> <ul><li>解压源码包</li></ul> <div class="language-shell extra-class"><pre class="language-shell"><code><span class="token function">tar</span> -xzvf pkgship-2.1.0.tar.gz
+</code></pre></div><ul><li>修改部分源码文件</li></ul> <blockquote><p>进入解压后的源码目录，修改源码路径下</p></blockquote> <div class="language-shell extra-class"><pre class="language-shell"><code>./packageship/application/query/pkg.py
+./packageship/application/query/depend.py
+</code></pre></div><blockquote><p>这两个文件中第19行的monkey.patch_all()为monkey.patch_all(thread=False, ssl=False)</p></blockquote> <blockquote><p>进入源码目录的packageship目录下创建一个version.yaml文件，文件内容为</p></blockquote> <div class="language-shell extra-class"><pre class="language-shell"><code>Version: <span class="token number">2.1</span>.0
+Release: <span class="token number">7</span>.oe1
+</code></pre></div><blockquote><p>避免安装时因为缺少文件报如下错误</p></blockquote> <div class="language-shell extra-class"><pre class="language-shell"><code>installing package data to build/bdist.linux-x86_64/egg
+running install_data
+creating /etc/pkgship
+copying packageship/package.ini -<span class="token operator">&amp;</span>gt<span class="token punctuation">;</span> /etc/pkgship/
+copying conf.yaml -<span class="token operator">&amp;</span>gt<span class="token punctuation">;</span> /etc/pkgship/
+copying packageship/auto_install_pkgship_requires.sh -<span class="token operator">&amp;</span>gt<span class="token punctuation">;</span> /etc/pkgship/
+copying packageship/uwsgi_logrotate.sh -<span class="token operator">&amp;</span>gt<span class="token punctuation">;</span> /etc/pkgship/
+copying packageship/pkgshipd -<span class="token operator">&amp;</span>gt<span class="token punctuation">;</span> /usr/bin
+copying packageship/pkgship -<span class="token operator">&amp;</span>gt<span class="token punctuation">;</span> /usr/bin
+copying packageship/pkgship.service -<span class="token operator">&amp;</span>gt<span class="token punctuation">;</span> /lib/systemd/system/
+copying packageship/application/common/rsp/mapping.xml -<span class="token operator">&amp;</span>gt<span class="token punctuation">;</span> build/bdist.linux-x86_64/egg/packageship/application/common/rsp
+error: can<span class="token string">'t copy '</span>packageship/version.yaml<span class="token string">': doesn'</span>t exist or not a regular <span class="token function">file</span>
+</code></pre></div><ul><li>安装pkgship</li></ul> <blockquote><p>进入pkgship主目录，开始使用setup.py脚本安装pkgship</p></blockquote> <div class="language-shell extra-class"><pre class="language-shell"><code><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># python3 --version</span>
+Python <span class="token number">3.7</span>.9
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># python3 setup.py install</span>
+</code></pre></div><ul><li>成功安装</li></ul> <div class="language-shell extra-class"><pre class="language-shell"><code>Processing packageship-2.1.0-py3.7.egg
+creating /usr/local/lib/python3.7/site-packages/packageship-2.1.0-py3.7.egg
+Extracting packageship-2.1.0-py3.7.egg to /usr/local/lib/python3.7/site-packages
+Adding packageship <span class="token number">2.1</span>.0 to easy-install.pth <span class="token function">file</span>
+
+Installed /usr/local/lib/python3.7/site-packages/packageship-2.1.0-py3.7.egg
+Processing dependencies <span class="token keyword">for</span> <span class="token assign-left variable">packageship</span><span class="token operator">==</span><span class="token number">2.1</span>.0
+Finished processing dependencies <span class="token keyword">for</span> <span class="token assign-left variable">packageship</span><span class="token operator">==</span><span class="token number">2.1</span>.0
+
+<span class="token punctuation">[</span>root@localhost pkgship-2.1.0<span class="token punctuation">]</span><span class="token comment"># pip3 list | grep packageship</span>
+packageship                   <span class="token number">2.1</span>.0
+<span class="token punctuation">[</span>root@localhost pkgship-2.1.0<span class="token punctuation">]</span><span class="token comment"># pkgship</span>
+usage: pkgship <span class="token punctuation">[</span>-h<span class="token punctuation">]</span> <span class="token punctuation">[</span>-v<span class="token punctuation">]</span> <span class="token punctuation">[</span>-remote<span class="token punctuation">]</span>
+               <span class="token punctuation">{</span>init,list,builddep,installdep,selfdepend,bedepend,pkginfo,dbs<span class="token punctuation">}</span>
+               <span class="token punctuation">..</span>.
+
+package related dependency management
+
+positional arguments:
+  <span class="token punctuation">{</span>init,list,builddep,installdep,selfdepend,bedepend,pkginfo,dbs<span class="token punctuation">}</span>
+                        package related dependency management
+    init                initialization of the database
+    list                get all package data
+    builddep            query the compilation dependencies of the specified
+                        package
+    installdep          query the installation dependencies of the specified
+                        package
+    selfdepend          query the self-compiled dependencies of the specified
+                        package
+    bedepend            dependency query <span class="token keyword">for</span> the specified package
+    pkginfo             query the information of a single package
+    dbs                 Get all data bases
+
+optional arguments:
+  -h, --help            show this <span class="token builtin class-name">help</span> message and <span class="token builtin class-name">exit</span>
+  -v                    Get version information
+  -remote               The address of the remote <span class="token function">service</span>
+</code></pre></div></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/299.0a83d3d4.js" defer></script>
+  </body>
+</html>

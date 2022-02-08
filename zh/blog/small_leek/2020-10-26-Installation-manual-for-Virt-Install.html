@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>virt-intall安装openEuler手册</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/8.88fed6c4.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>sigui small_leek</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2020-10-26</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>virt-intall安装openEuler手册</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>sigui small_leek</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2020-10-26</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>安装openEuler</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><h1 id="aarch64安装流程"><a href="#aarch64安装流程" class="header-anchor">#</a> aarch64安装流程</h1> <h2 id="环境信息"><a href="#环境信息" class="header-anchor">#</a> 环境信息</h2> <ol><li><p>宿主机环境： openEuler release 20.09</p></li> <li><p>虚拟机iso：openEuler-20.09-aarch64-dvd.iso</p></li> <li><p>iso获取地址：
+https://repo.openeuler.org/openEuler-20.09/ISO/aarch64/openEuler-20.09-aarch64-dvd.iso</p></li></ol> <h2 id="准备工作"><a href="#准备工作" class="header-anchor">#</a> 准备工作</h2> <h3 id="_1-准备好iso-在宿主机安装虚拟机化相关组件libvirt-、qemu-、virt-install-并开启libvirtd服务"><a href="#_1-准备好iso-在宿主机安装虚拟机化相关组件libvirt-、qemu-、virt-install-并开启libvirtd服务" class="header-anchor">#</a> 1. 准备好iso，在宿主机安装虚拟机化相关组件libvirt*、qemu*、virt-install，并开启libvirtd服务:</h3> <div class="language- extra-class"><pre><code>    yum install –y libvirt*
+    yum install –y qemu*
+    yum install –y virt-install
+    systemctl start libvirtd
+</code></pre></div><h3 id="_2-安装edk2"><a href="#_2-安装edk2" class="header-anchor">#</a> 2. 安装edk2</h3> <div class="language- extra-class"><pre><code>    yum install –y edk2
+</code></pre></div><p>在windows侧或者可以连通该宿主机的且有图形界面的机器上安装vncviewer，设置VNC客户端选项：
+<img src="/assets/img/2020-10-26-post-01.299e1262.jpg"></p> <h2 id="图形界面安装"><a href="#图形界面安装" class="header-anchor">#</a> 图形界面安装</h2> <h3 id="_1-执行如下命令使用vnc安装"><a href="#_1-执行如下命令使用vnc安装" class="header-anchor">#</a> 1. 执行如下命令使用vnc安装：</h3> <p>virt-install --connect qemu:///system --virt-tpye kvm --vcpus [cpu_num] --memory [memory size] --name [domain name] --cdrom [iso_path] --disk [disk_path_and_parameter] --boot cdrom --network [network] --graphics vnc,listen=0.0.0.0</p> <p>例：
+virt-install --connect qemu:///system --virt-tpye kvm --vcpus 4 --memory 4096 --name sgs-oe-20.09 --cdrom /home/images/openEuler-20.09-aarch64-dvd.iso --disk path=/home/images/test.img,size=50,format=qcow2,bus=scsi --boot cdrom --network network=default --graphics vnc,listen=0.0.0.0</p> <h3 id="_2-重新开启一个终端-使用如下命令查看vnc端口号"><a href="#_2-重新开启一个终端-使用如下命令查看vnc端口号" class="header-anchor">#</a> 2. 重新开启一个终端，使用如下命令查看vnc端口号</h3> <p>virsh vncdisplay [domain name]</p> <h3 id="_3-打开vncviewer输入【主机名-端口号】连接-进入如下界面"><a href="#_3-打开vncviewer输入【主机名-端口号】连接-进入如下界面" class="header-anchor">#</a> 3. 打开vncviewer输入【主机名：端口号】连接，进入如下界面：</h3> <img src="/assets/img/2020-10-26-post-02.47bc155c.jpg"> <p>注意：如果打不开，请再宿主机使用如下命令开通端口：</p> <div class="language- extra-class"><pre><code>firewall-cmd --add-port=[port]/tcp
+firewall-cmd --add-port=[port]/tcp --permanent
+</code></pre></div><p>其中，[port]的值应该等于5900+端口号的值，比如，此处应该是:</p> <div class="language- extra-class"><pre><code>firewall-cmd --add-port=5903/tcp
+firewall-cmd --add-port=5903/tcp --permanent
+</code></pre></div><img src="/assets/img/2020-10-26-post-03.9892e9f2.jpg"> <h4 id="选择安装或者测试后安装-进入如下界面"><a href="#选择安装或者测试后安装-进入如下界面" class="header-anchor">#</a> 选择安装或者测试后安装，进入如下界面：</h4> <img src="/assets/img/2020-10-26-post-04.0596ad44.jpg"> <h4 id="选择continue-进入下一步"><a href="#选择continue-进入下一步" class="header-anchor">#</a> 选择continue，进入下一步：</h4> <img src="/assets/img/2020-10-26-post-05.722c6af8.jpg"> <h4 id="选中标黄的部分-设置后-开始安装"><a href="#选中标黄的部分-设置后-开始安装" class="header-anchor">#</a> 选中标黄的部分，设置后，开始安装：</h4> <img src="/assets/img/2020-10-26-post-06.371eff1c.jpg">
+等待安装完毕，重启。
+<h3 id="_4-由于virt-install时设置的启动方式是boot-当安装完毕重启系统时-会进入如下界面-输入exit-退出console"><a href="#_4-由于virt-install时设置的启动方式是boot-当安装完毕重启系统时-会进入如下界面-输入exit-退出console" class="header-anchor">#</a> 4. 由于virt-install时设置的启动方式是boot，当安装完毕重启系统时，会进入如下界面，输入exit，退出console</h3> <img src="/assets/img/2020-10-26-post-07.278a326c.jpg"> <h3 id="_5-进入bios界面-选择系统启动方式boot-manager-uefi-qemu-qemu-harddisk"><a href="#_5-进入bios界面-选择系统启动方式boot-manager-uefi-qemu-qemu-harddisk" class="header-anchor">#</a> 5. 进入bios界面，选择系统启动方式Boot Manager-&gt;UEFI QEMU QEMU HARDDISK</h3> <img src="/assets/img/2020-10-26-post-08.286de27a.jpg"> <img src="/assets/img/2020-10-26-post-09.086bde7f.jpg"> <h3 id="_6-系统重启-安装完成"><a href="#_6-系统重启-安装完成" class="header-anchor">#</a> 6. 系统重启，安装完成</h3> <img src="/assets/img/2020-10-26-post-10.fc05b5a1.jpg"> <h2 id="文本方式安装"><a href="#文本方式安装" class="header-anchor">#</a> 文本方式安装</h2> <h3 id="_1-执行如下命令使用vnc安装-2"><a href="#_1-执行如下命令使用vnc安装-2" class="header-anchor">#</a> 1. 执行如下命令使用vnc安装：</h3> <p>virt-install --connect qemu:///system --virt-tpye kvm --vcpus [cpu_num] --memory [memory size] --name [domain name] --cdrom [iso_path] --disk [disk_path_and_parameter] --boot cdrom --network [network]</p> <p>例：
+virt-install --connect qemu:///system --virt-tpye kvm --vcpus 4 --memory 4096 --name wx-oe-20.09 --cdrom /home/images/openEuler-20.09-aarch64-dvd.iso --disk path=/home/images/test.img,size=50,format=qcow2,bus=scsi --boot cdrom --network network=default</p> <h3 id="_2-输入e-编辑文本模式-设置console-ttyama0-115200-tty0"><a href="#_2-输入e-编辑文本模式-设置console-ttyama0-115200-tty0" class="header-anchor">#</a> 2. 输入e，编辑文本模式，设置console=ttyAMA0,115200,tty0</h3> <img src="/assets/img/2020-10-26-post-11.491dd20b.jpg"> <img src="/assets/img/2020-10-26-post-12.8e5ff9c0.jpg"> <p>修改console，设置console=ttyAMA0,115200,tty0
+<img src="/assets/img/2020-10-26-post-13.ebbc6ed8.jpg"></p> <p>修改完成后，输入Ctrl-x开始</p> <h3 id="_3-选择2-使用文本模式安装"><a href="#_3-选择2-使用文本模式安装" class="header-anchor">#</a> 3. 选择2），使用文本模式安装</h3> <img src="/assets/img/2020-10-26-post-14.74086590.jpg"> <h3 id="_4-系统自定义安装。-感叹号的条目需要自定义设置"><a href="#_4-系统自定义安装。-感叹号的条目需要自定义设置" class="header-anchor">#</a> 4. 系统自定义安装。“！”感叹号的条目需要自定义设置</h3> <img src="/assets/img/2020-10-26-post-15.1d9d383d.jpg"> <p>输入r，对Processing的条目状态进行刷新
+<img src="/assets/img/2020-10-26-post-16.8b14da02.jpg"> <img src="/assets/img/2020-10-26-post-17.f987ebf9.jpg"> <img src="/assets/img/2020-10-26-post-18.1af246ac.jpg"> <img src="/assets/img/2020-10-26-post-19.25289554.jpg"></p> <h3 id="_5-设置root用户的密码"><a href="#_5-设置root用户的密码" class="header-anchor">#</a> 5. 设置root用户的密码</h3> <img src="/assets/img/2020-10-26-post-20.1a9b6f76.jpg"> <h3 id="_6-上述自定义设置完成后-输入b-开始安装系统"><a href="#_6-上述自定义设置完成后-输入b-开始安装系统" class="header-anchor">#</a> 6. 上述自定义设置完成后，输入b，开始安装系统</h3> <img src="/assets/img/2020-10-26-post-21.e796f31c.jpg"> <img src="/assets/img/2020-10-26-post-22.9ada0dd7.jpg"> <h3 id="_7-系统安装完成后-由于virt-install时设置的启动方式是boot-当安装完毕重启系统时-会进入如下界面-输入exit-退出console"><a href="#_7-系统安装完成后-由于virt-install时设置的启动方式是boot-当安装完毕重启系统时-会进入如下界面-输入exit-退出console" class="header-anchor">#</a> 7. 系统安装完成后，由于virt-install时设置的启动方式是boot，当安装完毕重启系统时，会进入如下界面，输入exit，退出console</h3> <img src="/assets/img/2020-10-26-post-23.278a326c.jpg"> <h3 id="_8-进入bios界面-选择系统启动方式boot-manager-uefi-qemu-qemu-harddisk"><a href="#_8-进入bios界面-选择系统启动方式boot-manager-uefi-qemu-qemu-harddisk" class="header-anchor">#</a> 8. 进入bios界面，选择系统启动方式Boot Manager-&gt;UEFI QEMU QEMU HARDDISK</h3> <img src="/assets/img/2020-10-26-post-24.286de27a.jpg"> <img src="/assets/img/2020-10-26-post-25.086bde7f.jpg"> <h3 id="_9-系统重启-安装完成"><a href="#_9-系统重启-安装完成" class="header-anchor">#</a> 9. 系统重启，安装完成</h3> <img src="/assets/img/2020-10-26-post-26.fc05b5a1.jpg"> <h1 id="x86-64安装流程"><a href="#x86-64安装流程" class="header-anchor">#</a> x86_64安装流程</h1> <h2 id="环境信息-2"><a href="#环境信息-2" class="header-anchor">#</a> 环境信息</h2> <ol><li>宿主机环境： openEuler release 20.09</li> <li>虚拟机iso：openEuler-20.09-x86_64-dvd.iso</li> <li>iso获取地址：
+https://repo.openeuler.org/openEuler-20.09/ISO/x86_64/openEuler-20.09-x86_64-dvd.iso</li></ol> <h2 id="准备工作-2"><a href="#准备工作-2" class="header-anchor">#</a> 准备工作</h2> <h3 id="_1-准备好iso-在宿主机安装虚拟机化相关组件libvirt-、qemu-、virt-install-并开启libvirtd服务-2"><a href="#_1-准备好iso-在宿主机安装虚拟机化相关组件libvirt-、qemu-、virt-install-并开启libvirtd服务-2" class="header-anchor">#</a> 1. 准备好iso，在宿主机安装虚拟机化相关组件libvirt*、qemu*、virt-install，并开启libvirtd服务:</h3> <div class="language- extra-class"><pre><code>    yum install –y libvirt*
+    yum install –y qemu*
+    yum install –y virt-install
+    systemctl start libvirtd
+</code></pre></div><h3 id="_2-安装edk2-2"><a href="#_2-安装edk2-2" class="header-anchor">#</a> 2. 安装edk2</h3> <div class="language- extra-class"><pre><code>    yum install –y edk2
+</code></pre></div><h3 id="_3-在windows侧或者可以连通该宿主机的且有图形界面的机器上安装vncviewer-设置vnc客户端选项"><a href="#_3-在windows侧或者可以连通该宿主机的且有图形界面的机器上安装vncviewer-设置vnc客户端选项" class="header-anchor">#</a> 3. 在windows侧或者可以连通该宿主机的且有图形界面的机器上安装vncviewer，设置VNC客户端选项</h3> <img src="/assets/img/2020-10-26-post-27.299e1262.jpg"> <h2 id="图形界面安装-2"><a href="#图形界面安装-2" class="header-anchor">#</a> 图形界面安装</h2> <h3 id="_1-执行如下命令使用vnc安装-3"><a href="#_1-执行如下命令使用vnc安装-3" class="header-anchor">#</a> 1. 执行如下命令使用vnc安装：</h3> <p>virt-install --connect qemu:///system --vcpus [cpu_num] --memory [memory size] --name [domain name] --cdrom [iso_path] --disk [disk_path_and_parameter] --boot cdrom --network [network] --graphics vnc,listen=0.0.0.0</p> <p>例：
+virt-install --connect qemu:///system --vcpus 4 --memory 4096 --name wx-oe-20.09 --cdrom /home/images/openEuler-20.09-x86_64-dvd.iso --disk path=/home/images/test.img,size=50,format=qcow2,bus=virtio --video virtio --boot cdrom --network network=default --graphics vnc,listen=0.0.0.0</p> <h3 id="_2-重新开启一个终端-使用如下命令查看vnc端口号-2"><a href="#_2-重新开启一个终端-使用如下命令查看vnc端口号-2" class="header-anchor">#</a> 2. 重新开启一个终端，使用如下命令查看vnc端口号</h3> <div class="language- extra-class"><pre><code>    virsh vncdisplay [domain name]
+</code></pre></div><h3 id="_3-打开vncviewer输入【主机名-端口号】连接-进入如下界面-2"><a href="#_3-打开vncviewer输入【主机名-端口号】连接-进入如下界面-2" class="header-anchor">#</a> 3.打开vncviewer输入【主机名：端口号】连接，进入如下界面:</h3> <img src="/assets/img/2020-10-26-post-28.47bc155c.jpg"> <p>注意：如果打不开，请再宿主机使用如下命令开通端口：</p> <div class="language- extra-class"><pre><code>    firewall-cmd --add-port=[port]/tcp
+    firewall-cmd --add-port=[port]/tcp --permanent
+</code></pre></div><p>其中，[port]的值应该等于5900+端口号的值，比如，此处应该是</p> <div class="language- extra-class"><pre><code>    firewall-cmd --add-port=5903/tcp
+    firewall-cmd --add-port=5903/tcp --permanent
+</code></pre></div><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCADqAh8DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDxyiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACipba1mvLhILeJ55nOFjjUszH2FWL7Rr/S0R7yyuLVXJVWmjKgkdQM1XLJrmS0FzK9r6lKiprOzn1C4S3tYZLid/uxxKWY9+AKjdWjdkYFWU4KnqCO1KztcL9BtFFFIYUVdutF1CxtxcXFlcQQNjEkkRVeRkckdxTbzSb3Tkje6tJ7ZJPuNLGVDcA8Z9iPzq3CS3RPNF7MqUVLbWs15cJBbxPPM/CxxqWY/QCrSaBqclxLbpp9008QBkjETblB6EjHGaSjKWyByS3ZQop80MlvM8UqNFKhKsjjBUjqCKZUlBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFdx4V0uyutN0Z/slvdtLqDR6g0wDGKH5cHk/KMFjmuHoKg9RmtqVRU5XauZVIOorJ2PRrHQtKm0m0uGtLc2Ti/jlujxhY8+S27PBJI578VW8QWem2Omzmz0eKW3S1hkivzOgXeQpJHG5znIK59a5C61m5vNLtNPl8s2tqzNEBEoZS33vmAyc9/oKo7RnOOa6pYmHLyxj0307W7PS+pzxoSvzSl+fc9Pm0fS49XlFnb28b2eq2JhaJhnY43yZOeQD+QFM1HTFvNT1b7RbwxWs0d79itmm3GW6GWEyjPBYEY9cV5ltHoKNo9B+VN4uL+x/X3CWGa+3/X3newafbWXxE8N/ZI44rfbayuUI27lA80k56hg2fpTtL0+z+z6jK+mLqepDVWjaAuoKxEEgncCApOeR+fFcDtHpSbR6Cs1iEn8PVv7/kW6Da+Lt/W53jx6Xpvh8ahLolvcIdRmgMYn3MIMfLhx1IbID47Vwo5YY454pNoznHNFY1KntLWVrf12NqdPkvre56PHazeGb6NJcS6fFdW82q6lNIH+1YcEKoJJZFPoMk8nHSq2vyQ2Xh/Xknj8qa8uImhZ7gTfaHV2Z5U/ujYyDP4Z7VwG0DoAPwpcAdBiuh4rRxjHv8AK+nb+nq73MFh9U2+34fP+kdh4Xtf7JvNZ0+7CfbLixCQxpMo8zJRyiyA4BKZHXvj2rY1O9kudJ03w/babHdKF82e0lmJa2zIxhVpQR0RsYJ47gV5vgYxjik2jpgYqY4nkjyJabfK9+39dhyw/NLmb/4e1u/9dzf8dahb6p4u1S6tZRNbySDZIvRsKBke2QawaKK5ak3Um5vq7nRCPJFRXQKKKKgsKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAK0YvDuozaHNrCW27TIZBDJceYgCuei4znJ+nr6Gs6u0sZI4/g/q8QubZbptXguEt2nj81kWNlLCMncQCw7foDVJXM6knFK3dHF06KN7iVIokaWWRgiRxqWZmJwAAOSSe1fUevXngXUNN8QrH/wAIYbiG28N3+nrMkMMJvJZMX6sYAJDHg/vI1yqDkKuKxPHniLTvDeveEtds5vCtsF1x3nsbW1068uLOEMm8q9opiktyvKGRBMrA7e+JNDwHWNJvPD+q3mmajbvZ39nK0FxbyY3RyKcMpx3Bq74S8H6z471qPSNBsTqOpyI0iWySIjOFGW272AJA5wOcA8cGvoTxIukan8a/GniK91zwvq8s1vd3eg6fb3NgkNypuSEW5lkiMCyFCzguTKQBuIOBTvC8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P3iCD8pqDTNNk/4Xhpyyaddacl1qjNEVdw5HmsPORiPUFvTj0rzy81C71CRXu7qe6dRhWnlZyB6Ak8U46petefaze3Ju8Y+0ec3mYxjG7OenFLmXY09jLW8t00d1oPhfTdSh8QXeoWk1xPY6zb22POZN6TzNGd2BwRjcCOp4PFdDP8KdD0u6Nu8V1eqiatcPO0pTH2RyqRHaMDdjJPX0ryI6hds0rG6nLSsHkJlbLsDkM3PJB6E9K6HSfiFf6NpdzaQQQtPcRzRSXbvIXdZQA5dd212xkBmBIz16U1KPVEVKVXeMv6t/nqct15ooorI7gooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAN7wSLyTxFBDZ6dDqrTBo5bW4UGN4iPnLMf9WAOd4I24zmqvia102x168g0i6a805HxFMw6juAf4gDwGwMgZwM1nxXEsHmCKV4hIpR9jFdynqpx1HtUdO+liOV8/MFFFFIsKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAFwfSkp5zwMUmBuxivSlg/f5YS621vu/kcMcV7vNKPS+nYbRTse1GOvFR9Tm+v59r9i/rMe35encbS4PpQetKM7TWVKlGU3Cd9L7eSv+hdSo4xUo9bfiNpaXb8tK3etpYOUYSk3qrfr/kZRxUZSSXX/AIH+YyinL96gc57msoYfngpJ6tv8Fc0lW5ZuLWit+LsNop+BzxTamth5ULczX9Nr9CqVZVfhX9b/AKhSU5vuihl61rLCtJuL2Sb+auZxxC0Ulu3b5OwlFK3b6UN96pqUPZqT7W/FNlQrcziu9/wdhtFOHQ96Xb04706eFnUSae/r3t2FPERg2mtvTtcZS07A4pG7fSqlhHCm6kn93y/zRKxClNQiv61/yG0U7H3aXb7dqf1Kb1T7fil/mL61FaNd/wA3/kMop+3rx2pAAe3FCwVRyUbq79enyD61CzlZ2Q2lpR90jFH8JrP6s7J33Tf3X0L9urtW2aX32G0U8gDPFIw/nVzwc4Jttaf8H/JijioSaST1/wCB/mNopVp232qKeFnUipJ/1r/kVPERhLla/rT/ADGUU/1AGaQfdNXLCuLSv0l/5Lf/ACJjiFJN26r8bf5jaKfgc/SjaM9Kr6jU7r8fPy8mT9ah2f4eXn5oZRTm+lC9+9c/sJe09l1/4Fzb20eT2nT/AINhtFOwOeKRuGIqq2GnRV5Nf1dfoxU68arsl/Wn+YlFP2jjikwPSuiWAqQh7RtW+f8AkYRxkJS5Enf5f5jaKftH60jDpWVXB1KUXJtaf8D/ADNKeJhUkoobRTl+9QvQjHNTSw/tEnffm/BX/EqpW9m2rbW/F2G0U/Ax0zRtHpW0cBUns1079fkZSxkI7p9e3T5jKKc30pK5KtGVKVmdNOrGoroSiiisDUKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAFozSUVanJR5U9CeVN81tQoooqCgooooAKKKKAClzSUVUZOLvEmUVJWYUUUVJQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf/Z"> <h3 id="_4-选择安装或者测试后安装-进入如下界面"><a href="#_4-选择安装或者测试后安装-进入如下界面" class="header-anchor">#</a> 4. 选择安装或者测试后安装，进入如下界面：</h3> <img src="/assets/img/2020-10-26-post-30.0596ad44.jpg">
+选择continue，进入下一步：
+<img src="/assets/img/2020-10-26-post-31.722c6af8.jpg">
+选中标黄的部分，设置后，开始安装：
+<img src="/assets/img/2020-10-26-post-32.371eff1c.jpg">
+等待安装完毕，重启。
+<h3 id="_5-重新开启一个终端-关闭新安装的虚拟机"><a href="#_5-重新开启一个终端-关闭新安装的虚拟机" class="header-anchor">#</a> 5. 重新开启一个终端，关闭新安装的虚拟机</h3> <div class="language- extra-class"><pre><code>    virsh destroy [domain name]
+</code></pre></div><h3 id="_6-编辑虚拟机的启动方式-更改boot-dev-cdrom-为boot-dev-hd"><a href="#_6-编辑虚拟机的启动方式-更改boot-dev-cdrom-为boot-dev-hd" class="header-anchor">#</a> 6. 编辑虚拟机的启动方式，更改boot dev='cdrom'为boot dev='hd'</h3> <div class="language- extra-class"><pre><code>    virsh edit [domain name]
+</code></pre></div><h3 id="_7-重启虚拟机"><a href="#_7-重启虚拟机" class="header-anchor">#</a> 7. 重启虚拟机</h3> <div class="language- extra-class"><pre><code>    virsh start [domain name]
+</code></pre></div><h3 id="_8-通过vncviewer再次连接虚拟机-确认虚拟机重启ok。"><a href="#_8-通过vncviewer再次连接虚拟机-确认虚拟机重启ok。" class="header-anchor">#</a> 8.通过vncviewer再次连接虚拟机，确认虚拟机重启ok。</h3></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/8.88fed6c4.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Nginx 1.14.2 移植指南（openEuler 20.03 LTS SP1）</title>
+    <meta name="generator" content="VuePress 1.5.4">
+    <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <script src="/js/analytics.js"></script>
+  <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+  <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <meta name="description" content="openEuler 是一个开源、免费的 Linux 发行版平台，将通过开放的社区形式与全球的开发者共同构建一个开放、多元和架构包容的软件生态体系。同时，openEuler 也是一个创新的平台，鼓励任何人在该平台上提出新想法、开拓新思路、实践新方案。">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="keywords" content="openEuler, 操作系统, 开放, 生态, 开源, Linux 开源, OS, open, ecosystem, open source, Linux open source">
+    <meta name="baidu-site-verification" content="code-EWzbQRssNU">
+    <link rel="preload" href="/assets/css/0.styles.0df284ed.css" as="style"><link rel="preload" href="/assets/js/app.cdfb7ee7.js" as="script"><link rel="preload" href="/assets/js/14.8a38dea1.js" as="script"><link rel="preload" href="/assets/js/296.23c2969a.js" as="script">
+    <link rel="stylesheet" href="/assets/css/0.styles.0df284ed.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="euler-app" data-v-34596062><div class="nav-fill " data-v-fe04bb58 data-v-34596062><div class="nav-wrapper" data-v-fe04bb58><div class="nav-bar" data-v-fe04bb58><img src="/openeuler-logo.png" alt class="nav-logo" data-v-fe04bb58> <img src="/openeuler-logo.png" alt class="nav-logo nav-logo-mobile" data-v-fe04bb58> <ul class="nav-menu" data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                ISO
+                            </li><li data-v-fe04bb58>
+                                镜像仓列表
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                文档
+                            </li><li data-v-fe04bb58>
+                                慕课
+                            </li><li data-v-fe04bb58>
+                                实习
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link menu-active" data-v-fe04bb58>互动
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                新闻
+                            </li><li data-v-fe04bb58>
+                                博客
+                            </li><li data-v-fe04bb58>
+                                直播
+                            </li><li data-v-fe04bb58>
+                                沙龙
+                            </li><li data-v-fe04bb58>
+                                峰会
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                贡献攻略
+                            </li><li data-v-fe04bb58>
+                                行为守则
+                            </li><li data-v-fe04bb58>
+                                邮件列表
+                            </li><li data-v-fe04bb58>
+                                个人认证
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                查看SIG
+                            </li><li data-v-fe04bb58>
+                                申请流程
+                            </li><li data-v-fe04bb58>
+                                角色说明
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                A-Tune
+                            </li><li data-v-fe04bb58>
+                                Bisheng JDK
+                            </li><li data-v-fe04bb58>
+                                iSula
+                            </li><li data-v-fe04bb58>
+                                secGear
+                            </li><li data-v-fe04bb58>
+                                StratoVirt
+                            </li><li data-v-fe04bb58>
+                                Compass-CI
+                            </li><li data-v-fe04bb58>
+                                Compliance
+                            </li><li data-v-fe04bb58>
+                                Pkgship
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持
+                        <span data-v-fe04bb58></span></a> <div class="sub-menu" data-v-fe04bb58><ul class="sig-menu-content" data-v-fe04bb58><li data-v-fe04bb58>
+                                漏洞管理
+                            </li><li data-v-fe04bb58>
+                                安全公告
+                            </li><li data-v-fe04bb58>
+                                CVE
+                            </li><li data-v-fe04bb58>
+                                兼容性列表
+                            </li><li data-v-fe04bb58>
+                                迁移指南
+                            </li></ul> <span class="submenu-arrow" data-v-fe04bb58></span></div></li></ul> <ul class="nav-menu-mobile" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>下载<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    ISO
+                                </li><li data-v-fe04bb58>
+                                    镜像仓列表
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>学习<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    文档
+                                </li><li data-v-fe04bb58>
+                                    慕课
+                                </li><li data-v-fe04bb58>
+                                    实习
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>互动<i class="icon-arrow arrow-active" data-v-fe04bb58></i></a> <ul class="sub-menu" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    新闻
+                                </li><li data-v-fe04bb58>
+                                    博客
+                                </li><li data-v-fe04bb58>
+                                    直播
+                                </li><li data-v-fe04bb58>
+                                    沙龙
+                                </li><li data-v-fe04bb58>
+                                    峰会
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>社区<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    贡献攻略
+                                </li><li data-v-fe04bb58>
+                                    行为守则
+                                </li><li data-v-fe04bb58>
+                                    邮件列表
+                                </li><li data-v-fe04bb58>
+                                    个人认证
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>SIG<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    查看SIG
+                                </li><li data-v-fe04bb58>
+                                    申请流程
+                                </li><li data-v-fe04bb58>
+                                    角色说明
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>探索<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    A-Tune
+                                </li><li data-v-fe04bb58>
+                                    Bisheng JDK
+                                </li><li data-v-fe04bb58>
+                                    iSula
+                                </li><li data-v-fe04bb58>
+                                    secGear
+                                </li><li data-v-fe04bb58>
+                                    StratoVirt
+                                </li><li data-v-fe04bb58>
+                                    Compass-CI
+                                </li><li data-v-fe04bb58>
+                                    Compliance
+                                </li><li data-v-fe04bb58>
+                                    Pkgship
+                                </li></ul></li><li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>支持<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    漏洞管理
+                                </li><li data-v-fe04bb58>
+                                    安全公告
+                                </li><li data-v-fe04bb58>
+                                    CVE
+                                </li><li data-v-fe04bb58>
+                                    兼容性列表
+                                </li><li data-v-fe04bb58>
+                                    迁移指南
+                                </li></ul></li> <li data-v-fe04bb58><a class="menu-link" data-v-fe04bb58>源码<i class="icon-arrow" data-v-fe04bb58></i></a> <ul class="sub-menu" style="display:none;" data-v-fe04bb58 data-v-fe04bb58><li data-v-fe04bb58>
+                                    代码仓
+                                </li><li data-v-fe04bb58>
+                                    软件包仓
+                                </li><li data-v-fe04bb58>
+                                    GitHub镜像仓
+                                </li></ul></li></ul> <div data-v-fe04bb58></div> <div class="search-mobile" data-v-fe04bb58><div class="el-input el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other" style="display:;" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li data-v-fe04bb58><span data-v-fe04bb58>代码</span> <ul data-v-fe04bb58><li data-v-fe04bb58>
+                            代码仓
+                        </li><li data-v-fe04bb58>
+                            软件包仓
+                        </li><li data-v-fe04bb58>
+                            GitHub镜像仓
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><img src="/search.png" alt data-v-fe04bb58></li></ul> <div class="search-input" style="display:none;" data-v-fe04bb58><div class="el-input el-input--small el-input--suffix" data-v-fe04bb58><!----><input type="text" autocomplete="off" placeholder="输入内容" class="el-input__inner"><!----><span class="el-input__suffix"><span class="el-input__suffix-inner"><i class="icon-search el-input__icon" data-v-fe04bb58></i><!----><!----><!----><!----></span><!----></span><!----><!----></div></div> <ul class="nav-other-mobile nav-other" data-v-fe04bb58><li class="lang" data-v-fe04bb58><span class="icon-lang" data-v-fe04bb58></span> <ul data-v-fe04bb58><li class="lang-list" data-v-fe04bb58>
+                            中文
+                        </li><li data-v-fe04bb58>
+                            English
+                        </li><li data-v-fe04bb58>
+                            Русский
+                        </li> <span class="submenu-arrow" data-v-fe04bb58></span></ul></li> <li class="search" data-v-fe04bb58><span class="icon-search" data-v-fe04bb58></span></li> <li class="menu" data-v-fe04bb58><span class="icon-menu" data-v-fe04bb58></span></li></ul></div></div> <!----></div> <!----> <div id="vuepress-theme-blog__post-layout" class="content" data-v-8dab3852 data-v-34596062><div class="blog-link-post" data-v-8dab3852>
+        博客\
+    </div> <div class="post-left" data-v-8dab3852><p class="blog-img mobile-hide" data-v-8dab3852><img src="/img/blog/blog_user.png" alt class="middle-img" data-v-8dab3852></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/account.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-author" data-v-8dab3852>randy1568</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/date.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date mobile" data-v-8dab3852>2021-12-29</span></p> <p class="mobile-hide" data-v-8dab3852><img src="/img/blog/visibility.svg" alt class="mobile-middle-img" data-v-8dab3852> <span class="blog-date" data-v-8dab3852><span data-v-8dab3852><span data-v-8dab3852>浏览</span> <span data-v-8dab3852></span> <span data-v-8dab3852>次</span></span></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <!----> <p class="other-blog-item" data-v-8dab3852></p></div> <div class="post-right" data-v-8dab3852><p class="blog-title" data-v-8dab3852>Nginx 1.14.2 移植指南（openEuler 20.03 LTS SP1）</p> <div class="user-info-mobile" data-v-8dab3852><div class="left" data-v-8dab3852><img src="/img/blog/blog_user.png" alt data-v-8dab3852></div> <div class="right" data-v-8dab3852><p class="name" data-v-8dab3852>randy1568</p> <p class="date-count" data-v-8dab3852><span class="date" data-v-8dab3852>2021-12-29</span> <span class="count" data-v-8dab3852>浏览次</span></p></div></div> <p class="blog-item-tag" data-v-8dab3852><span data-v-8dab3852>标签: </span> <span data-v-8dab3852><span class="tag-item" data-v-8dab3852>Nginx</span> <span data-v-8dab3852>, </span></span><span data-v-8dab3852><span class="tag-item" data-v-8dab3852>Porting Guide</span> <!----></span></p> <p class="bottom-line bottom-line-none" data-v-8dab3852></p> <div id="blog_content" class="markdown content__default" data-v-8dab3852><h1 id="nginx-1-14-2-移植指南-openeuler-20-03-lts-sp1"><a href="#nginx-1-14-2-移植指南-openeuler-20-03-lts-sp1" class="header-anchor">#</a> Nginx 1.14.2 移植指南（openEuler 20.03 LTS SP1）</h1> <h1 id="介绍"><a href="#介绍" class="header-anchor">#</a> 介绍</h1> <h2 id="简要介绍"><a href="#简要介绍" class="header-anchor">#</a> 简要介绍</h2> <p>Nginx是一款轻量级的Web服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器，其特点是占有内存少，并发能力强，支持FastCGI、SSL、Virtual Host、URL Rewrite、gzip等功能，并且支持很多第三方的模块扩展。</p> <p>开发语言：C</p> <p>一句话描述：Web服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器</p> <h2 id="建议的版本"><a href="#建议的版本" class="header-anchor">#</a> 建议的版本</h2> <p>建议使用版本为“Nginx 1.14.2”。
+说明：
+本文档适用于Nginx 1.14.2版本，其他版本的Nginx移植步骤也可参考本文档。</p> <h1 id="环境要求"><a href="#环境要求" class="header-anchor">#</a> 环境要求</h1> <h2 id="硬件要求"><a href="#硬件要求" class="header-anchor">#</a> 硬件要求</h2> <p>硬件要求如表1所示。
+表1 硬件要求</p> <table><thead><tr><th>项目</th> <th>说明</th></tr></thead> <tbody><tr><td>服务器</td> <td>TaiShan 200服务器（型号2280）</td></tr> <tr><td>CPU</td> <td>鲲鹏920 5250处理器</td></tr> <tr><td>磁盘分区</td> <td>对磁盘分区无要求</td></tr></tbody></table> <h2 id="操作系统要求"><a href="#操作系统要求" class="header-anchor">#</a> 操作系统要求</h2> <p>操作系统要求如表2所示。
+表2 操作系统要求</p> <table><thead><tr><th>项目</th> <th>版本</th> <th>版本查看命令</th></tr></thead> <tbody><tr><td>openEuler</td> <td>20.03 LTS SP1</td> <td><code>cat /etc/openEuler-release</code></td></tr> <tr><td>Kernel</td> <td>4.19.90</td> <td><code>uname -r</code></td></tr></tbody></table> <h1 id="配置编译环境"><a href="#配置编译环境" class="header-anchor">#</a> 配置编译环境</h1> <h2 id="配置yum源"><a href="#配置yum源" class="header-anchor">#</a> 配置Yum源</h2> <p>说明：
+如果组网环境处于外网受限情况下，服务器yum命令无法通过外界获取依赖包时，可参考本节内容进行本地源配置。</p> <ol><li>将操作系统镜像文件openEuler-20.03-LTS-everything-aarch64-dvd.iso文件拷贝到每台服务器的“/root”目录下。</li> <li>镜像文件挂载。
+a. 将“/root”目录下的openEuler操作系统对应iso文件挂载到“/mnt”目录下。
+<code>mount /root/openEuler-20.03-LTS-SP1-everything-aarch64-dvd.iso /mnt</code>
+说明：
+该操作单次生效，重启后失效。若需要配置开机启动自动挂载镜像（可选），可参考下面步骤。
+<ol><li>打开fstab文件。
+<code>vi /etc/fstab</code></li> <li>编辑fstab文件，在文件末尾添加如下信息：
+<code>/root/openEuler-20.03-LTS-SP1-everything-aarch64-dvd.iso /mnt iso9660 loop 0 0</code></li> <li>保存并退出fstab文件。</li></ol></li> <li>添加本地源文件。
+a. 进入“/etc/yum.repos.d”目录。
+<code>cd /etc/yum.repos.d</code>
+说明：
+此时，建议将此目录下的*.repo文件移到任意其他备份目录下。
+b. 创建local.repo文件。
+<ol><li>打开local.repo文件。
+<code>vi local.repo</code></li> <li>编辑local.repo文件，在local.repo文件中添加如下内容：</li></ol> <div class="language- extra-class"><pre class="language-text"><code>[local]
+name=local.repo
+baseurl=file:///mnt
+enabled=1
+gpgcheck=0
+</code></pre></div>说明：
+其中，baseurl中file路径为镜像挂载路径，与镜像文件挂载中的目录“/mnt” 对应。
+3. 保存并退出local.repo文件。
+4. 生效本地源。<div class="language- extra-class"><pre class="language-text"><code>yum clean all
+yum makecache
+yum list
+</code></pre></div></li></ol> <h2 id="安装依赖包"><a href="#安装依赖包" class="header-anchor">#</a> 安装依赖包</h2> <p>下载并安装依赖包</p> <div class="language- extra-class"><pre class="language-text"><code>yum -y install gcc gcc-c++ make libtool zlib zlib-devel pcre pcre-devel pcre2-devel perl-devel perl-ExtUtils-Embed openssl openssl-devel
+</code></pre></div><h1 id="获取源码"><a href="#获取源码" class="header-anchor">#</a> 获取源码</h1> <p>本文使用源码编译安装，因此需要获取到Nginx。</p> <ol><li>下载Nginx源码
+<code>cd /home</code> <code>wget https://nginx.org/download/nginx-1.14.2.tar.gz --no-check-certificate</code></li></ol> <p>说明：
+也可以通过本地浏览器下载源码之后上传到服务器&quot;/home&quot;目录下。
+源码地址：https://nginx.org/download/nginx-1.14.2.tar.gz</p> <p>注意：
+若及其需要配置代理才可以访问外网，请参考下面操作配置网络代理。</p> <ol><li>打开profile文件
+<code>vi /etc/profile</code></li> <li>添加如下代码后，保存并退出文件。
+其中，代理服务用户名、代理服务器密码、代理服务器IP和代理服务端口需要根据当前环境配置</li></ol> <div class="language- extra-class"><pre class="language-text"><code>export http_proxy=&quot;http://代理服务器名:代理服务器密码@代理服务器IP：代理服务器端口&quot;
+export http_proxy=$http_proxy
+export no_proxy=127.0.0.1,.huawei.com,localhost,local,.local
+</code></pre></div><ol start="3"><li>使用代理效。
+<code>source /etc/profile</code></li> <li>查看环境变量中的代理信息。
+<code>env</code></li> <li>验证代理是否配置成功。
+<code>curl www.baidu.com</code>
+可以正常解析百度即为配置成功。</li></ol> <h1 id="编译和安装"><a href="#编译和安装" class="header-anchor">#</a> 编译和安装</h1> <ol><li><p>解压Nginx安装包。
+<code>tar -xvf nginx-1.14.2.tar.gz</code></p></li> <li><p>进入&quot;nginx-1.14.2&quot;目录。
+<code>cd /home/nginx-1.14.2/</code></p></li> <li><p>配置Nginx。
+<code>./configure --prefix=/usr/local/nginx --with-http_ssl_module</code>
+说明：</p></li></ol> <ul><li>--prefix=PATH:用来制定Nginx的安装目录，默认安装目录为&quot;/usr/local/nginx&quot;。</li> <li>不需要配置with-http_stub_status_module模块，该统计模块会影响Nginx性能。</li></ul> <ol start="4"><li>编译并安装Nginx
+<code>make -j96 &amp;amp;&amp;amp; make -j96 install</code>
+说明：
+-j96: 充分利用CPU多核优势，加快编译安装速度。
+CPU 的核数可以通过lscpu查看。
+5.查看安装目录。
+<code>ls /usr/local/nginx</code></li></ol> <h1 id="运行和验证"><a href="#运行和验证" class="header-anchor">#</a> 运行和验证</h1> <h2 id="生成证书"><a href="#生成证书" class="header-anchor">#</a> 生成证书</h2> <ol><li>进入&quot;/usr/local/nginx&quot;目录，在该目录下生成密钥key。
+<code>cd /usr/local/nginx</code> <code>openssl genrsa -des3 -out server_2048.key 2048</code>
+会有两次要求输入密码，输入同一个即可，此时会生成server_2048.key文件。</li></ol> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost nginx]# openssl genrsa -des3 -out server_2048.key 2048
+Generating RSA private key, 2048 bit long modulus (2 primes)
+..................................................................................+++++
+................+++++
+e is 65537 (0x010001)
+Enter pass phrase for server_2048.key:
+Verifying - Enter pass phrase for server_2048.key:
+</code></pre></div><p>说明：
+可通过如下命令实现免密码使用此文件：
+<code>openssl rsa -in server_2048.key -out -server_2048.key</code></p> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost nginx]# openssl rsa -in server_2048.key -out -server_2048.key
+Enter pass phrase for server_2048.key
+writing RSA key
+</code></pre></div><ol start="2"><li>创建服务器证书的申请文件。</li></ol> <div class="language- extra-class"><pre class="language-text"><code>openssl req -new -key server_2048.key -out server_2048.csr
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>[root@localhost nginx]# openssl req -new -key server_2048.key -out server_2048.csr
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+Country Name (2 letter code) [AU]:CN
+State or Province Name (full name) [Some-State]:
+Locality Name (eg, city) []:
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:
+Email Address []:
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+</code></pre></div><p>输入1中设置的密码，其中Country Name 选项输入CN，其他选项可以不填。
+3. 重写密钥key。
+<code>openssl rsa -in server_2048.key -out server_2048.key</code></p> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost nginx]# openssl rsa -in server_2048.key -out server_2048.key
+writing RSA key
+</code></pre></div><ol start="4"><li>生成证书。
+<code>openssl x509 -req -days 365 -in server_2048.csr -signkey server_2048.key -out server_2048.crt</code></li></ol> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost nginx]# openssl x509 -req -days 365 -in server_2048.csr -signkey server_2048.key -out server_2048.crt
+Signature ok
+subject=C = CN, ST = Some-State, O = Internet Widgits Pty Ltd
+Getting Private key
+</code></pre></div><p>输入1中设置的密码。若已经设置免密码使用该文件，则无需输入密码。</p> <h2 id="配置功能"><a href="#配置功能" class="header-anchor">#</a> 配置功能</h2> <h3 id="配置nginx的https功能"><a href="#配置nginx的https功能" class="header-anchor">#</a> 配置Nginx的HTTPS功能</h3> <ol><li>打开nginx.conf配置文件。
+<code>vi /usr/local/nginx/conf/nginx.conf</code></li> <li>修改nginx.conf配置文件以下三处配置后，保存并退出（Esc+ :wq）。
+<ul><li>定义Nginx运行的用户权限user为root。</li> <li>修改listen监测端口，可以使用默认端口，本文修改为20000。</li> <li>指定ssl_certificate和ssl_certificate_key文件。</li></ul></li></ol> <h4 id="原文默认内容"><a href="#原文默认内容" class="header-anchor">#</a> 原文默认内容：</h4> <div class="language- extra-class"><pre class="language-text"><code>#user  nobody;
+...
+    # HTTPS server
+    #
+    #server {
+    #    listen       443 ssl;
+    #    server_name  localhost;
+
+    #    ssl_certificate      cert.pem;
+    #    ssl_certificate_key  cert.key;
+
+    #    ssl_session_cache    shared:SSL:1m;
+    #    ssl_session_timeout  5m;
+
+    #    ssl_ciphers  HIGH:!aNULL:!MD5;
+    #    ssl_prefer_server_ciphers  on;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+</code></pre></div><h4 id="修改后内容"><a href="#修改后内容" class="header-anchor">#</a> 修改后内容：</h4> <div class="language- extra-class"><pre class="language-text"><code>user  root;
+ ...
+     HTTPS server
+    
+    server {
+        listen       20000 ssl;
+        server_name  localhost;
+
+        ssl_certificate      /usr/local/nginx/server_2048.crt;
+        ssl_certificate_key  /usr/local/nginx/server_2048.key;
+
+        ssl_session_cache    shared:SSL:1m;
+        ssl_session_timeout  5m;
+
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers  on;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+    }
+
+</code></pre></div><h3 id="配置nginx的http功能"><a href="#配置nginx的http功能" class="header-anchor">#</a> 配置Nginx的HTTP功能</h3> <ol><li>打开nginx.conf配置文件。
+<code>vi /usr/local/nginx/conf/nginx.conf</code></li> <li>修改nginx.conf配置文件以下三处配置后，保存并退出（Esc+ :wq）。
+<ul><li>定义Nginx运行的用户权限user为root。</li> <li>修改listen监测端口，可以使用默认端口，本文修改为10000。</li></ul></li></ol> <h4 id="原文件默认内容"><a href="#原文件默认内容" class="header-anchor">#</a> 原文件默认内容：</h4> <div class="language- extra-class"><pre class="language-text"><code>user  root;
+...
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] &quot;$request&quot; '
+    #                  '$status $body_bytes_sent &quot;$http_referer&quot; '
+    #                  '&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on
+
+    server {
+        listen       80;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+   }
+}
+</code></pre></div><h4 id="修改后内容-2"><a href="#修改后内容-2" class="header-anchor">#</a> 修改后内容：</h4> <div class="language- extra-class"><pre class="language-text"><code>user  root;
+...
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] &quot;$request&quot; '
+    #                  '$status $body_bytes_sent &quot;$http_referer&quot; '
+    #                  '&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on
+
+    server {
+        listen       10000;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+   }
+}
+</code></pre></div><h2 id="运行nginx"><a href="#运行nginx" class="header-anchor">#</a> 运行Nginx</h2> <ol><li><p>启动Nginx（两种方式）。</p> <ul><li>通过Service服务启动（使用该方法需要先将Nginx加入Service服务再执行启动命令）。
+<ol><li>修改“/etc/init.d/nginx”文件。
+a. 删除原文件nginx。
+<code>rm -rf /etc/init.d/nginx</code>
+b. 新建nginx文件。
+<code>vi /etc/init.d/nginx</code>
+c. 添加如下内容后，保存并退</li></ol></li></ul></li></ol> <div class="language- extra-class"><pre class="language-text"><code>	   #!/bin/bash
+	   # chkconfig: 2345 10 90
+	   # description: nginx
+	   case &quot;$1&quot; in
+	     'start')
+	       /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+	       echo &quot;$0_start&quot;;
+	      ;;
+	    'stop')
+	     /usr/local/nginx/sbin/nginx -s quit
+	     echo &quot;$0_stop&quot;;
+	     ;;
+	   esac
+</code></pre></div><div class="language- extra-class"><pre><code> 2. 修改“/etc/init.d/nginx”文件权限。
+</code></pre></div><p><code>chmod 777 /etc/init.d/nginx</code>
+3. 将Nginx加入chkconfig管理列表。
+<code>chkconfig --add /etc/init.d/nginx</code>
+4. 设置Nginx开机自动启动。
+<code>chkconfig nginx on</code>
+5. 启动Nginx。
+<code>service nginx start</code>
+- 通过脚本命令启动。
+<code>/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf</code>
+2. 查看Nginx的进程。
+<code>ps -ef | grep nginx</code></p> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost nginx]# ps -ef | grep nginx
+root        9463       1  0 18:22 ?        00:00:00 nginx: master process /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+root        9464    9463  0 18:22 ?        00:00:00 nginx: worker process
+root        9466    1352  0 18:23 ttyAMA0  00:00:00 grep --color=auto nginx
+</code></pre></div><p>说明：
+关闭Nginx命令如下（3种方式，可选）。业务运行中不要执行该命令。</p> <ul><li>通过Service服务关闭。
+<code>service nginx stop</code></li> <li>通过脚本命令关闭。
+<code>/usr/local/nginx/sbin/nginx -s quit</code></li> <li>使用结束进程命令。</li></ul> <div class="language- extra-class"><pre><code>```pkill nginx```
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>[root@localhost nginx]# pkill nginx
+[root@localhost nginx]# ps -ef | grep nginx
+root        9469    1352  0 18:27 ttyAMA0  00:00:00 grep --color=auto nginx
+</code></pre></div><h2 id="验证nginx"><a href="#验证nginx" class="header-anchor">#</a> 验证Nginx</h2> <ol><li>查看Nginx的监测端口（10000是HTTP监测端口，20000是HTTPS监测端口）。
+<code>netstat -anp | grep 10000</code> <code>netstat -anp | grep 20000</code> <code>netstat -anpt</code></li></ol> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost nginx]# netstat -anp | grep 10000
+tcp        0      0 0.0.0.0:10000           0.0.0.0:*               LISTEN      9535/nginx: master  
+[root@localhost nginx]# netstat -anp | grep 20000
+tcp        0      0 0.0.0.0:20000           0.0.0.0:*               LISTEN      9535/nginx: master  
+[root@localhost nginx]# netstat -anpt
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:10000           0.0.0.0:*               LISTEN      9535/nginx: master  
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      775/sshd: /usr/sbin 
+</code></pre></div><ol start="2"><li>查看Nginx的HTML文件所在目录。
+<code>ll -h /usr/local/nginx/html/</code></li></ol> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost nginx]# ll -h /usr/local/nginx/html/
+total 8.0K
+-rw-r--r--. 1 root root 537 Mar 20 16:46 50x.html
+-rw-r--r--. 1 root root 612 Mar 20 16:46 index.html
+</code></pre></div><ol start="3"><li>验证HTTPS功能。
+通过curl本地访问Nginx的HTML页面。
+<code>curl -k https://127.0.0.1:20000/index.html</code></li></ol> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost nginx]# curl -k  https://127.0.0.1:20000/index.html
+
+
+
+Welcome to nginx!
+
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+
+
+
+&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.
+
+For online ation and support please refer to
+&lt;a href=&quot;#&quot; class=&quot;white&quot;&gt;nginx.org&lt;/a&gt;.&lt;br&gt;
+Commercial support is available at
+&lt;a href=&quot;#&quot; class=&quot;white&quot;&gt;nginx.com&lt;/a&gt;.
+
+&lt;em&gt;Thank you for using nginx.&lt;/em&gt;
+
+
+</code></pre></div><ol start="4"><li>验证HTTP功能。
+通过curl本地访问Nginx的HTML页面。
+<code>curl http://127.0.0.1:10000/index.html</code></li></ol> <div class="language- extra-class"><pre class="language-text"><code>[root@localhost nginx]# curl http://127.0.0.1:10000/index.html
+
+
+
+Welcome to nginx!
+
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+
+
+
+&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.
+
+For online ation and support please refer to
+&lt;a href=&quot;#&quot; class=&quot;white&quot;&gt;nginx.org&lt;/a&gt;.&lt;br&gt;
+Commercial support is available at
+&lt;a href=&quot;#&quot; class=&quot;white&quot;&gt;nginx.com&lt;/a&gt;.
+
+&lt;em&gt;Thank you for using nginx.&lt;/em&gt;
+
+
+</code></pre></div><h1 id="卸载nginx"><a href="#卸载nginx" class="header-anchor">#</a> 卸载Nginx</h1> <ol><li>编译安装只是生成对应的文件，不涉及卸载，直接删除对应的安装目录即可。
+<code>rm -rf /usr/local/nginx</code></li></ol></div></div> <div class="bottom-line" data-v-8dab3852></div> <div class="disclaimer" data-v-8dab3852>【版权声明】Copyright © 2021 openEuler Community。本文由openEuler社区首发，欢迎遵照 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode" data-v-8dab3852>CC-BY-SA 4.0</a> 协议规定转载。转载时敬请在正文注明并保留原文链接和作者信息。</div> <div class="disclaimer" data-v-8dab3852>
+        【免责声明】本文仅代表作者本人观点，与本网站无关。本网站对文中陈述、观点判断保持中立，不对所包含内容的准确性、可靠性或完整性提供任何明示或暗示的保证。本文仅供读者参考，由此产生的所有法律责任均由读者本人承担。
+    </div></div> <div class="footer-wrapper" data-v-0b78f953 data-v-34596062><div class="qr-code" data-v-0b78f953><img src="/img/common/newyear-qr.png" alt data-v-0b78f953> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MTBGRjQxMDc4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MTBGRjQxMDg4MTFBMTFFNDg4RUU4NENEQTQxODZDMjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxMEZGNDEwNTgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxMEZGNDEwNjgxMUExMUU0ODhFRTg0Q0RBNDE4NkMyNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvJh/V0AAAJMSURBVHja5Je7L0RBFMatCEEiQYcCBYKo6IgQu0SnIhuFXUsUdBL/gEqt8dhVSNajUbJsSFBqiHeBSsUqiHeyvknOTcaYuffsI9nCSX7Z2bsz8317Z848XPF4PCuTkZ2V4cixCl6vl9umCDSBOlBMz57AJTgGz5xOwuHwbwOMaABDoBfUG+qcgU2wBM7TNQSlIAhOwaSNuGVykowsgpJUDXSDa+BPYniHqa0nWQMDYIvzLxzeXgT0J2qgHaykcbKvgjaugUJyne7YAQUcA/MgT/P8C2wzhESdb81z0eeck4EqsSRoGt+DTpqUQRvxINXpoDZqDIJKOwMTNvl9SOUACBnEA1Q+pDa6GDcZEOPTZ2jkpryWU0w2EZLELTNuQ19CI//PUoxoUV+PJq9d9Gl9L5fKshmfTT/VoBkcqAZqGRPMrwj2KL87ictaB+oQcBccP6VUrvRMlKNM8V9aGd+OZQMxZhtrgn1Kz0S5i3ZBTsR0Bi6Z4vJsjyirpt+Qompc6QwcgVubRouKeIh2Oo8iOuywWN2Q1h8Dr2DDZnkdsZntPkU0QBNVF0LjzTQJZw2NGkGrNAw+Q3ZYJtrocKKLWe2ZkEIMQVizH5SBPbDrcMAQJipo39Ad95bBndNuKF71h+EA62FMMI9B/B2McbbjV6ZQouGmvlknon06kqUr+qXdlH0mXKO9/TEF4Qf65+vJnopF+tU45LUpFqhtNNV7QYzyWtwHZuh+YIpTqiPqjtKNiXc1Y8QFmALThquZ+P0EvCTymlz//nb8I8AA0Ah5h1oiyB4AAAAASUVORK5CYII=" alt class="close" data-v-0b78f953></div> <div class="atom" data-v-0b78f953><p data-v-0b78f953>openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目</p> <img src="/atom-pc.png" alt class="atom-pc" data-v-0b78f953></div> <div class="footer-content" data-v-0b78f953><div class="footer-left" data-v-0b78f953><img src="/footer-logo2.svg" class="footer-logo" data-v-0b78f953> <div class="footer-mail" data-v-0b78f953>contact@openeuler.io</div></div> <div class="footer-center" data-v-0b78f953><ul class="right-list" data-v-0b78f953><li data-v-0b78f953><a data-v-0b78f953>品牌</a></li><li data-v-0b78f953><a data-v-0b78f953>隐私政策</a></li><li data-v-0b78f953><a data-v-0b78f953>法律声明</a></li><li data-v-0b78f953><a data-v-0b78f953>服务状态</a></li></ul> <p class="footer-copyright" data-v-0b78f953>
+        版权所有 © 2022 openEuler 保留一切权利
+      </p></div> <div class="footer-right" data-v-0b78f953><img src="/qrcode.png" class="footer-qrcode" data-v-0b78f953> <div class="qrcode-desc" data-v-0b78f953>扫码关注公众号</div></div></div></div></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.cdfb7ee7.js" defer></script><script src="/assets/js/14.8a38dea1.js" defer></script><script src="/assets/js/296.23c2969a.js" defer></script>
+  </body>
+</html>
